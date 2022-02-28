@@ -13,9 +13,10 @@ end_sec=`date -d "$end_date" "+%s"`
 for((i=start_sec;i<=end_sec;i+=86400)); do
     day=$(date -d "@$i" "+%Y-%m-%d")
     rnd=$(rand 0 2)
+    sudo date -s ${day}
     echo $day $rnd
     for((j=0;j<rnd;j++));do
-        echo $day  $rnd >> 67.二进制求和.cpp
+        echo $day  $rnd >> $day.cpp
         git add .
         git commit -m "add"
     done
