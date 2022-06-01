@@ -6,8 +6,8 @@ function rand(){
 }
 
 echo "ccc" | sudo -S service ntp stop
-start_date=20220515
-end_date=20220531
+start_date=20220601
+end_date=20220715
 start_sec=`date -d "$start_date" "+%s"`
 end_sec=`date -d "$end_date" "+%s"`
 for((i=start_sec;i<=end_sec;i+=86400)); do
