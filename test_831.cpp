@@ -102,7 +102,47 @@
 class Solution {
 public:
     string maskPII(string s) {
-        
+        bool email = true;
+        std::string::size_type pos1 = s.find("@");
+        email = (pos1 != std::string::npos);
+        std::string new_s;
+        if(email){
+            new_s.push_back(std::tolower(s[0]));
+            new_s.append("*****");
+            new_s.push_back(std::tolower(s[pos1 - 1]));
+            for(int i = pos1; i < s.size(); i++ ){
+                if(s[i] != '.'){
+                    new_s.push_back(std::tolower(s[i]));
+                }else{
+                    new_s.push_back('.');
+                }
+            }
+        }else{
+            int num = 0;
+            for(int  i = s.size() ;i >= 0; i--){
+                if( '0' <= s[i] && s[i] <= '9'){
+                    num ++;
+                    if(num <= 4){
+                        new_s.push_back( s[i]);
+                    }else{
+                        new_s.push_back('*');
+                    }
+                    if(num == 4 || num == 7 || num == 10){
+                        new_s.push_back('-');
+                    }
+                }
+            }
+            if(num == 10){
+                new_s = new_s.substr(0, new_s.size() - 1);
+            }else{
+                new_s.push_back('+');
+            }
+            std::reverse(new_s.begin(), new_s.end());
+
+        }
+
+        return new_s;
+
     }
 };
 // @lc code=end
