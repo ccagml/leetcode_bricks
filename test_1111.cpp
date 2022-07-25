@@ -97,6 +97,7 @@
 class Solution {
 public:
     vector<int> maxDepthAfterSplit(string seq) {
+        // 没想到可以用贪心,将左边括号平均分给两份
         int n = seq.size();
         // vector<int> result(n);
         vector<int> result;
