@@ -60,11 +60,19 @@
 
 // 20220728 有问题, 排序, dfs, 标记位会超时, 提前处理 是分配成两组, 当时同一边的时候又不行, 例如 [2, 3, 3, 3, 4], 没啥想法
 // 
+// [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+// 11440:108847714:78405
+// 
 class Solution {
 public:
     unordered_map<int, unordered_set<int>> u_sum_us_flag;
+    unordered_map<int, vector<unordered_set<int>>> u_sum_v_i_s_flag;
+    unordered_map<int, int> u_value_to_index;
     int max_result;
     int half_sum;
+    int loop_max;
+    int loop_cnt;
+    int loop_cnt2;
     int set_bit_1(int x, int index)
     {
         x |= (1 << ( index + 1));
@@ -77,20 +85,53 @@ public:
     }
 
     void dfs(vector<int>& rods, int cur_index, int cur_sum, int select_flag){
+        // if(cur_sum > max_result){
+        //     int new_size = u_sum_us_flag[cur_sum].size();
+        //     if(loop_max < new_size ){
+        //         loop_max = new_size;
+        //     }
+        //     if(new_size >= 1 ){
+        //         for (const auto& elem: u_sum_us_flag[cur_sum]) {
+        //             loop_cnt++;
+        //             if((elem & select_flag) == 0){
+        //                 max_result = cur_sum;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        //     u_sum_us_flag[cur_sum].insert(select_flag);
+        // }
         if(cur_sum > max_result){
-            if(u_sum_us_flag[cur_sum].size() >= 1 ){
-                for (const auto& elem: u_sum_us_flag[cur_sum]) {
-                    if((elem & select_flag) == 0){
-                        max_result = cur_sum;
-                        break;
+            if(u_sum_v_i_s_flag.count(cur_sum) == 0){
+                vector<unordered_set<int>> new_vus(22);
+                u_sum_v_i_s_flag[cur_sum] = new_vus;
+            }
+            int new_select_flag = select_flag;
+            int cur_last = 0;
+            while(new_select_flag > 0 && cur_sum > max_result){
+                int delete_last = new_select_flag & (new_select_flag - 1);
+                int last_index = new_select_flag - delete_last;
+                new_select_flag = delete_last;
+                int delete_last_index = u_value_to_index[last_index];
+                u_sum_v_i_s_flag[cur_sum][delete_last_index].insert(select_flag);
+                for(int iii = cur_last + 1; iii < delete_last_index; iii++){
+                    if(u_sum_v_i_s_flag[cur_sum][iii].size() > 0){
+                        for(auto &tmp : u_sum_v_i_s_flag[cur_sum][iii] ){
+                            if((tmp & select_flag) == 0){
+                                max_result = cur_sum;
+                                break;
+                            }
+                        }
                     }
                 }
+                cur_last = delete_last_index;
             }
-            u_sum_us_flag[cur_sum].insert(select_flag);
         }
+
         for(int j = cur_index; j < rods.size(); j++){
             int new_select_flag = set_bit_1(select_flag, j);
             int new_cur_sum = cur_sum + rods[j];
+            loop_cnt2++;
             if(new_cur_sum <= half_sum){
                 dfs(rods, j + 1, new_cur_sum, new_select_flag);
             }else{
@@ -102,28 +143,25 @@ public:
     int tallestBillboard(vector<int>& rods) {
         max_result = 0;
         int tem_sum = 0;
-        unordered_map<int, int> uii;
+        loop_max = 0;
+        loop_cnt = 0;
+        loop_cnt2 = 0;
         for(int i = 0; i < rods.size(); i++){
-            uii[rods[i]]++;
-            if(uii[rods[i]] == 2){
-                uii[rods[i]] -= 2;
-                tem_sum += rods[i];
-            }
             half_sum += rods[i];
         }
-        half_sum /= 2;
 
-        vector<int> new_rods;
-        for(auto &tem : uii){
-            if(tem.second > 0){
-                new_rods.push_back(tem.first);
-            }
+        for(int i = 1; i< 22; i++){
+            u_value_to_index[set_bit_1(0, i)] = i;
         }
-        sort(new_rods.begin(), new_rods.end());
-        dfs(new_rods, 0, 0, 0);
-
+        half_sum /= 2;
+        sort(rods.begin(), rods.end());
+        dfs(rods, 0, 0, 0);
+        std::cout << loop_max << ":" << loop_cnt << ":" << loop_cnt2 << std::endl;
         return max_result + tem_sum;
     }
 };
 // @lc code=end
+
+
+
 
