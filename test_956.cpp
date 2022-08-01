@@ -160,8 +160,21 @@ public:
     //     return max_result + tem_sum;
     // }
 
+    // 一个哈希表 存当前的结果,
+    // 每个数字有三种选择, 加左边, 减左边, 不使用
+    // 哈希的k,v: k存当前加减后的值, v存最大正整数
+    // map要拷贝, 避免循环有问题
     int tallestBillboard(vector<int>& rods) {
-        
+        unordered_map<int, int> um = { {0, 0}};
+        for(int r_index = 0; r_index < rods.size(); r_index++){
+            int i = rods[r_index];
+            unordered_map<int, int> dum = um;
+            for(auto tmp : dum){
+                um[tmp.first + i] = max(um[tmp.first + i], tmp.second + i);
+                um[tmp.first - i] = max(um[tmp.first - i], tmp.second);
+            }
+        }
+        return um[0];
     }
 };
 // @lc code=end
