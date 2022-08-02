@@ -78,11 +78,11 @@ public:
         }
         int last_n_add = last_n + kk;
         int last_n_cost = last_n - kk;
-        if ((last_n + kk) >= 0 && (last_n + kk) <= 9)
+        if (last_n_add >= 0 && last_n_add <= 9)
         {
-            dfs((last_n + kk), cur_index + 1, cur_value * 10 + (last_n + kk));
+            dfs(last_n_add, cur_index + 1, cur_value * 10 + last_n_add);
         }
-        if (last_n_cost >= 0 && last_n_cost <= 9 && (last_n + kk) != last_n_cost)
+        if (last_n_cost >= 0 && last_n_cost <= 9 && last_n_add != last_n_cost)
         {
             dfs(last_n_cost, cur_index + 1, cur_value * 10 + last_n_cost);
         }
