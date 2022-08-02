@@ -92,9 +92,10 @@ void test_string()
     int i2 = 123456789;
     std::string i_str1 = std::to_string(i2); // 123456789
 
-    std::cout << "a" << " -> std::toupper -> " << char(std::toupper('a')) << std::endl;
-    std::cout << "A" << " -> std::tolower -> " << char(std::tolower('A')) << std::endl;
-
+    std::cout << "a"
+              << " -> std::toupper -> " << char(std::toupper('a')) << std::endl;
+    std::cout << "A"
+              << " -> std::tolower -> " << char(std::tolower('A')) << std::endl;
 }
 void test_array()
 {
@@ -451,9 +452,11 @@ void tset_sort()
     //使用lambda函数
     //====================================================================================================================================
     // 16,8,7,5,true排前面
-    std::sort(v.begin(), v.end(), [](int a, int b) { return a > b; });
+    std::sort(v.begin(), v.end(), [](int a, int b)
+              { return a > b; });
     // 5,7,8,16,true排前面
-    std::sort(v.begin(), v.end(), [](int a, int b) { return a < b; });
+    std::sort(v.begin(), v.end(), [](int a, int b)
+              { return a < b; });
     //====================================================================================================================================
     //排序pair
     //自定义比较函数pair//返回true使得第一个参数排后面
@@ -588,6 +591,7 @@ class TestClass
 private:
     //静态数据成员，必须在外部定义和初始化，内部不能直接初始化！
     static int static_int_var;
+
 public:
     TestClass(/* args */);
     ~TestClass();
@@ -677,7 +681,8 @@ void test_lower_bound()
     std::vector<PriceInfo> prices = {{100.0}, {101.5}, {102.5}, {102.5}, {107.3}};
     for (double to_find : {102.5, 110.2})
     {
-        auto prc_info = std::lower_bound(prices.begin(), prices.end(), to_find, [](const PriceInfo &info, double value) { return info.price < value; });
+        auto prc_info = std::lower_bound(prices.begin(), prices.end(), to_find, [](const PriceInfo &info, double value)
+                                         { return info.price < value; });
         if (prc_info != prices.end())
         {
             std::cout << prc_info->price << " at index " << prc_info - prices.begin();
@@ -715,7 +720,8 @@ void test_upper_bound()
     std::vector<PriceInfo> prices = {{100.0}, {101.5}, {102.5}, {102.5}, {107.3}};
     for (double to_find : {102.5, 110.2})
     {
-        auto prc_info = std::upper_bound(prices.begin(), prices.end(), to_find, [](double value, const PriceInfo &info) { return value < info.price; });
+        auto prc_info = std::upper_bound(prices.begin(), prices.end(), to_find, [](double value, const PriceInfo &info)
+                                         { return value < info.price; });
         if (prc_info != prices.end())
         {
             std::cout << prc_info->price << " at index " << prc_info - prices.begin();
@@ -737,6 +743,12 @@ int set_bit_0(int x, int index)
     x &= ~(1 << index);
     return x;
 }
+
+bool is_bit_1(int x, int index)
+{
+    return ((1 << index) & (x));
+}
+
 void test_set_bit()
 {
     // std::cout << "1:" << (1 << 0) << '\n';
@@ -754,6 +766,26 @@ void test_set_bit()
         x = set_bit_0(x, i);
         std::cout << "b0 i:" << i << ",x:" << x << '\n';
     }
+    for (int v = 0; v < 100; v++)
+    {
+        for (int i = 0; i < 15; i++)
+        {
+            std::cout << v << ":" << i << ":" << is_bit_1(v, i) << std::endl;
+        }
+    }
+
+    int v = 0;
+    v = set_bit_1(v, 0);
+    v = set_bit_1(v, 3);
+    v = set_bit_1(v, 5);
+    v = set_bit_1(v, 8);
+    v = set_bit_1(v, 9);
+    v = set_bit_1(v, 11);
+
+    for (int i = 0; i < 15; i++)
+    {
+        std::cout << v << ":" << i << ":" << is_bit_1(v, i) << std::endl;
+    }
     // b1 i:0,x:1
     // b1 i:1,x:3
     // b1 i:2,x:7
@@ -769,7 +801,7 @@ int main(int argc, char const *argv[])
 {
     // test_pair();
     // test_tuple();
-    test_string();
+    // test_string();
     // test_array();
     // test_unordered_map();
     // test_unordered_set();
