@@ -66,30 +66,65 @@
 // @lc code=start
 class Solution
 {
+    // 区间dp
+    // [3,2,4,1]\n2\n[3,2,4,1]\n3\n[3,5,1,2,6]\n3\n
 public:
     int mergeStones(vector<int> &stones, int k)
     {
+
         int n = stones.size();
-        vector<vector<int>> vvi(n, vector<int>(n, -1));
+
+        if ((n - 1) % (k - 1) != 0)
+        {
+            return -1;
+        }
+
         // 可能需要一个前缀和
-        vector<int> qian;
-        int sum = 0;
+        vector<int> qian(n + 1);
+        for (int i = 1; i <= n; i++)
+        {
+            qian[i] = ((qian[i - 1] + stones[i - 1]));
+            // std::cout << qian[i] << ",";
+        }
+        // std::cout << std::endl;
+
+        vector<vector<int>> vvi(n, vector<int>(n, 1000000));
         for (int i = 0; i < n; i++)
         {
-            sum += stones[i];
-            qian.push_back(sum);
+            vvi[i][i] = 0;
         }
-        for (int start = k; start < n; start++)
+        for (int start = k; start <= n; start++)
         {
             for (int i = 0; i < n; i++)
             {
-                // vvi[i][j] = 10   i - j 合成一堆的最小代价
-                int j = i + k;
-                if (j < n)
+                int j = i + start - 1;
+                if (j >= n)
                 {
+                    break;
+                }
+                // vvi[i][j] = 10   i - j 合成一堆的最小代价
+                for (int temp = i; temp < j; temp += (k - 1))
+                {
+                    vvi[i][j] = min(vvi[i][j], vvi[i][temp] + vvi[temp + 1][j]);
+                }
+
+                if ((start - 1) % (k - 1) == 0)
+                {
+                    vvi[i][j] += (qian[j + 1] - qian[i]);
                 }
             }
         }
+
+        // for (int i = 0; i < n; i++)
+        // {
+        //     std::cout << "" << std::endl;
+        //     for (int j = 0; j < n; j++)
+        //     {
+        //         std::cout << vvi[i][j] << "|";
+        //     }
+        //     std::cout << "," << std::endl;
+        // }
+
         return vvi[0][n - 1];
     }
 };
