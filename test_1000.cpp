@@ -67,6 +67,10 @@
 class Solution
 {
     // 区间dp
+    // 前缀和快速计算范围值
+    // 从长度2开始计算区间
+    // vvi[i][j] 的值相当于  vvi[i][tmp] + vvi[tmp + 1][j]中的最小值, tmp的取值跳k-1个数
+    // 判断vvi[i][j] 是否可以合并一堆 如果可以 做合并加值
     // [3,2,4,1]\n2\n[3,2,4,1]\n3\n[3,5,1,2,6]\n3\n
 public:
     int mergeStones(vector<int> &stones, int k)
@@ -89,11 +93,12 @@ public:
         // std::cout << std::endl;
 
         vector<vector<int>> vvi(n, vector<int>(n, 1000000));
+        // 已经是一堆 不用消耗
         for (int i = 0; i < n; i++)
         {
             vvi[i][i] = 0;
         }
-        for (int start = k; start <= n; start++)
+        for (int start = 2; start <= n; start++)
         {
             for (int i = 0; i < n; i++)
             {
