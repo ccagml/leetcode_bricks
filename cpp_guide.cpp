@@ -436,6 +436,34 @@ void test_priority_queue()
     // pair_pq.pop();
     //}
     // std::cout<<'\n';
+
+    struct compare
+    {
+        bool operator()(const std::pair<int, std::string> &t1, const std::pair<int, std::string> &t2)
+        {
+            // true使得t1排后面?
+            if (t1.first < t2.first)
+            {
+                return true;
+            }
+            else if (t1.first == t2.first && t1.second > t2.second)
+            {
+                return true;
+            }
+            return false;
+        }
+    };
+    std::unordered_map<std::string, std::priority_queue<std::pair<int,std::string>, std::vector<std::pair<int, std::string>>, compare>> cus_s;
+
+    cus_s["test"].push({10, "aaa"});
+    cus_s["test"].push({10, "baaa"});
+    cus_s["test"].push({10, "aaaaaa"});
+    cus_s["test"].push({11, "sss"});
+    cus_s["test"].push({9, "aaa"});
+    while(!cus_s["test"].empty()){
+        std::cout << cus_s["test"].top().first << ":" << cus_s["test"].top().second << std::endl;
+        cus_s["test"].pop();
+    }
 }
 //排序函数
 void tset_sort()
@@ -809,7 +837,7 @@ int main(int argc, char const *argv[])
     // test_deque();
     // test_stack();
     // test_queue();
-    // test_priority_queue();
+    test_priority_queue();
     // tset_sort();
     // test_class();
     // test_mod_1e97();
