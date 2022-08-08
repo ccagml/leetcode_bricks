@@ -49,10 +49,14 @@
  */
 
 // @lc code=start
+
+// 1.2层循环会超时
+// 2. 一开始想的是 分两个vector<int> 分别存储 values[i] + i 和 values[i] - i;然后排序
+// 3. 2中的问题是可能出现的 + 的i比 - 的 i 大,不符合规则
+// 4. 没想到的点, 因为 values[i] + values[j] + i - j 中 values[i] + i 中的i一定比j小, 所以可以累计一个最大值来
 class Solution
 {
 public:
-
     // 两层循环会超时
     // int maxScoreSightseeingPair(vector<int> &values)
     // {
@@ -69,7 +73,16 @@ public:
     // }
     int maxScoreSightseeingPair(vector<int> &values)
     {
+        int result = 0;
+        int temp_max = values[0];
+        for (int i = 1; i < values.size(); i++)
+        {
+            result = max(result, temp_max + values[i] - i);
+            // 排前面的
+            temp_max = max(temp_max, values[i] + i);
+        }
 
+        return result;
     }
 };
 // @lc code=end
