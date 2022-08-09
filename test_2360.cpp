@@ -82,10 +82,14 @@ public:
                         max_result = max(max_result, (temp_len - uii[edges[start_1]] + 1));
                         break;
                     }
+                    int old = edges[start_1];
+                    if(start_1 >= 0){
+                        edges[start_1] = -1;
+                    }
                     uii[start_1] = temp_len;
                     temp_len++;
-                    uii[edges[start_1]] = temp_len;
-                    start_1 = edges[start_1];
+                    uii[old] = temp_len;
+                    start_1 = old;
                     flag[start_1] = 1;
                 }
             }
