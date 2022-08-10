@@ -453,14 +453,15 @@ void test_priority_queue()
             return false;
         }
     };
-    std::unordered_map<std::string, std::priority_queue<std::pair<int,std::string>, std::vector<std::pair<int, std::string>>, compare>> cus_s;
+    std::unordered_map<std::string, std::priority_queue<std::pair<int, std::string>, std::vector<std::pair<int, std::string>>, compare>> cus_s;
 
     cus_s["test"].push({10, "aaa"});
     cus_s["test"].push({10, "baaa"});
     cus_s["test"].push({10, "aaaaaa"});
     cus_s["test"].push({11, "sss"});
     cus_s["test"].push({9, "aaa"});
-    while(!cus_s["test"].empty()){
+    while (!cus_s["test"].empty())
+    {
         std::cout << cus_s["test"].top().first << ":" << cus_s["test"].top().second << std::endl;
         cus_s["test"].pop();
     }
