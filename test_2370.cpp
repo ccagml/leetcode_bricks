@@ -63,40 +63,30 @@ public:
     int longestIdealString(string s, int k)
     {
         int n = s.size();
-        vector<vector<int>> vvi(n, vector<int>(26));
+        vector<int> vvi(26);
         for (int i = 0; i < n; i++)
         {
             int cur_index = s[i] - 'a';
             if (i == 0)
             {
-                vvi[i][cur_index] = 1;
+                vvi[cur_index] = 1;
             }
             else
             {
                 // std::cout << i << ":";
-                for (int start = 0; start < 26; start++)
+                int cur_last_max = 0;
+                for (int cur_temp = max(0, cur_index - k); cur_temp < min(26, cur_index + k + 1); cur_temp++)
                 {
-                    if (start == cur_index)
-                    {
-                        int cur_last_max = 0;
-                        for(int cur_temp = max(0, start -k); cur_temp < min(26, start + k + 1); cur_temp++){
-                            cur_last_max = max(cur_last_max, vvi[i - 1][cur_temp]);
-                        }
-                        vvi[i][cur_index] = cur_last_max + 1;
-                    }
-                    else
-                    {
-                        vvi[i][start] = vvi[i - 1][start];
-                    }
-                    // std::cout  << char(start +'a') << ":" << vvi[i][start] << "),";
+                    cur_last_max = max(cur_last_max, vvi[cur_temp]);
                 }
+                vvi[cur_index] = cur_last_max + 1;
                 // std::cout << std::endl;
             }
         }
         int result = 0;
         for (int i = 0; i < 26; i++)
         {
-            result = max(result, vvi[n - 1][i]);
+            result = max(result, vvi[i]);
         }
         return result;
     }
