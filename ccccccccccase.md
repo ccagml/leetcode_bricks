@@ -28,3 +28,6 @@
 
 # 2370
 - "acfgbd"\n2\n"abcd"\n3\n"aaaaaaaaaaaaaaaaaaaa"\n3\n"pvjcci"\n4\n"azaza"\n25\n
+
+# 1417
+- "leetcode"\n"1229857369"\n"covid2019"\n"ab123"\n
