@@ -64,6 +64,7 @@ public:
     {
         int n = s.size();
         vector<int> vvi(26);
+        int result = 0;
         for (int i = 0; i < n; i++)
         {
             int cur_index = s[i] - 'a';
@@ -75,18 +76,14 @@ public:
             {
                 // std::cout << i << ":";
                 int cur_last_max = 0;
-                for (int cur_temp = max(0, cur_index - k); cur_temp < min(26, cur_index + k + 1); cur_temp++)
+                for (int cur_temp = (cur_index - k > 0 ? cur_index - k : 0); cur_temp < (cur_index + k + 1 < 26 ? cur_index + k + 1 : 26); cur_temp++)
                 {
-                    cur_last_max = max(cur_last_max, vvi[cur_temp]);
+                    cur_last_max = (cur_last_max > vvi[cur_temp]) ? cur_last_max : vvi[cur_temp];
                 }
                 vvi[cur_index] = cur_last_max + 1;
                 // std::cout << std::endl;
             }
-        }
-        int result = 0;
-        for (int i = 0; i < 26; i++)
-        {
-            result = max(result, vvi[i]);
+            result = (result > vvi[cur_index] ? result : vvi[cur_index]);
         }
         return result;
     }
