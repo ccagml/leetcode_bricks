@@ -54,3 +54,6 @@
 
 # 2374 
 - [1,0,0,0,0,7,7,5]\n[2,0,0,2]\n
+
+# 2375
+- "IIIDIDDD"\n"DDD"\n"DIIDIDD"\n"DDIIDID"\n"DIDIDDD"\n
