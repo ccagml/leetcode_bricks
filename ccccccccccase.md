@@ -64,3 +64,6 @@
 
 
 ```
+
+# 2379
+- "WBBWWBBWBW"\n7\n"WBWBBBW"\n2\n
