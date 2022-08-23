@@ -56,35 +56,131 @@
 
 // @lc code=start
 
-typedef long long LL;
+// typedef long long LL;
+
+// class Solution
+// {
+// public:
+//     LL n, a[100005], d[270000], b[270000];
+//     string shiftingLetters(string s, vector<vector<int>> &shifts)
+//     {
+
+//         int n = s.size();
+//         build(1, n, 1);
+//         for (int i = 0; i < shifts.size(); i++)
+//         {
+//             if (shifts[i][2] == 1)
+//             {
+//                 update(shifts[i][0] + 1, shifts[i][1] + 1, 1, 1, n, 1);
+//             }
+//             else
+//             {
+//                 update(shifts[i][0] + 1, shifts[i][1] + 1, -1, 1, n, 1);
+//             }
+//         }
+//         string result = "";
+//         for (int i = 0; i < s.size(); i++)
+//         {
+//             int num = getsum(i + 1, i + 1, 1, n, 1);
+//             int cur = s[i] - 'a';
+//             int old = s[i] - 'a';
+//             cur += num;
+//             while (cur > 25)
+//             {
+//                 cur -= 26;
+//             }
+//             while (cur < 0)
+//             {
+//                 cur += 26;
+//             }
+//             // std::cout << i << ":增加:" << num << ":" << old << "->" << cur << std::endl;
+//             result.push_back(cur + 'a');
+//         }
+//         return result;
+//     }
+//     void build(LL l, LL r, LL p)
+//     { // l:区间左端点 r:区间右端点 p:节点标号
+//         if (l == r)
+//         {
+//             d[p] = a[l]; // 将节点赋值
+//             return;
+//         }
+//         LL m = l + ((r - l) >> 1);
+//         build(l, m, p << 1);
+//         build(m + 1, r, (p << 1) | 1); // 分别建立子树
+//         d[p] = d[p << 1] + d[(p << 1) | 1];
+//     }
+
+//     void update(LL l, LL r, LL c, LL s, LL t, LL p)
+//     {
+//         if (l <= s && t <= r)
+//         {
+//             d[p] += (t - s + 1) * c;
+//             b[p] += c; // 如果区间被包含了，直接得出答案
+//             return;
+//         }
+//         LL m = s + ((t - s) >> 1);
+//         if (b[p])
+//             d[p << 1] += b[p] * (m - s + 1), d[(p << 1) | 1] += b[p] * (t - m),
+//                 b[p << 1] += b[p], b[(p << 1) | 1] += b[p];
+//         b[p] = 0;
+//         if (l <= m)
+//             update(l, r, c, s, m, p << 1); // 本行和下面的一行用来更新p*2和p*2+1的节点
+//         if (r > m)
+//             update(l, r, c, m + 1, t, (p << 1) | 1);
+//         d[p] = d[p << 1] + d[(p << 1) | 1]; // 计算该节点区间和
+//     }
+
+//     LL getsum(LL l, LL r, LL s, LL t, LL p)
+//     {
+//         if (l <= s && t <= r)
+//             return d[p];
+//         LL m = s + ((t - s) >> 1);
+//         if (b[p])
+//             d[p << 1] += b[p] * (m - s + 1), d[(p << 1) | 1] += b[p] * (t - m),
+//                 b[p << 1] += b[p], b[(p << 1) | 1] += b[p];
+//         b[p] = 0;
+//         LL sum = 0;
+//         if (l <= m)
+//             sum =
+//                 getsum(l, r, s, m, p << 1); // 本行和下面的一行用来更新p*2和p*2+1的答案
+//         if (r > m)
+//             sum += getsum(l, r, m + 1, t, (p << 1) | 1);
+//         return sum;
+//     }
+// };
 
 class Solution
 {
 public:
-    LL n, a[100005], d[270000], b[270000];
     string shiftingLetters(string s, vector<vector<int>> &shifts)
     {
-
         int n = s.size();
-        build(1, n, 1);
+        // 插旗法?
+        vector<int> vi(n + 10);
+        vector<int> vi1(n + 10);
         for (int i = 0; i < shifts.size(); i++)
         {
-            if (shifts[i][2] == 1)
-            {
-                update(shifts[i][0] + 1, shifts[i][1] + 1, 1, 1, n, 1);
-            }
-            else
-            {
-                update(shifts[i][0] + 1, shifts[i][1] + 1, -1, 1, n, 1);
+            int start = shifts[i][0]; 
+            int end = shifts[i][1]; 
+            int flag = shifts[i][2];
+            if(flag == 1){
+                vi[start] += 1;
+                vi[end + 1] -= 1;
+            }else{
+                vi1[start] += 1;
+                vi1[end + 1] -= 1;
             }
         }
         string result = "";
-        for (int i = 0; i < s.size(); i++)
-        {
-            int num = getsum(i + 1, i + 1, 1, n, 1);
+        int vi_a = 0;
+        int vi1_a = 0;
+        for(int i = 0; i < s.size(); i++){
+            vi_a += vi[i];
+            vi1_a += vi1[i];
+            int sub = vi_a - vi1_a;
             int cur = s[i] - 'a';
-            int old = s[i] - 'a';
-            cur += num;
+            cur += sub;
             while (cur > 25)
             {
                 cur -= 26;
@@ -93,60 +189,9 @@ public:
             {
                 cur += 26;
             }
-            // std::cout << i << ":增加:" << num << ":" << old << "->" << cur << std::endl;
             result.push_back(cur + 'a');
         }
         return result;
-    }
-    void build(LL l, LL r, LL p)
-    { // l:区间左端点 r:区间右端点 p:节点标号
-        if (l == r)
-        {
-            d[p] = a[l]; // 将节点赋值
-            return;
-        }
-        LL m = l + ((r - l) >> 1);
-        build(l, m, p << 1);
-        build(m + 1, r, (p << 1) | 1); // 分别建立子树
-        d[p] = d[p << 1] + d[(p << 1) | 1];
-    }
-
-    void update(LL l, LL r, LL c, LL s, LL t, LL p)
-    {
-        if (l <= s && t <= r)
-        {
-            d[p] += (t - s + 1) * c;
-            b[p] += c; // 如果区间被包含了，直接得出答案
-            return;
-        }
-        LL m = s + ((t - s) >> 1);
-        if (b[p])
-            d[p << 1] += b[p] * (m - s + 1), d[(p << 1) | 1] += b[p] * (t - m),
-                b[p << 1] += b[p], b[(p << 1) | 1] += b[p];
-        b[p] = 0;
-        if (l <= m)
-            update(l, r, c, s, m, p << 1); // 本行和下面的一行用来更新p*2和p*2+1的节点
-        if (r > m)
-            update(l, r, c, m + 1, t, (p << 1) | 1);
-        d[p] = d[p << 1] + d[(p << 1) | 1]; // 计算该节点区间和
-    }
-
-    LL getsum(LL l, LL r, LL s, LL t, LL p)
-    {
-        if (l <= s && t <= r)
-            return d[p];
-        LL m = s + ((t - s) >> 1);
-        if (b[p])
-            d[p << 1] += b[p] * (m - s + 1), d[(p << 1) | 1] += b[p] * (t - m),
-                b[p << 1] += b[p], b[(p << 1) | 1] += b[p];
-        b[p] = 0;
-        LL sum = 0;
-        if (l <= m)
-            sum =
-                getsum(l, r, s, m, p << 1); // 本行和下面的一行用来更新p*2和p*2+1的答案
-        if (r > m)
-            sum += getsum(l, r, m + 1, t, (p << 1) | 1);
-        return sum;
     }
 };
 // @lc code=end
