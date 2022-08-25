@@ -1,9 +1,7 @@
-- I've been reading books of old
-- The legends and the myths
-- Achilles and his gold
-- Hercules and his gifts
-- Spiderman's control
-- And Batman with his fists
-- And clearly I don't see myself upon that list
-- But she said where'd you wanna go
-- How much you wanna risk?
+# 文件夹说明
+- simple 不需要看答案 写完一次通过
+- simple_1 不需要看答案 写完一次错误用例(说明 思考有一处不周的地方 某个测试用例没思考全)
+- simple_2 不需要看答案 写完调试超过一次(说明 思考有多处不周的地方 多个用例没思考全)
+- medium 想不出来,需要思路 看完思路可以做
+- hard 光思路也不行,有知识点缺失(需要学习)
+- old 在分类前做的旧题
