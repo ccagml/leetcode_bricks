@@ -7,10 +7,10 @@ do
         then
             
             mv $file "simple"
-        elif [ $1 == "s2" ]; 
+        elif [ $1 == "se" ]; 
         then
             
-            mv $file "simple_2"
+            mv $file "simple_error"
         elif [ $1 == "m" ]; 
         then
             
