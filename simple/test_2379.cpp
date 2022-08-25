@@ -61,6 +61,7 @@
 
 // @lc code=start
 // 滑动窗口?
+// 1360分
 class Solution {
 public:
     int minimumRecolors(string blocks, int k) {
