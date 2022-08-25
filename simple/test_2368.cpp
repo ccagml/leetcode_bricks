@@ -59,6 +59,7 @@
  */
 
 // @lc code=start
+// 1476分
 class Solution
 {
 public:
