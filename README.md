@@ -6,3 +6,7 @@
 - medium 想不出来,需要思路 看完思路可以做
 - hard 光思路也不行,有知识点缺失(需要学习)
 - old 在分类前做的旧题
+- case.md 一些测试用例
+- quick_cpp.cpp 快速掌握一些c++做题需要的基础操作
+- makefile 编译quick_cpp.cpp验证结果
+- move_to_dir.sh 把做的题分类到文件夹
