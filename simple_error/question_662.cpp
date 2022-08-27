@@ -77,10 +77,8 @@
  */
 
 /*
-      1
-    2  3
-   4 5 6 7
 
+unsigned long long 才能过
 */
 
 class Solution
