@@ -95,4 +95,38 @@
 //         return result;
 //     }
 // };
+
+// 数学思想
+// 正反两次遍历 累计当前之和
+class Solution
+{
+public:
+    vector<long long> getDistances(vector<int> &arr)
+    {
+
+        vector<long long> result(arr.size());
+
+        unordered_map<int, vector<int>> umivi;
+        unordered_map<int, long long> umii_sum;
+        for (int i = 0; i < arr.size(); i++)
+        {
+            int value = arr[i];
+            result[i] += i * umivi[value].size() - umii_sum[value];
+            umivi[value].push_back(i);
+            umii_sum[value] += i;
+        }
+
+        unordered_map<int, vector<int>> umivi1;
+        unordered_map<int, long long> umii_sum1;
+        for (int i = arr.size() - 1; i >= 0; i--)
+        {
+            int value = arr[i];
+            result[i] += umii_sum1[value] - i * umivi1[value].size();
+            umivi1[value].push_back(i);
+            umii_sum1[value] += i;
+        }
+
+        return result;
+    }
+};
 // @lc code=end
