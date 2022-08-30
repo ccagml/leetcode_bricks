@@ -10,5 +10,4 @@
 - case.md 一些测试用例
 - quick_cpp.cpp 快速掌握一些c++做题需要的基础操作
 - makefile 编译quick_cpp.cpp验证结果
-- dir.sh 把做的题分类到文件夹
 - f.sh 查找某一题是否做过?
