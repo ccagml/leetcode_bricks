@@ -16,7 +16,7 @@ void test_pair()
     std::pair<int, int> p1 = std::make_pair(n, a[1]);
     std::pair<int, int> p2{1, 3};
     // (1,2)
-    // std::cout << "(" << p1.first << "," << p1.second << ")\n";
+    std::cout << "(" << p1.first << "," << p1.second << ")\n";
 }
 void test_tuple()
 {
@@ -35,14 +35,15 @@ void test_string()
     std::string str1 = "hello";
     std::string str2 = str1 + "world";
     // helloworld
-    // std::cout << str2 << '\n';
+    std::cout << str2 << '\n';
     //查找find
     std::string::size_type pos1 = str2.find("o"); // pos1 = 4
-    // std::cout << pos1 << '\n';
-    std::string::size_type pos2 = str2.find("w"); // pos2 = 6
-    // std::cout << pos2 << '\n';
-    std::string::size_type pos3 = str2.find("rl"); // pos3 = 8
-    // std::cout << pos3 << '\n';
+    // 4
+    std::cout << pos1 << '\n';
+    std::string::size_type pos2 = str2.find("w"); // pos2 = 5
+    std::cout << pos2 << '\n';
+    std::string::size_type pos3 = str2.find("rl"); // pos3 = 7
+    std::cout << pos3 << '\n';
     //裁剪substr
     std::string str3 = "helloworld";
     std::string str4 = str3.substr(0, 5); // hello
@@ -91,17 +92,19 @@ void test_string()
     std::string f_str1 = std::to_string(f1); // 123456.000000
     int i2 = 123456789;
     std::string i_str1 = std::to_string(i2); // 123456789
-
+    // a -> std::toupper -> A
     std::cout << "a"
               << " -> std::toupper -> " << char(std::toupper('a')) << std::endl;
+    // A -> std::tolower -> a
     std::cout << "A"
               << " -> std::tolower -> " << char(std::tolower('A')) << std::endl;
 }
 void test_array()
 {
     std::array<int, 3> a1{{1, 2, 3}};
-    a1 = {3, 2, 1}; // 3,2,1
-    // std::cout << a1[0] << "," << a1[1] << "," << a1[2] << '\n';
+    a1 = {3, 2, 1};
+    // 3,2,1
+    std::cout << a1[0] << "," << a1[1] << "," << a1[2] << '\n';
     std::sort(a1.begin(), a1.end()); // 1,2,3
     //交换
     std::swap(a1[0], a1[1]); // 2,1,3
@@ -111,12 +114,25 @@ void test_unordered_map()
     // Createanunordered_mapofthreestrings(thatmaptostrings)
     std::unordered_map<std::string, std::string> um = {{"RED", "#FF0000"}, {"GREEN", "#00FF00"}, {"BLUE", "#0000FF"}};
     //遍历
+
+    // 遍历方式1 = {
+    // "BLUE" = "#0000FF"
+    // "GREEN" = "#00FF00"
+    // "RED" = "#FF0000"
+    // }
+
     std::cout << "遍历方式1 = {\n";
     for (const std::pair<std::string, std::string> &n : um)
     {
         std::cout << "\"" << n.first << "\" = \"" << n.second << "\"\n";
     }
     std::cout << "}\n";
+
+    // 遍历方式2 = {
+    // "BLUE" = "#0000FF"
+    // "GREEN" = "#00FF00"
+    // "RED" = "#FF0000"
+    // }
     std::cout << "遍历方式2 = {\n";
     //遍历
     for (const auto &n : um)
@@ -124,6 +140,12 @@ void test_unordered_map()
         std::cout << "\"" << n.first << "\" = \"" << n.second << "\"\n";
     }
     std::cout << "}\n";
+
+    // 遍历方式3 = {
+    // "BLUE" = "#0000FF"
+    // "GREEN" = "#00FF00"
+    // "RED" = "#FF0000"
+    // }
     std::cout << "遍历方式3 = {\n";
     //遍历
     for (auto n : um)
@@ -131,6 +153,12 @@ void test_unordered_map()
         std::cout << "\"" << n.first << "\" = \"" << n.second << "\"\n";
     }
     std::cout << "}\n";
+
+    // 遍历方式4 = {
+    // "BLUE" = "#0000FF"
+    // "GREEN" = "#00FF00"
+    // "RED" = "#FF0000"
+    // }
     std::cout << "遍历方式4 = {\n";
     //指针遍历
     for (auto iter = um.begin(); iter != um.end(); ++iter)
@@ -140,40 +168,49 @@ void test_unordered_map()
     std::cout << "}\n";
     //设置
     um["BLACK"] = "#000000";
+    // 设置值 "BLACK" = "#000000"
     std::cout << "设置值 \"BLACK\" = \"" << um["BLACK"] << "\"\n";
-    //判断空
+    // 判断空 um.empty() 是否为空0
     std::cout << "判断空 um.empty() 是否为空" << um.empty() << '\n';
+    // 判断 size:4
     std::cout << "判断 size:" << um.size() << '\n';
     //清空
     um.clear();
+    // 清空 um.clear() 后是否为空1
     std::cout << "清空 um.clear() 后是否为空" << um.empty() << '\n';
+    // 判断 size:0
     std::cout << "判断 size:" << um.size() << '\n';
     um = {{"RED", "#FF0000"}, {"GREEN", "#00FF00"}, {"BLUE", "#0000FF"}};
-    // um.count('RED'):1
+    // um.count('RED') 计数 1
     std::cout << "um.count('RED') 计数 " << um.count("RED") << '\n';
-    // um.count('GREEN'):1
+    // um.count('GREEN') 计数 1
     std::cout << "um.count('GREEN') 计数 " << um.count("GREEN") << '\n';
-    // um.count('BLUE'):1
+    // um.count('BLUE') 计数 1
     std::cout << "um.count('BLUE') 计数 " << um.count("BLUE") << '\n';
     auto search = um.find("RED");
     if (search != um.end())
     {
+        // 查找 um.find("RED") "RED" = "#FF0000"
         std::cout << "查找 um.find(\"RED\") \"" << search->first << "\" = \"" << search->second << "\"\n";
     }
     um.erase("RED");
     if (um.count("RED") <= 0)
     {
+        // um.erase("RED")后RED不存在了0
         std::cout << "um.erase(\"RED\")后RED不存在了" << um.count("RED1") << '\n';
     }
+    // um.count("RED1"):0,um['RED1']的操作会使得初始化默认值,um.count("RED1"):1
     std::cout << "um.count(\"RED1\"):" << um.count("RED1") << ",um['RED1']的操作会使得初始化默认值" << um["RED1"] << ",um.count(\"RED1\"):" << um.count("RED1") << "\n";
     auto red1 = um.find("RED1");
     if (red1 != um.end())
     {
+        // um.find("RED1")存在了
         std::cout << "um.find(\"RED1\")存在了" << '\n';
     }
     um.erase(red1);
+    // um.erase(red1)后RED1不存在了0
     std::cout << "um.erase(red1)后RED1不存在了" << um.count("RED1") << '\n';
-    // 6:1:576460752303423487
+    // 11:0:115292150460684697
     std::cout << um.bucket("GREEN") << ":" << um.bucket_size(6) << ":" << um.max_bucket_count() << '\n';
 }
 void test_unordered_set()
@@ -186,9 +223,11 @@ void test_unordered_set()
     auto search = nums.find(2);
     if (search != nums.end())
     {
+        // nums.find(2) 有找到2
         std::cout << "nums.find(2) 有找到" << (*search) << '\n';
     }
     //查找
+    // nums.count(2):1
     std::cout << "nums.count(2):" << nums.count(2) << '\n';
     // nums.erase(nums.begin())0
     // nums.erase(nums.begin())1
@@ -209,9 +248,8 @@ void test_unordered_set()
 }
 void test_vector()
 {
-    // Createavectorcontainingintegers
+
     std::vector<int> v = {7, 5, 16, 8};
-    // Addtwomoreintegerstovector
     v.push_back(25);
     v[1] = 10;
     //{7,10,16,8,25,};
@@ -224,16 +262,17 @@ void test_vector()
     v.resize(10);
     //{10,16,};
     v.resize(2);
-    // std::cout << "{";
-    // for (int n : v)
-    // {
-    //     std::cout << n << ",";
-    // }
-    // std::cout << "};\n";
+    std::cout << "{";
+    for (int n : v)
+    {
+        std::cout << n << ",";
+    }
+    std::cout << "};\n";
 }
+
+// 双端队列
 void test_deque()
 {
-    // Createadequecontainingintegers
     std::deque<int> d = {7, 5, 16, 8};
     d.push_front(13);
     d.push_back(25);
@@ -242,13 +281,44 @@ void test_deque()
     //{13,7,5,16,8,}
     d.pop_front();
     //{7,5,16,8,}
-    // std::cout << "{";
-    // for (int n : d)
-    // {
-    //     std::cout << n << ",";
-    // }
-    // std::cout << "}" << '\n';
+    for (int n : d)
+    {
+        std::cout << n << ",";
+    }
+    std::cout << '\n';
+
+    // 擦除
+    std::deque<int> c{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    // 0 1 2 3 4 5 6 7 8 9
+    for (auto &i : c)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << '\n';
+
+    c.erase(c.begin());
+    // 1 2 3 4 5 6 7 8 9
+    for (auto &i : c)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << '\n';
+
+    c.erase(c.begin() + 2, c.begin() + 5);
+    // 1 2 6 7 8 9
+    for (auto &i : c)
+    {
+        std::cout << i << " ";
+    }
+    std::cout << '\n';
+    // 取队列头尾
+    // 1 9
+    std::cout << c.front() << " " << c.back() << '\n';
+
+    // 是否为空0大小6
+    std::cout << "是否为空" << c.empty() << "大小" << c.size() << '\n';
 }
+// 栈
 void test_stack()
 {
     std::stack<int> c1;
@@ -259,6 +329,7 @@ void test_stack()
     std::cout << c1.size() << ','; // 0
     std::stack<int> c2(c1);
 }
+// 单向队列
 void test_queue()
 {
     std::queue<int> c1;
@@ -318,12 +389,12 @@ void test_priority_queue()
         q2.push(n);
     }
     // 9,8,7,6,5,4,3,2,1,0,
-    // while(!q2.empty())
-    //{
-    // std::cout<<q2.top()<<",";
-    // q2.pop();
-    //}
-    // std::cout<<'\n';
+    while (!q2.empty())
+    {
+        std::cout << q2.top() << ",";
+        q2.pop();
+    }
+    std::cout << '\n';
     //====================================================================================================================================
     //绑定pair
     //第一个小的排前面,第一个相同比较第二个
@@ -339,12 +410,12 @@ void test_priority_queue()
     coll.push(d);
     coll.push(e);
     //(3,4)(3,5)(4,3)(4,5)(6,6)
-    // while(!coll.empty())
-    //{
-    // std::cout<<"("<<coll.top().first<<","<<coll.top().second<<")";
-    // coll.pop();
-    //}
-    // std::cout<<'\n';
+    while (!coll.empty())
+    {
+        std::cout << "(" << coll.top().first << "," << coll.top().second << ")";
+        coll.pop();
+    }
+    std::cout << '\n';
     //====================================================================================================================================
     //通过struct和自定义struct比较的方式
     std::priority_queue<Time, std::vector<Time>, CompareTime> pq;
@@ -353,12 +424,20 @@ void test_priority_queue()
     {
         pq.push(t[i]);
     }
-    // while(!pq.empty())
-    //{
-    // Timet2=pq.top();
-    // std::cout<<t2.h<<","<<t2.m<<","<<t2.s<<std::endl;
-    // pq.pop();
-    //}
+    while (!pq.empty())
+    {
+        // (5,16,13)
+        // (5,14,20)
+        // (3,2,40)
+        // (3,2,26)
+        // (5,16,13)
+        // (5,14,20)
+        // (3,2,40)
+        // (3,2,26)
+        Time t2 = pq.top();
+        std::cout << "(" << t2.h << "," << t2.m << "," << t2.s << ")" << std::endl;
+        pq.pop();
+    }
     //====================================================================================================================================
     //自定义lambda函数方式
     auto cmp = [](const Time &t1, const Time &t2)
@@ -387,14 +466,13 @@ void test_priority_queue()
     //(5,14,20)
     //(3,2,40)
     //(3,2,26)
-    // while(!que4.empty())
-    //{
-    // Timet2=que4.top();
-    // std::cout
-    //<<"("<<t2.h<<","<<t2.m<<","<<t2.s<<")"<<std::endl;
-    // que4.pop();
-    //}
-    // std::cout<<'\n';
+    while (!que4.empty())
+    {
+        Time t2 = que4.top();
+        std::cout << "(" << t2.h << "," << t2.m << "," << t2.s << ")" << std::endl;
+        que4.pop();
+    }
+    std::cout << '\n';
     //====================================================================================================================================
     //自定义比较函数pair//返回true使得第一个参数排后面
     auto cmp_pair = [](const std::pair<int, int> &t1, const std::pair<int, int> &t2)
@@ -428,14 +506,15 @@ void test_priority_queue()
     //(2,3)
     //(3,5)
     //(4,3)
-    // while(!pair_pq.empty())
-    //{
-    // std::pair<int,int>t2=pair_pq.top();
-    // std::cout
-    //<<"("<<t2.first<<","<<t2.second<<")"<<std::endl;
-    // pair_pq.pop();
-    //}
-    // std::cout<<'\n';
+    while (!pair_pq.empty())
+    {
+        std::pair<int, int> t2 = pair_pq.top();
+        std::cout
+            << "(" << t2.first << "," << t2.second << ")" << std::endl;
+        pair_pq.pop();
+    }
+    std::cout
+        << '\n';
 
     struct compare
     {
@@ -676,6 +755,13 @@ long long quick_pow(long long a, long long b)
 }
 void test_quick_pow()
 {
+    // quick_pow(1,1):11
+    // quick_pow(1,2):11
+    // quick_pow(1,3):11
+    // quick_pow(2,1):22
+    // quick_pow(2,2):44
+    // quick_pow(2,3):88
+    // quick_pow(2,4):1616
     std::cout << "quick_pow(1,1):1" << quick_pow(1, 1) << "\n";
     std::cout << "quick_pow(1,2):1" << quick_pow(1, 2) << "\n";
     std::cout << "quick_pow(1,3):1" << quick_pow(1, 3) << "\n";
@@ -780,10 +866,10 @@ bool is_bit_1(int x, int index)
 
 void test_set_bit()
 {
-    // std::cout << "1:" << (1 << 0) << '\n';
-    // std::cout << "2:" << (1 << 1) << '\n';
-    // std::cout << "4:" << (1 << 2) << '\n';
-    // std::cout << "8:" << (1 << 3) << '\n';
+    std::cout << "1:" << (1 << 0) << '\n';
+    std::cout << "2:" << (1 << 1) << '\n';
+    std::cout << "4:" << (1 << 2) << '\n';
+    std::cout << "8:" << (1 << 3) << '\n';
     int x = 0;
     for (int i = 0; i < 5; i++)
     {
@@ -795,13 +881,13 @@ void test_set_bit()
         x = set_bit_0(x, i);
         std::cout << "b0 i:" << i << ",x:" << x << '\n';
     }
-    for (int v = 0; v < 100; v++)
-    {
-        for (int i = 0; i < 15; i++)
-        {
-            std::cout << v << ":" << i << ":" << is_bit_1(v, i) << std::endl;
-        }
-    }
+    // for (int v = 0; v < 100; v++)
+    // {
+    //     for (int i = 0; i < 15; i++)
+    //     {
+    //         std::cout << v << ":" << i << ":" << is_bit_1(v, i) << std::endl;
+    //     }
+    // }
 
     int v = 0;
     v = set_bit_1(v, 0);
@@ -838,7 +924,7 @@ int main(int argc, char const *argv[])
     // test_deque();
     // test_stack();
     // test_queue();
-    test_priority_queue();
+    // test_priority_queue();
     // tset_sort();
     // test_class();
     // test_mod_1e97();
@@ -849,4 +935,4 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-// g++ -std=c++11 cpp_guide.cpp
+// g++ -std=c++11 quick_cpp.cpp

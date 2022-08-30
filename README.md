@@ -8,6 +8,6 @@
 - hard 光思路也不行,有知识点缺失(需要学习)
 - old 在分类前做的旧题
 - case.md 一些测试用例
-- quick_cpp.cpp 快速掌握一些c++做题需要的基础操作
+- quick_start.cpp 快速掌握一些c++做题需要的基础操作
 - makefile 编译quick_cpp.cpp验证结果
 - f.sh 查找某一题是否做过?
