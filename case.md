@@ -107,3 +107,7 @@
 # 2096
 - [5,1,2,3,null,6,4]\n3\n6\n[2,1]\n2\n1\n
 - [5,1,2,3,null,6,4]\n5\n6\n[5,1,2,3,null,6,4]\n5\n3\n[5,1,2,3,null,6,4]\n6\n4\n[5,1,2,3,null,6,4]\n4\n6\n
+
+# 2063
+- "a"\n"ab"\n"abc"\n"aaaa"\n"aaeee"\n
+- "aa"\n"aaa"\n"baa"\n"aaaa"\n"noosabasboosa"\n"ltcd"\n
