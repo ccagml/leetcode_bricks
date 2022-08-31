@@ -83,6 +83,11 @@
  */
 
 // @lc code=start
+// 1.一开始想并查集
+// 2.并查集的思路是对的
+// 3.结果想 先处理restrictions 把 对应值+n 加到对方身上------这步不对
+// 4.应该是直接处理requests的时候 检查每个restriction
+// 5.然后并查集的模板写错了, 应该是 v_father[fa] = fb; v_father[fb] = fa; 这一步调了很久才看出来
 class unionFind
 {
 public:
@@ -109,11 +114,11 @@ public:
         int fb = get(b);
         if (fa > fb)
         {
-            v_father[a] = fb;
+            v_father[fa] = fb;
         }
         else if (fb > fa)
         {
-            v_father[b] = fa;
+            v_father[fb] = fa;
         }
     }
 };
