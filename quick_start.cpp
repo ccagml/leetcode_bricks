@@ -245,6 +245,12 @@ void test_unordered_set()
     std::cout << "nums.erase(nums.begin())" << nums.count(2) << '\n';
     std::cout << "nums.erase(nums.begin())" << nums.count(3) << '\n';
     std::cout << "nums.erase(nums.begin())" << nums.count(4) << '\n';
+
+    std::unordered_set<int> new_num_set = {2, 3, 4};
+    // 4,3,2,
+    for (const auto& get: new_num_set) {
+        std::cout << get << ",";
+    }
 }
 void test_vector()
 {
@@ -919,7 +925,7 @@ int main(int argc, char const *argv[])
     // test_string();
     // test_array();
     // test_unordered_map();
-    // test_unordered_set();
+    test_unordered_set();
     // test_vector();
     // test_deque();
     // test_stack();
@@ -935,4 +941,4 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-// g++ -std=c++11 quick_cpp.cpp
+// g++ -std=c++11 quick_start.cpp
