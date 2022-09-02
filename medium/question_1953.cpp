@@ -78,7 +78,13 @@
 // 上面的思路好像不太对 类似 [8,8,2,6]
 //  [4, 3, 3]
 
+// 贪心的思路
+// 先获得最大值, 如果最大值 大于等于 + 1 那就不能全完成, 否则可以全完成
+
+// 对的思路 应该是最大的值先插槽
+
 // @lc code=start
+
 // class Solution
 // {
 // public:
@@ -167,5 +173,29 @@
 //         return result;
 //     }
 // };
+class Solution
+{
+public:
+    long long numberOfWeeks(vector<int> &milestones)
+    {
+        long long max_temp = 0;
+        long long all = 0;
+        for (int i = 0; i < milestones.size(); i++)
+        {
+            long long tt = milestones[i];
+            max_temp = max(max_temp, tt);
+            all += tt;
+        }
+        long long rest = all - max_temp;
+        if (max_temp > rest + 1)
+        {
+            return 2 * rest + 1;
+        }
+        else
+        {
+            return all;
+        }
+    }
+};
 
 // @lc code=end
