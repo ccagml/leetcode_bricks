@@ -58,6 +58,91 @@
 // @lc code=start
 
 // vv2 vv3如果是 二维数组会超时, 1维数组可以过 ....
+// class Solution
+// {
+// public:
+//     bool validPartition(vector<int> &nums)
+//     {
+//         //分为 2 是否已划分 3 是否已划分
+//         int n = nums.size();
+//         vector<bool> vv2(n);
+//         vector<bool> vv3(n);
+//         for (int i = 0; i < n - 1; i++)
+//         {
+//             if (nums[i] == nums[i + 1])
+//             {
+//                 // std::cout << "vv2 ->" << i << ":" << i + 1 << std::endl;
+//                 vv2[i] = true;
+//             }
+
+//             if (i < n - 2)
+//             {
+//                 if (nums[i] == nums[i + 1] && nums[i + 1] == nums[i + 2])
+//                 {
+//                     // std::cout << "vv3 -> " << i << ":" << i + 2 << std::endl;
+//                     vv3[i] = true;
+//                 }
+//                 if ((nums[i + 1] - nums[i] == 1) && (nums[i + 2] - nums[i + 1] == 1))
+//                 {
+//                     // std::cout << "vv3 -> " << i << ":" << i + 2 << std::endl;
+//                     vv3[i] = true;
+//                 }
+//             }
+//         }
+
+//         // 检查是否能完成
+//         std::priority_queue<int, std::vector<int>, std::less<int>> q2;
+//         q2.push(0);
+//         unordered_set<int> flag;
+//         flag.insert(0);
+//         while (q2.size() > 0)
+//         {
+//             int cur = q2.top();
+//             q2.pop();
+//             // std::cout << "出" << cur << std::endl;
+//             if (cur >= n)
+//             {
+//                 continue;
+//             }
+//             // std::cout << "vv2:" << vv2[cur][cur + 1] << std::endl;
+//             if (vv2[cur])
+//             {
+//                 if (cur + 1 == n - 1)
+//                 {
+//                     return true;
+//                 }
+
+//                 if (cur + 2 < n && flag.count(cur + 2) == 0)
+//                 {
+//                     // std::cout << "放入 " << cur + 2 << std::endl;
+//                     flag.insert(cur + 2);
+//                     q2.push(cur + 2);
+//                 }
+//             }
+//             if (cur >= n - 1)
+//             {
+//                 continue;
+//             }
+//             // std::cout << "vv3:" << vv3[cur][cur + 2] << std::endl;
+//             if (vv3[cur])
+//             {
+//                 if (cur + 2 == n - 1)
+//                 {
+//                     return true;
+//                 }
+//                 if (cur + 3 < n && flag.count(cur + 3) == 0)
+//                 {
+//                     // std::cout << "放入 " << cur + 3 << std::endl;
+//                     flag.insert(cur + 3);
+//                     q2.push(cur + 3);
+//                 }
+//             }
+//         }
+
+//         return false;
+//     }
+// };
+
 class Solution
 {
 public:
@@ -89,57 +174,44 @@ public:
                 }
             }
         }
-
-        // 检查是否能完成
-        std::priority_queue<int, std::vector<int>, std::less<int>> q2;
-        q2.push(0);
-        unordered_set<int> flag;
-        flag.insert(0);
-        while (q2.size() > 0)
+        vector<bool> result(n, false);
+        for (int i = 1; i < n; i++)
         {
-            int cur = q2.top();
-            q2.pop();
-            // std::cout << "出" << cur << std::endl;
-            if (cur >= n)
+            if (i == 1)
             {
-                continue;
-            }
-            // std::cout << "vv2:" << vv2[cur][cur + 1] << std::endl;
-            if (vv2[cur])
-            {
-                if (cur + 1 == n - 1)
+                if (vv2[i - 1])
                 {
-                    return true;
-                }
-
-                if (cur + 2 < n && flag.count(cur + 2) == 0)
-                {
-                    // std::cout << "放入 " << cur + 2 << std::endl;
-                    flag.insert(cur + 2);
-                    q2.push(cur + 2);
+                    // std::cout << i << "已划分222" << std::endl;
+                    result[i] = true;
                 }
             }
-            if (cur >= n - 1)
+            else if (i == 2)
             {
-                continue;
-            }
-            // std::cout << "vv3:" << vv3[cur][cur + 2] << std::endl;
-            if (vv3[cur])
-            {
-                if (cur + 2 == n - 1)
+                if (vv3[i - 2])
                 {
-                    return true;
+                    // std::cout << i << "已划分333" << std::endl;
+                    result[i] = true;
                 }
-                if (cur + 3 < n && flag.count(cur + 3) == 0)
+            }
+            else if (i > 2)
+            {
+                if (result[i - 2] && vv2[i - 1])
                 {
-                    // std::cout << "放入 " << cur + 3 << std::endl;
-                    flag.insert(cur + 3);
-                    q2.push(cur + 3);
+                    // std::cout << i << "已划分222" << std::endl;
+                    result[i] = true;
+                }
+                if (i > 3)
+                {
+                    if (result[i - 3] && vv3[i - 2])
+                    {
+                        // std::cout << i << "已划分333" << std::endl;
+                        result[i] = true;
+                    }
                 }
             }
         }
 
-        return false;
+        return result[n - 1];
     }
 };
 // @lc code=end
