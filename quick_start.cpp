@@ -166,6 +166,20 @@ void test_unordered_map()
         std::cout << "\"" << iter->first << "\" = \"" << iter->second << "\"\n";
     }
     std::cout << "}\n";
+
+    std::unordered_map<char, std::vector<int>> index;
+    index['a'].push_back(1);
+    index['a'].push_back(2);
+    index['a'].push_back(3);
+    for (std::pair<char, std::vector<int>> &&tt : index)
+    {
+        // 1,2,3,
+        for (int i = 0; i < tt.second.size(); i++)
+        {
+            std::cout << tt.second[i] << ",";
+        }
+    }
+
     //设置
     um["BLACK"] = "#000000";
     // 设置值 "BLACK" = "#000000"
@@ -248,7 +262,8 @@ void test_unordered_set()
 
     std::unordered_set<int> new_num_set = {2, 3, 4};
     // 4,3,2,
-    for (const auto& get: new_num_set) {
+    for (const auto &get : new_num_set)
+    {
         std::cout << get << ",";
     }
 }
@@ -924,8 +939,8 @@ int main(int argc, char const *argv[])
     // test_tuple();
     // test_string();
     // test_array();
-    // test_unordered_map();
-    test_unordered_set();
+    test_unordered_map();
+    // test_unordered_set();
     // test_vector();
     // test_deque();
     // test_stack();

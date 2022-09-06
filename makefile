@@ -1,6 +1,6 @@
 default:
-	g++ -std=c++11 cpp_guide.cpp -o cpp_guide
+	g++ -std=c++11 quick_start.cpp -o quick_start
 	echo "========================================="
-	./cpp_guide
+	./quick_start
 	echo "========================================="
-	rm -rf cpp_guide
+	rm -rf quick_start
