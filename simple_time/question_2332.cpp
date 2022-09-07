@@ -61,8 +61,7 @@
  *
  *
  */
-// [10,20]\n[2,17,18,19]\n2\n[20,30,10]\n[19,13,26,4,25,11,21]\n2\n[3]\n[2,4]\n2\n[2]\n[2]\n1\n[3]\n[2]\n2
-// [3]\n[2]\n1
+// [2]\n[2]\n2\n[10,20]\n[2,17,18,19]\n2\n[20,30,10]\n[19,13,26,4,25,11,21]\n2\n[3]\n[2,4]\n2\n[2]\n[2]\n1\n[3]\n[2]\n2\n[3]\n[2]\n1
 // @lc code=start
 class Solution
 {
@@ -72,50 +71,67 @@ public:
         int result = 0;
         sort(buses.begin(), buses.end());
         sort(passengers.begin(), passengers.end());
-        unordered_set<int> us;
-        std::priority_queue<int, std::vector<int>, std::greater<int>> q1;
+        unordered_map<int, int> us;
+
         for (int i = 0; i < passengers.size(); i++)
         {
-            q1.push(passengers[i]);
-            us.insert(passengers[i]);
+            us[passengers[i]] = i;
         }
-        int last = -1;
+
+        int up_cnt = 0;
+        vector<int> vi;
+        vector<int> qian;
         for (int i = 0; i < buses.size(); i++)
         {
             int time = buses[i];
-            for (int j = 0; j < capacity; j++)
+
+            // 第一个大于
+            auto upper = std::upper_bound(passengers.begin(), passengers.end(), time);
+            int can = 0;
+            if (upper != passengers.end())
             {
-                int temp_top = q1.top();
-                if (temp_top > time)
+                int u_index = std::distance(passengers.begin(), upper);
+                can = u_index - up_cnt;
+            }
+            else
+            {
+                can = passengers.size() - up_cnt;
+            }
+            int can_add = min(capacity, can);
+            up_cnt += can_add;
+            // std::cout << "可以上车几个" << can_add << "现在上了几个" << up_cnt << std::endl;
+            qian.push_back(up_cnt);
+            vi.push_back(can_add);
+        }
+        // 找到一个时间点
+        for (int i = vi.size() - 1; i >= 0; i--)
+        {
+            int end_time = buses[i];
+            int cur_cnt = vi[i];
+            if (cur_cnt < capacity)
+            {
+                for (int start = end_time; start >= 0; start--)
                 {
-                    break;
-                }
-                q1.pop();
-                if (last == -1)
-                {
-                    result = max(result, temp_top - 1);
-                }
-                else if (temp_top - last > 1)
-                {
-                    result = max(result, temp_top - 1);
-                }
-                last = temp_top;
-                int next_top = q1.top();
-                if (time < next_top)
-                {
-                    result = max(result, time);
-                }
-                if (q1.size() < 1)
-                {
-                    if (us.count(time) < 1)
+                    if (us.count(start) < 1)
                     {
-                        result = max(result, time);
+                        return start;
                     }
+                }
+            }
+            // 满载,要往前找时间
+            int all = qian[i];
+            int last_up = passengers[all - 1];
+            // std::cout << "最后上车" << last_up << std::endl;
+            for (int start = last_up; start >= 0; start--)
+            {
+                if (us.count(start) < 1)
+                {
+                    return start;
                 }
             }
         }
 
-        return result;
+        return 1;
     }
 };
 // @lc code=end

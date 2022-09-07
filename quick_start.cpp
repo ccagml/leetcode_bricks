@@ -803,6 +803,14 @@ void test_lower_bound()
     {
         // 第一个大于等于 i 的位置
         auto lower = std::lower_bound(data.begin(), data.end(), i);
+        // 0 ≤ 1 at index 0
+        // 1 ≤ 1 at index 0
+        // 2 ≤ 2 at index 1
+        // 3 ≤ 4 at index 2
+        // 4 ≤ 4 at index 2
+        // 5 ≤ 5 at index 3
+        // 6 ≤ 6 at index 5
+        // 7 ≤ [not found]
         std::cout << i << " ≤ ";
         if (lower != data.end())
         {
@@ -821,10 +829,12 @@ void test_lower_bound()
                                          { return info.price < value; });
         if (prc_info != prices.end())
         {
+            // 102.5 at index 2
             std::cout << prc_info->price << " at index " << prc_info - prices.begin();
         }
         else
         {
+            // 110.2 not found
             std::cout << to_find << " not found";
         }
         std::cout << '\n';
@@ -842,6 +852,13 @@ void test_upper_bound()
     {
         // //第一个大于 i
         auto upper = std::upper_bound(data.begin(), data.end(), i);
+        // 0 < 1 at index 0
+        // 1 < 2 at index 1
+        // 2 < 4 at index 2
+        // 3 < 4 at index 2
+        // 4 < 5 at index 3
+        // 5 < 6 at index 5
+        // 6 < not found
         std::cout << i << " < ";
         if (upper != data.end())
         {
@@ -860,10 +877,12 @@ void test_upper_bound()
                                          { return value < info.price; });
         if (prc_info != prices.end())
         {
+            // 107.3 at index 4
             std::cout << prc_info->price << " at index " << prc_info - prices.begin();
         }
         else
         {
+            // 110.2 not found
             std::cout << to_find << " not found";
         }
         std::cout << '\n';
@@ -939,7 +958,7 @@ int main(int argc, char const *argv[])
     // test_tuple();
     // test_string();
     // test_array();
-    test_unordered_map();
+    // test_unordered_map();
     // test_unordered_set();
     // test_vector();
     // test_deque();
@@ -950,8 +969,8 @@ int main(int argc, char const *argv[])
     // test_class();
     // test_mod_1e97();
     // test_quick_pow();
-    // test_lower_bound();
-    // test_upper_bound();
+    test_lower_bound();
+    test_upper_bound();
     // test_set_bit();
     return 0;
 }
