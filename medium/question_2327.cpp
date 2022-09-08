@@ -117,5 +117,29 @@
 //         }
 //         return result;
 //     }
+// };
+
+// 没想到是直接 第二层循环 从delay 往forget 累加上去 因为感觉会超时
+class Solution
+{
+public:
+    int peopleAwareOfSecret(int n, int delay, int forget)
+    {
+        int MOD = ((int)1e9 + 7);
+        vector<int> all(3000);
+        all[0] = 1; // 第一天 一个人知道
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = i + delay; j < i + forget; j++)
+            {
+                all[j] = (all[j] % MOD + all[i] % MOD) % MOD;
+            }
+        }
+        int ans = 0;
+        for (int i = max(0, n - forget); i < n; i++)
+            ans = (ans % MOD + all[i] % MOD) % MOD;
+        return ans;
+    }
 };
 // @lc code=end
