@@ -754,9 +754,9 @@ void test_mod_1e97()
 {
     int a = 1;
     int b = a % ((int)1e9 + 7);
-    int MOD = 100000007;
+    int MOD = 1000000007;
     int c = a % MOD;
-    std::cout << b << ":" << c;
+    std::cout << b << ":" << c << ":" << MOD << ":" << ((int)1e9 + 7);
 }
 // 快速幂次方 2^3 = 8, a = 2, x = 3
 long long quick_pow(long long a, long long b)
@@ -967,10 +967,10 @@ int main(int argc, char const *argv[])
     // test_priority_queue();
     // tset_sort();
     // test_class();
-    // test_mod_1e97();
+    test_mod_1e97();
     // test_quick_pow();
-    test_lower_bound();
-    test_upper_bound();
+    // test_lower_bound();
+    // test_upper_bound();
     // test_set_bit();
     return 0;
 }
