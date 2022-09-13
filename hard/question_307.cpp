@@ -63,6 +63,7 @@
  */
 
 // @lc code=start
+// 线段树
 class NumArray
 {
 public:
