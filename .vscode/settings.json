@@ -70,7 +70,8 @@
         "queue": "cpp",
         "ratio": "cpp",
         "sstream": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "list": "cpp"
     },
     "makefile.launchConfigurations": [
         {

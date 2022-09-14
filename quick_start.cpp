@@ -3,6 +3,7 @@
 #include <deque>
 #include <functional>
 #include <iostream>
+#include <list>
 #include <queue>
 #include <stack>
 #include <tuple>
@@ -952,6 +953,35 @@ void test_set_bit()
     // b0 i:2,x:3
     // b0 i:1,x:1
 }
+// 双向链表
+void test_list()
+{
+    std::list<int> l = {1, 2, 3, 4, 5, 6, 7};
+    l.push_front(0); // 0,1,2,3,4,5,6,7
+    l.push_back(8);  // 0,1,2,3,4,5,6,7,8
+
+    l.front(); // 0
+    l.back();  // 8
+
+    l.pop_front(); // 去掉 头
+    l.front();     // 1
+
+    l.pop_back(); // 去掉尾巴
+    l.back();     // 7
+
+    // 1,2,3,4,5,6,7,
+    for (std::list<int>::iterator it = l.begin(); it != l.end(); it++)
+    {
+        std::cout << *it << ",";
+    }
+    std::cout << "\n";
+    // 7,6,5,4,3,2,1,
+    for (std::list<int>::reverse_iterator it = l.rbegin(); it != l.rend(); ++it)
+    {
+        std::cout << *it << ",";
+    }
+}
+
 int main(int argc, char const *argv[])
 {
     // test_pair();
@@ -967,11 +997,12 @@ int main(int argc, char const *argv[])
     // test_priority_queue();
     // tset_sort();
     // test_class();
-    test_mod_1e97();
+    // test_mod_1e97();
     // test_quick_pow();
     // test_lower_bound();
     // test_upper_bound();
     // test_set_bit();
+    test_list();
     return 0;
 }
 
