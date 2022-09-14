@@ -318,6 +318,9 @@ void test_deque()
     }
     std::cout << '\n';
 
+    // with []4
+    std::cout << "with []" << c[4]  << std::endl;; 
+
     c.erase(c.begin());
     // 1 2 3 4 5 6 7 8 9
     for (auto &i : c)
@@ -991,7 +994,7 @@ int main(int argc, char const *argv[])
     // test_unordered_map();
     // test_unordered_set();
     // test_vector();
-    // test_deque();
+    test_deque();
     // test_stack();
     // test_queue();
     // test_priority_queue();
@@ -1002,7 +1005,7 @@ int main(int argc, char const *argv[])
     // test_lower_bound();
     // test_upper_bound();
     // test_set_bit();
-    test_list();
+    // test_list();
     return 0;
 }
 
