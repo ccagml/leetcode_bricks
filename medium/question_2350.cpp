@@ -71,21 +71,35 @@
 // 想不到的点:当遇到一个数, 如果累计的数量比答案小,那么可以记上,然后如果记全了,就答案+1;
 // 当 某一级答案没记录全的时候, 可以忽略下一级的答案
 
+// 220914 回归通过, 想的是用unordered_set 存, 存满了就答案加1
+
 // @lc code=start
 class Solution {
     
 public:
+    // int shortestSequence(vector<int>& rolls, int k) {
+    //     int result = 1;
+    //     int left = k;
+    //     vector<int> ki(k + 1);
+    //     for(int i = 0; i < rolls.size(); i++){
+    //         if(ki[rolls[i]] < result){
+    //             ki[rolls[i]] = result;
+    //             if(--left == 0){
+    //                 left = k;
+    //                 result++;
+    //             }
+    //         }
+    //     }
+    //     return result;
+    // }
     int shortestSequence(vector<int>& rolls, int k) {
         int result = 1;
-        int left = k;
-        vector<int> ki(k + 1);
+        unordered_set<int> us;
         for(int i = 0; i < rolls.size(); i++){
-            if(ki[rolls[i]] < result){
-                ki[rolls[i]] = result;
-                if(--left == 0){
-                    left = k;
-                    result++;
-                }
+            us.insert(rolls[i]);
+            if(us.size() == k){
+                result++;
+                us.clear();
             }
         }
         return result;
