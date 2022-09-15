@@ -195,7 +195,7 @@ public:
             start = set_bit_1(start, i);
         }
         us.insert(start);
-        for (int i = 0; i < presses; i++)
+        for (int i = 0; i < min(presses, 4); i++)
         {
             unordered_set<int> n_us;
             for (const auto &get : us)
