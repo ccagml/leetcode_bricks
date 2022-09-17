@@ -186,9 +186,12 @@ int main(int argc, char const *argv[])
     // std::cout << st->query_sum(1, 16) << std::endl;
     for (int i = 1; i < 22; i++)
     {
+        std::cout << "query:"<< i << ":" << i << ":" << st->query_max(i, i) << std::endl;
         for (int j = i; j < 22; j++)
         {
-            std::cout << i << ":" << j << ":" << st->query_max(i, j) << std::endl;
+            std::cout << "max:"<< i << ":" << j << ":" << st->query_max(i, j) << std::endl;
+            std::cout << "min:"<< i << ":" << j << ":" << st->query_min(i, j) << std::endl;
+            std::cout << "sum:"<< i << ":" << j << ":" << st->query_sum(i, j) << std::endl;
         }
     }
     // std::cout << st->query_max(5, 5) << std::endl;
