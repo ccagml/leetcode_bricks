@@ -57,6 +57,128 @@
 // 扫描线
 // 超时
 // 可以把打标记的部分换成线段树再试试看
+
+class stree
+{
+public:
+    class Node
+    {
+    public:
+        Node *ls;
+        Node *rs;
+        long long max_val;
+        long long min_val;
+        long long sum_val;
+    };
+    Node *root;
+    long all_left;
+    long all_right;
+    stree(long left, long right)
+    {
+        all_left = left;
+        all_right = right;
+        root = new Node();
+    }
+    void update_range(long l, long r, long add){
+        pri_update_range(root, all_left, all_right, l, r, add);
+    }
+    void update_one(long x, long long add)
+    {
+        pri_update_one(root, all_left, all_right, x, add);
+    }
+    void query_max(long l, long r)
+    {
+        return pri_query_max(root, all_left, all_right, l, r);
+    }
+    void query_min(long l, long r)
+    {
+        return query_m(root, all_left, all_right, l, r);
+    }
+    void query_sum(long l, long r)
+    {
+        return pri_query_sum(root, all_left, all_right, l, r);
+    }
+
+private:
+    void pri_update_range(Node *node, long lc, long rc, long l, long r, long long add){
+        node->max_val = max(node->max_val, add);
+        node->min_val = min(node->min_val, add);
+        node->sum_val += (r - l + 1) * add;
+        if (lc == rc)
+            return;
+        long mid = (lc + rc) >> 1;
+        if (x <= mid)
+        {
+            if (node->ls == nullptr)
+                node->ls = new Node();
+            pri_update_range(node->ls, lc, mid, l, r, v);
+        }
+        else
+        {
+            if (node->rs == nullptr)
+                node->rs = new Node();
+            pri_update_range(node->rs, mid + 1, rc, l, r, v);
+        }
+    }
+
+    void pri_update_one(Node *node, long lc, long rc, long x, long long add)
+    {
+        node->max_val = max(node->max_val, add);
+        node->min_val = min(node->min_val, add);
+        node->sum_val += add;
+        if (lc == rc)
+            return;
+        long mid = (lc + rc) >> 1;
+        if (x <= mid)
+        {
+            if (node->ls == nullptr)
+                node->ls = new Node();
+            pri_update_one(node->ls, lc, mid, x, add);
+        }
+        else
+        {
+            if (node->rs == nullptr)
+                node->rs = new Node();
+            pri_update_one(node->rs, mid + 1, rc, x, add);
+        }
+    }
+
+    long long pri_query_max(Node *node, long lc, long rc, long l, long r)
+    {
+        if (node == nullptr)
+            return 0;
+        if (r < lc || l > rc)
+            return 0;
+        if (l <= lc && rc <= r)
+            return node->max_val;
+        long mid = (lc + rc) >> 1;
+        return max(pri_query_max(node->ls, lc, mid, l, r), pri_query_max(node->rs, mid + 1, rc, l, r));
+    }
+
+    long long pri_query_min(Node *node, long lc, long rc, long l, long r)
+    {
+        if (node == nullptr)
+            return 0;
+        if (r < lc || l > rc)
+            return 0;
+        if (l <= lc && rc <= r)
+            return node->min_val;
+        long mid = (lc + rc) >> 1;
+        return min(pri_query_min(node->ls, lc, mid, l, r), pri_query_min(node->rs, mid + 1, rc, l, r));
+    }
+    long long pri_query_sum(Node *node, long lc, long rc, long l, long r)
+    {
+        if (node == nullptr)
+            return 0;
+        if (r < lc || l > rc)
+            return 0;
+        if (l <= lc && rc <= r)
+            return node->sum_val;
+        long mid = (lc + rc) >> 1;
+        return pri_query_sum(node->ls, lc, mid, l, r) + pri_query_sum(node->rs, mid + 1, rc, l, r);
+    }
+}
+
 class Solution
 {
 public:
