@@ -1135,7 +1135,7 @@ void test_segment_tree()
         segmentTreeNode *root;
 
     public:
-        segmentTree(int left, int right, long long _initValue)
+        segmentTree(int left, int right)
         {
 
             root = new segmentTreeNode(left, right);
@@ -1163,7 +1163,7 @@ void test_segment_tree()
         }
     };
 
-    segmentTree *root = new segmentTree(0, 100001, 0);
+    segmentTree *root = new segmentTree(0, 100001);
 
     // max:0, min:0, sum:0
     std::cout << "max:" << root->query_max(1, 10);
