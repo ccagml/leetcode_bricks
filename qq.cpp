@@ -204,4 +204,4 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-// g++ -std=c++11 quick_start.cpp
+// g++ -std=c++11 qq.cpp
