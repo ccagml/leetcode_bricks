@@ -71,7 +71,8 @@
         "ratio": "cpp",
         "sstream": "cpp",
         "stack": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "climits": "cpp"
     },
     "makefile.launchConfigurations": [
         {

@@ -1,16 +1,74 @@
-#include <algorithm>
-#include <array>
-#include <climits>
-#include <deque>
-#include <functional>
-#include <iostream>
-#include <list>
-#include <queue>
-#include <stack>
-#include <tuple>
-#include <unordered_map>
-#include <unordered_set>
-#include <utility>
+/*
+ * @lc app=leetcode.cn id=2407 lang=cpp
+ *
+ * [2407] 最长递增子序列 II
+ *
+ * https://leetcode.cn/problems/longest-increasing-subsequence-ii/description/
+ *
+ * algorithms
+ * Hard (22.32%)
+ * Likes:    28
+ * Dislikes: 0
+ * Total Accepted:    2.7K
+ * Total Submissions: 11.5K
+ * Testcase Example:  '[4,2,1,4,3,4,5,8,15]\n3'
+ *
+ * 给你一个整数数组 nums 和一个整数 k 。
+ *
+ * 找到 nums 中满足以下要求的最长子序列：
+ *
+ *
+ * 子序列 严格递增
+ * 子序列中相邻元素的差值 不超过 k 。
+ *
+ *
+ * 请你返回满足上述要求的 最长子序列 的长度。
+ *
+ * 子序列 是从一个数组中删除部分元素后，剩余元素不改变顺序得到的数组。
+ *
+ *
+ *
+ * 示例 1：
+ *
+ * 输入：nums = [4,2,1,4,3,4,5,8,15], k = 3
+ * 输出：5
+ * 解释：
+ * 满足要求的最长子序列是 [1,3,4,5,8] 。
+ * 子序列长度为 5 ，所以我们返回 5 。
+ * 注意子序列 [1,3,4,5,8,15] 不满足要求，因为 15 - 8 = 7 大于 3 。
+ *
+ *
+ * 示例 2：
+ *
+ * 输入：nums = [7,4,5,1,8,12,4,7], k = 5
+ * 输出：4
+ * 解释：
+ * 满足要求的最长子序列是 [4,5,8,12] 。
+ * 子序列长度为 4 ，所以我们返回 4 。
+ *
+ *
+ * 示例 3：
+ *
+ * 输入：nums = [1,5], k = 1
+ * 输出：1
+ * 解释：
+ * 满足要求的最长子序列是 [1] 。
+ * 子序列长度为 1 ，所以我们返回 1 。
+ *
+ *
+ *
+ *
+ * 提示：
+ *
+ *
+ * 1 <= nums.length <= 10^5
+ * 1 <= nums[i], k <= 10^5
+ *
+ *
+ */
+
+// @lc code=start
+
 class segmentTree
 {
 private:
@@ -213,40 +271,23 @@ public:
     }
 };
 
-int main(int argc, char const *argv[])
+class Solution
 {
-    segmentTree *st = new segmentTree(1, 100, 0);
-    // std::cout << st->query_max(1, 100) << std::endl;
-    // std::cout << st->query_min(1, 100) << std::endl;
-    // std::cout << st->query_sum(1, 100) << std::endl;
-    std::cout << "修改前" << std::endl;
-    st->modify(2, 10, 1);
-    st->modify(5, 20, 3);
-    std::cout << "修改后" << std::endl;
-    // std::cout << st->query_max(1, 100) << std::endl;
-    // std::cout << st->query_min(1, 100) << std::endl;
-    // std::cout << st->query_sum(1, 100) << std::endl;
-    // std::cout << st->query_max(2, 9) << std::endl;
-    // std::cout << st->query_min(21, 100) << std::endl;
-    // std::cout << st->query_sum(1, 16) << std::endl;
-    for (int i = 1; i < 22; i++)
+public:
+    int lengthOfLIS(vector<int> &nums, int k)
     {
-        std::cout << "query:" << i << ":" << i << ":" << st->query_max(i, i) << std::endl;
-        for (int j = i; j < 22; j++)
+        int result = 0;
+        segmentTree *root = new segmentTree(0, 100001, 0);
+        for (int i = 0; i < nums.size(); i++)
         {
-            std::cout << "max:" << i << ":" << j << ":" << st->query_max(i, j) << std::endl;
-            std::cout << "min:" << i << ":" << j << ":" << st->query_min(i, j) << std::endl;
-            std::cout << "sum:" << i << ":" << j << ":" << st->query_sum(i, j) << std::endl;
+            int temp_max = root->query_max(nums[i] - k, nums[i] - 1); // query(root, 0, 100001, nums[i] - k, nums[i] - 1);
+            int q = root->query_max(nums[i], nums[i]);
+            root->modify(nums[i], nums[i], ((temp_max + 1) - q));
+            // update(root, 0, 100001, nums[i], temp_max + 1);
+            result = max(result, temp_max + 1);
         }
+
+        return result;
     }
-    // std::cout << st->query_max(5, 5) << std::endl;
-    // std::cout << st->query_min(5, 5) << std::endl;
-    // std::cout << st->query_sum(5, 5) << std::endl;
-    // std::cout << st->query_sum(5, 6) << std::endl;
-    // std::cout << st->query_sum(5, 7) << std::endl;
-    // std::cout << st->query_sum(5, 8) << std::endl;
-
-    return 0;
-}
-
-// g++ -std=c++11 qq.cpp
+};
+// @lc code=end
