@@ -152,7 +152,7 @@ public:
 
             int temp_q = my_query(root, 0, si.size(), 0, index);
             result += temp_q;
-            // std::cout << "当前" << nums[i] << "需要小于" << need << ":" << index << ":" << um_value_index[index] << "|" << temp_q << std::endl;
+            std::cout << "当前" << nums[i] << "需要小于" << need << ":" << index << ":" << um_value_index[index] << "|" << temp_q << std::endl;
             my_update(root, 0, si.size(), um_value_index[nums[i]], 1);
         }
         return result;
