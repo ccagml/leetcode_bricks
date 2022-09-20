@@ -62,6 +62,10 @@ public:
     unordered_map<int, int> status_value;
     void dfs(vector<int> &nums, int index, int status, int val)
     {
+        if (val > need_save)
+        {
+            return;
+        }
         if (index >= nums.size())
         {
             return;
@@ -69,8 +73,14 @@ public:
         int old_val = val;
         int new_status = set_bit_1(status, index);
         int new_val = val + nums[index];
-        status_value[status] = val;
-        status_value[new_status] = new_val;
+        if (val == need_save)
+        {
+            status_value[status] = val;
+        }
+        if (new_val == need_save)
+        {
+            status_value[new_status] = new_val;
+        }
         dfs(nums, index + 1, status, val);
         dfs(nums, index + 1, new_status, new_val);
     }
@@ -110,6 +120,7 @@ public:
 
     int key_status = 0;
     int key_k = 0;
+    int need_save = 0;
     bool canPartitionKSubsets(vector<int> &nums, int k)
     {
         key_k = k;
@@ -119,6 +130,7 @@ public:
             key_status = set_bit_1(key_status, i);
             all += nums[i];
         }
+        need_save = all / k;
         dfs(nums, 0, 0, 0);
         status_value.erase(0);
         unordered_map<int, vector<int>> uiusi;
