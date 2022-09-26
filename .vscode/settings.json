@@ -72,7 +72,9 @@
         "sstream": "cpp",
         "stack": "cpp",
         "list": "cpp",
-        "climits": "cpp"
+        "climits": "cpp",
+        "optional": "cpp",
+        "fstream": "cpp"
     },
     "makefile.launchConfigurations": [
         {
