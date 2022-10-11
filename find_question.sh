@@ -6,5 +6,5 @@ find ./simple |grep $1
 find ./simple_error |grep $1
 find ./old |grep $1
 
-a=`find ./ | grep question | awk -F "/" '{print $NF}' | awk -F "_" '{print $2}' | awk -F "." '{print $1}' |sort | uniq | wc -l`
+a=`find ./ | grep question | awk -F "/" '{print $NF}' | awk -F "_" '{print $2}' | awk -F "." '{print $1}' && find ./ | grep -v question | grep -v .git |grep -v .vscode | awk -F "/" '{print $NF}' | awk -F "." '{print $1}' | grep '^[[:digit:]]*$'`
 echo "$(tput setaf 2)已经做了"$(tput setaf 1) ${a}$(tput setaf 2)  "题(去重)"
