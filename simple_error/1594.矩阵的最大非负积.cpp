@@ -71,6 +71,8 @@
  */
 
 // @lc code=start
+// 动态规划 求余数的位置不对,中间过程求余数 会有问题
+
 class Solution
 {
 public:
@@ -97,13 +99,13 @@ public:
         {
             if (grid[yy][0] < 0)
             {
-                flag[yy][0].first = max(flag[yy][0].first, flag[yy - 1][0].second * grid[yy][0]) % aaa;
-                flag[yy][0].second = min(flag[yy][0].second, flag[yy - 1][0].first * grid[yy][0]) % aaa;
+                flag[yy][0].first = max(flag[yy][0].first, flag[yy - 1][0].second * grid[yy][0]);
+                flag[yy][0].second = min(flag[yy][0].second, flag[yy - 1][0].first * grid[yy][0]);
             }
             else
             {
-                flag[yy][0].first = max(flag[yy][0].first, flag[yy - 1][0].first * grid[yy][0]) % aaa;
-                flag[yy][0].second = min(flag[yy][0].second, flag[yy - 1][0].second * grid[yy][0]) % aaa;
+                flag[yy][0].first = max(flag[yy][0].first, flag[yy - 1][0].first * grid[yy][0]);
+                flag[yy][0].second = min(flag[yy][0].second, flag[yy - 1][0].second * grid[yy][0]);
             }
             if (grid[yy][0] == 0)
             {
@@ -114,13 +116,13 @@ public:
         {
             if (grid[0][xx] < 0)
             {
-                flag[0][xx].first = max(flag[0][xx].first, flag[0][xx - 1].second * grid[0][xx]) % aaa;
-                flag[0][xx].second = min(flag[0][xx].second, flag[0][xx - 1].first * grid[0][xx]) % aaa;
+                flag[0][xx].first = max(flag[0][xx].first, flag[0][xx - 1].second * grid[0][xx]);
+                flag[0][xx].second = min(flag[0][xx].second, flag[0][xx - 1].first * grid[0][xx]);
             }
             else
             {
-                flag[0][xx].first = max(flag[0][xx].first, flag[0][xx - 1].first * grid[0][xx]) % aaa;
-                flag[0][xx].second = min(flag[0][xx].second, flag[0][xx - 1].second * grid[0][xx]) % aaa;
+                flag[0][xx].first = max(flag[0][xx].first, flag[0][xx - 1].first * grid[0][xx]);
+                flag[0][xx].second = min(flag[0][xx].second, flag[0][xx - 1].second * grid[0][xx]);
             }
             if (grid[0][xx] == 0)
             {
@@ -133,13 +135,13 @@ public:
             {
                 if (grid[yy][xx] < 0)
                 {
-                    flag[yy][xx].first = max(flag[yy][xx].first, max(flag[yy][xx - 1].second * grid[yy][xx], flag[yy - 1][xx].second * grid[yy][xx])) % aaa;
-                    flag[yy][xx].second = min(flag[yy][xx].second, min(flag[yy][xx - 1].first * grid[yy][xx], flag[yy - 1][xx].first * grid[yy][xx])) % aaa;
+                    flag[yy][xx].first = max(flag[yy][xx].first, max(flag[yy][xx - 1].second * grid[yy][xx], flag[yy - 1][xx].second * grid[yy][xx]));
+                    flag[yy][xx].second = min(flag[yy][xx].second, min(flag[yy][xx - 1].first * grid[yy][xx], flag[yy - 1][xx].first * grid[yy][xx]));
                 }
                 else
                 {
-                    flag[yy][xx].first = max(flag[yy][xx].first, max(flag[yy][xx - 1].first * grid[yy][xx], flag[yy - 1][xx].first * grid[yy][xx])) % aaa;
-                    flag[yy][xx].second = min(flag[yy][xx].second, min(flag[yy][xx - 1].second * grid[yy][xx], flag[yy - 1][xx].second * grid[yy][xx])) % aaa;
+                    flag[yy][xx].first = max(flag[yy][xx].first, max(flag[yy][xx - 1].first * grid[yy][xx], flag[yy - 1][xx].first * grid[yy][xx]));
+                    flag[yy][xx].second = min(flag[yy][xx].second, min(flag[yy][xx - 1].second * grid[yy][xx], flag[yy - 1][xx].second * grid[yy][xx]));
                 }
                 if (grid[yy][xx] == 0)
                 {
@@ -149,7 +151,7 @@ public:
         }
         if (flag[y - 1][x - 1].first > 0)
         {
-            return flag[y - 1][x - 1].first;
+            return flag[y - 1][x - 1].first % aaa;
         }
         else if (flag[y - 1][x - 1].first == 0 && has_zero)
         {
