@@ -65,6 +65,7 @@
 // 0 1 1 0
 // 1 0 0 1 0 1 1 0
 // 0 1 1 0 1 0 0 1 1 0 0 1 0 1 1 0
+// 想当然超时了
 class Solution {
 public:
     int kthGrammar(int n, int k) {
