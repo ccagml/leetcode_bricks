@@ -10,7 +10,7 @@
 - quick_start.cpp 快速掌握一些c++做题需要的基础操作
 - makefile 编译quick_cpp.cpp验证结果
 - f.sh 查找某一题是否做过?
-# 反思
+# 备忘
 
 
 ## [315.计算右侧小于当前元素的个数](https://leetcode.cn/problems/count-of-smaller-numbers-after-self/description/)

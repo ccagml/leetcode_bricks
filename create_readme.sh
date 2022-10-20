@@ -12,7 +12,7 @@ echo "# 文件夹说明
 - quick_start.cpp 快速掌握一些c++做题需要的基础操作
 - makefile 编译quick_cpp.cpp验证结果
 - f.sh 查找某一题是否做过?
-# 反思" > README.md
+# 备忘" > README.md
 
 for file in $CRTDIR/do_think/*
 do
