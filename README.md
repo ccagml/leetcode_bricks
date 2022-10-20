@@ -13,14 +13,6 @@
 # 备忘
 
 
-## [2435.矩阵中和能被 K 整除的路径](https://leetcode.cn/problems/paths-in-matrix-whose-sum-is-divisible-by-k/description/)
-### 反思
-1. 看题目是普通的动态规划,可能是每个格子需要一个长度k的vector存余数数据的数量
-1. 在+的时候 可以直接对结果 % (1e9 + 7),这样不需要long long, long long也无法通过所有用例
-1. 结果直接返回余数0的部分就行了,这点弄了很久
-### 时间
-- 22.10.20
-
 ## [315.计算右侧小于当前元素的个数](https://leetcode.cn/problems/count-of-smaller-numbers-after-self/description/)
 ### 反思
 - 范围查询->线段树
@@ -41,5 +33,20 @@
 ### 反思
 - 通过规律可以看出是不断在翻转
 - 没想到可以用递归,每一层往下计算就行
+### 时间
+- 22.10.20
+
+## [2328.网格图中递增路径的数目](https://leetcode.cn/problems/number-of-increasing-paths-in-a-grid/description/)
+### 反思
+1. 思考1: 把每个格子的数值从小到大分类
+1. 思考2: 根据数值大小开始收集(这样能保证比我小的已经算完了)
+### 时间
+- 22.10.20
+
+## [2435.矩阵中和能被 K 整除的路径](https://leetcode.cn/problems/paths-in-matrix-whose-sum-is-divisible-by-k/description/)
+### 反思
+1. 看题目是普通的动态规划,可能是每个格子需要一个长度k的vector存余数数据的数量
+1. 在+的时候 可以直接对结果 % (1e9 + 7),这样不需要long long, long long也无法通过所有用例
+1. 结果直接返回余数0的部分就行了,这点弄了很久
 ### 时间
 - 22.10.20

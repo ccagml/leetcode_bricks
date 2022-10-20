@@ -1,0 +1,6 @@
+## [2328.网格图中递增路径的数目](https://leetcode.cn/problems/number-of-increasing-paths-in-a-grid/description/)
+### 反思
+1. 思考1: 把每个格子的数值从小到大分类
+1. 思考2: 根据数值大小开始收集(这样能保证比我小的已经算完了)
+### 时间
+- 22.10.20

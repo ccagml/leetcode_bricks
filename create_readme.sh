@@ -14,11 +14,14 @@ echo "# 文件夹说明
 - f.sh 查找某一题是否做过?
 # 备忘" > README.md
 
-for file in $CRTDIR/do_think/*
+# |awk -F "/" '{print $NF}' | sort -n
+a=`ls $CRTDIR/do_think/* | awk -F "/" '{print $NF}' | sort -n`
+echo $a
+for file in $a
 do
-    if test -f $file
+    if test -f $CRTDIR/do_think/$file
     then
         echo -e "\n" >> README.md
-        cat $file >> README.md
+        cat $CRTDIR/do_think/$file >> README.md
     fi
 done
