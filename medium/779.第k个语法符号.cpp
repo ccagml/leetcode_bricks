@@ -68,22 +68,14 @@
 // 想当然超时了
 class Solution {
 public:
-    int kthGrammar(int n, int k) {
-        vector<int> vi = {0};
-        for(int i = 1; i < n; i++){
-            vector<int> new_vi;
-            for(int j = 0; j < vi.size(); j++){
-                if(vi[j] == 0){
-                    new_vi.push_back(0);
-                    new_vi.push_back(1);
-                }else{
-                    new_vi.push_back(1);
-                    new_vi.push_back(0);
-                }
-            }
-            vi = new_vi;
+    int kthGrammar(int N, int K) {
+        if(N==1 && K==1) return 0;
+        int mid=pow(2,N-1)/2;
+        if(K<=mid){
+            return kthGrammar(N-1, K);
+        }else{
+            return !(kthGrammar(N-1, K-mid));
         }
-        return vi[k - 1];
     }
 };
 // @lc code=end
