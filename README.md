@@ -13,8 +13,6 @@
 # 备忘
 
 
-1
-
 ## [315.计算右侧小于当前元素的个数](https://leetcode.cn/problems/count-of-smaller-numbers-after-self/description/)
 ### 反思
 - 范围查询->线段树
@@ -67,6 +65,16 @@
 1. 想不到第二步, 每个字符对 子字符串的贡献 是 上一个 到本字符  跟 本字符到下一个的乘积
 ### 时间
 - 22.09.05
+
+## [1953.你可以工作的最大周数](https://leetcode.cn/problems/maximum-number-of-weeks-for-which-you-can-work/description/)
+### 反思
+- 多的先排?优先级队列? 感觉会超时
+- 上面的思路好像不太对 类似 [8,8,2,6]
+- 贪心的思路
+- 先获得最大值, 如果最大值 大于等于 + 1 那就不能全完成, 否则可以全完成
+- 对的思路 应该是最大的值先插槽
+### 时间
+- 22.09.13
 
 ## [2328.网格图中递增路径的数目](https://leetcode.cn/problems/number-of-increasing-paths-in-a-grid/description/)
 ### 反思
