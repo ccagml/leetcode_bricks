@@ -13,6 +13,8 @@
 # 备忘
 
 
+1
+
 ## [315.计算右侧小于当前元素的个数](https://leetcode.cn/problems/count-of-smaller-numbers-after-self/description/)
 ### 反思
 - 范围查询->线段树
