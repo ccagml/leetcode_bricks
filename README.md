@@ -66,6 +66,12 @@
 ### 时间
 - 22.09.05
 
+## [901.股票价格跨度](https://leetcode.cn/problems/online-stock-span/description/)
+### 反思
+1. 想多了,以为是需要求过去所有日子,小于等于今天值得最大连续子数组
+### 时间
+- 22.10.21
+
 ## [1953.你可以工作的最大周数](https://leetcode.cn/problems/maximum-number-of-weeks-for-which-you-can-work/description/)
 ### 反思
 - 多的先排?优先级队列? 感觉会超时
