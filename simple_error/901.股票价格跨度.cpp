@@ -56,33 +56,59 @@
  */
 
 // @lc code=start
+// class StockSpanner
+// {
+// public:
+//     vector<int> ll;
+//     StockSpanner()
+//     {
+//     }
+
+//     int next(int price)
+//     {
+//         ll.push_back(price);
+//         int result = 0;
+//         int temp = 0;
+//         for (int i = ll.size() - 1; i >= 0; i--)
+//         {
+//             if (ll[i] <= price)
+//             {
+//                 temp++;
+//                 result = max(temp, result);
+//             }
+//             else
+//             {
+//                 temp = 0;
+//                 break;
+//             }
+//         }
+
+//         return result;
+//     }
+// };
 class StockSpanner
 {
 public:
-    vector<int> ll;
+    stack<pair<int, int>> si;
+    int all = 0;
     StockSpanner()
     {
     }
 
     int next(int price)
     {
-        ll.push_back(price);
-        int result = 0;
-        int temp = 0;
-        for (int i = ll.size() - 1; i >= 0; i--)
+        all++;
+        while (si.size() > 0 && si.top().second <= price)
         {
-            if (ll[i] <= price)
-            {
-                temp++;
-                result = max(temp, result);
-            }
-            else
-            {
-                temp = 0;
-                break;
-            }
+            si.pop();
         }
-
+        int result = 1;
+        if(si.size() > 0){
+            result = all - si.top().first;
+        }else{
+            result = all;
+        }
+        si.push({all, price});
         return result;
     }
 };
