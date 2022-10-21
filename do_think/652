@@ -1,0 +1,5 @@
+## [652.寻找重复的子树](https://leetcode.cn/problems/find-duplicate-subtrees/description/)
+### 反思
+- 思路不对 原本以为会相同层比较,结果需要序列化成字符串比较,不是同层比较
+### 时间
+- 22.09.05

@@ -1,0 +1,5 @@
+## [667.优美的排列 II](https://leetcode.cn/problems/k-th-symbol-in-grammar/description/)
+### 反思
+- 构造的思路不一样, 都想到可能需要 一个前一个后来控制差值
+### 时间
+- 22.09.05
