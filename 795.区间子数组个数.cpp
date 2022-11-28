@@ -46,30 +46,74 @@
  *
  */
 
+// 双指针,可以在一个循环里,把右边更大的也算上
+// 想不到的结果是 左边数量 * 右边数量
+
+using namespace std;
+#include "stack"
+#include "vector"
+
 // @lc code=start
 class Solution
 {
 public:
     int numSubarrayBoundedMax(vector<int> &nums, int left, int right)
     {
-        stack<int> left;
-        stack<int> right;
+        stack<int> sleft;
+        stack<int> sright;
         int n = nums.size();
-        vector<int> left_big(n);
-        vector<int> right_flag(n, n - 1);
+        vector<int> left_big(n, -1);
+        vector<int> right_big(n, n);
         for (int i = 0; i < n; i++)
         {
-            while (left.size() > 0 && nums[left.top()])
+            // 左边更大值
+            while (sleft.size() > 0 && nums[sleft.top()] < nums[i])
             {
+                sleft.pop();
+            }
+            left_big[i] = sleft.size() > 0 ? sleft.top() : -1;
+            sleft.push(i);
+
+            while (!sright.empty() && nums[sright.top()] < nums[i])
+            {
+                right_big[sright.top()] = i;
+                sright.pop();
+            }
+            sright.push(i);
+        }
+
+        // for (int i = n - 1; i >= 0; i--)
+        // {
+        //     // 左边更大值
+        //     while (sright.size() > 0 && nums[sright.top()] < nums[i])
+        //     {
+        //         sright.pop();
+        //     }
+        //     right_big[i] = sright.size() > 0 ? sright.top() : n;
+        //     sright.push(i);
+        // }
+        int result = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (nums[i] >= left && nums[i] <= right)
+            {
+                result += (right_big[i] - i) * (i - left_big[i]);
             }
         }
+        return result;
     }
 };
+
+// 1, 2, 1, 1, 1
 // @lc code=end
 
 /*
 // @lcpr case=start
 // [2,1,4,3]\n2\n3\n
+// @lcpr case=end
+
+// @lcpr case=start
+// [2,2,2,2]\n2\n3\n
 // @lcpr case=end
 
 // @lcpr case=start
