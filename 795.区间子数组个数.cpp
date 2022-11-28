@@ -52,6 +52,17 @@ class Solution
 public:
     int numSubarrayBoundedMax(vector<int> &nums, int left, int right)
     {
+        stack<int> left;
+        stack<int> right;
+        int n = nums.size();
+        vector<int> left_big(n);
+        vector<int> right_flag(n, n - 1);
+        for (int i = 0; i < n; i++)
+        {
+            while (left.size() > 0 && nums[left.top()])
+            {
+            }
+        }
     }
 };
 // @lc code=end
