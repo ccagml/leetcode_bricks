@@ -1,17 +1,17 @@
 /*
- * @lc app=leetcode.cn id=6248 lang=cpp
- * @lcpr version=20301
+ * @lc app=leetcode.cn id=2488 lang=cpp
+ * @lcpr version=20401
  *
- * [6248] 统计中位数为 K 的子数组
+ * [2488] 统计中位数为 K 的子数组
  *
  * https://leetcode.cn/problems/count-subarrays-with-median-k/description/
  *
  * algorithms
- * Hard (35.90%)
- * Likes:    22
+ * Hard (37.69%)
+ * Likes:    24
  * Dislikes: 0
- * Total Accepted:    2.9K
- * Total Submissions: 8K
+ * Total Accepted:    3.2K
+ * Total Submissions: 8.6K
  * Testcase Example:  '[3,2,1,4,5]\n4'
  *
  * 给你一个长度为 n 的数组 nums ，该数组由从 1 到 n 的 不同 整数组成。另给你一个正整数 k 。
@@ -58,16 +58,9 @@
  *
  *
  */
-
 using namespace std;
 #include "unordered_map"
 #include "vector"
-
-// 想的是 计算左右合起来大于 k 的数量, 超时原因可能是一直重复计算
-// 想不到 可以用map存下答案
-// 40:0
-// 先累计左边净多几个大的数量, 然后和右边合起来是0,或者净多1个的数量
-
 // @lc code=start
 class Solution
 {
@@ -83,54 +76,26 @@ public:
                 break;
             }
         }
+        unordered_map<int, int> umii;
 
-        unordered_map<int, int> jing_big;
-        // 计算左边
-        int left_big = 0;
-        int left_small = 0;
+        int da = 0;
+        int xiao = 0;
         for (int i = k_index; i >= 0; i--)
         {
-            (nums[i] > k) ? left_big++ : left_small++;
-            int temp_jing_duo = left_big - left_small;
-            jing_big[temp_jing_duo]++;
+            (nums[i] > k) ? da++ : xiao++;
+            int jd = da - xiao;
+            umii[jd]++;
         }
-
-        // 计算右边
-        int right_big = 0;
-        int right_small = 0;
         int result = 0;
+        da = 0;
+        xiao = 0;
         for (int i = k_index; i < nums.size(); i++)
         {
-            (nums[i] >= k) ? right_big++ : right_small++;
-            int temp_jing_duo = right_big - right_small;
-
-            result += (jing_big[-temp_jing_duo] + jing_big[-temp_jing_duo + 1]);
+            (nums[i] >= k) ? da++ : xiao++;
+            int jd = da - xiao;
+            result += (umii[-jd] + umii[-jd + 1]);
         }
         return result;
-        // unordered_map<int, int> mpl;
-        // int l = 0, m = 0, ans = 0;
-
-        // for (int i = k_index; i >= 0; i--)
-        // {
-        //     if (nums[i] <= k)
-        //         l++;
-        //     else
-        //         m++;
-        //     mpl[l - m]++;
-        // }
-
-        // l = -1;
-        // m = 0;
-        // for (int i = k_index; i < nums.size(); i++)
-        // {
-        //     if (nums[i] <= k)
-        //         l++;
-        //     else
-        //         m++;
-        //     ans += mpl[m - l + 1] + mpl[m - l];
-        // }
-
-        // return ans;
     }
 };
 // @lc code=end
@@ -138,6 +103,10 @@ public:
 /*
 // @lcpr case=start
 // [3,2,1,4,5]\n4\n
+// @lcpr case=end
+
+// @lcpr case=start
+// [2,5,1,4,3,6]\n1\n
 // @lcpr case=end
 
 // @lcpr case=start

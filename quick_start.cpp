@@ -1,3 +1,4 @@
+using namespace std;
 #include <algorithm>
 #include <array>
 #include <climits>
@@ -11,6 +12,8 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
+#include <vector>
+
 void test_pair()
 {
     int n = 1;
