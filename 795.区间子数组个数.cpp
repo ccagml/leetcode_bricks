@@ -54,56 +54,98 @@ using namespace std;
 #include "vector"
 
 // @lc code=start
+// class Solution
+// {
+// public:
+//     int numSubarrayBoundedMax(vector<int> &nums, int left, int right)
+//     {
+//         stack<int> sleft;
+//         stack<int> sright;
+//         int n = nums.size();
+//         vector<int> left_big(n, -1);
+//         vector<int> right_big(n, n);
+//         for (int i = 0; i < n; i++)
+//         {
+//             // 左边更大值
+//             while (sleft.size() > 0 && nums[sleft.top()] < nums[i])
+//             {
+//                 sleft.pop();
+//             }
+//             left_big[i] = sleft.size() > 0 ? sleft.top() : -1;
+//             sleft.push(i);
+
+//             while (!sright.empty() && nums[sright.top()] < nums[i])
+//             {
+//                 right_big[sright.top()] = i;
+//                 sright.pop();
+//             }
+//             sright.push(i);
+//         }
+
+//         // for (int i = n - 1; i >= 0; i--)
+//         // {
+//         //     // 左边更大值
+//         //     while (sright.size() > 0 && nums[sright.top()] < nums[i])
+//         //     {
+//         //         sright.pop();
+//         //     }
+//         //     right_big[i] = sright.size() > 0 ? sright.top() : n;
+//         //     sright.push(i);
+//         // }
+//         int result = 0;
+//         for (int i = 0; i < n; i++)
+//         {
+//             if (nums[i] >= left && nums[i] <= right)
+//             {
+//                 result += (right_big[i] - i) * (i - left_big[i]);
+//             }
+//         }
+//         return result;
+//     }
+// };
+
 class Solution
 {
 public:
     int numSubarrayBoundedMax(vector<int> &nums, int left, int right)
     {
-        stack<int> sleft;
-        stack<int> sright;
+        stack<int> s_l;
+        stack<int> s_r;
         int n = nums.size();
-        vector<int> left_big(n, -1);
-        vector<int> right_big(n, n);
+        vector<int> vi_l(n, -1);
+        vector<int> vi_r(n, n);
+
         for (int i = 0; i < n; i++)
         {
-            // 左边更大值
-            while (sleft.size() > 0 && nums[sleft.top()] < nums[i])
+            while (s_l.size() > 0 && nums[s_l.top()] < nums[i])
             {
-                sleft.pop();
+                s_l.pop();
             }
-            left_big[i] = sleft.size() > 0 ? sleft.top() : -1;
-            sleft.push(i);
+            vi_l[i] = s_l.size() > 0 ? s_l.top() : -1;
+            s_l.push(i);
 
-            while (!sright.empty() && nums[sright.top()] < nums[i])
+            while (s_r.size() > 0 && nums[s_r.top()] < nums[i])
             {
-                right_big[sright.top()] = i;
-                sright.pop();
+                vi_r[s_r.top()] = i;
+                s_r.pop();
             }
-            sright.push(i);
+            s_r.push(i);
         }
 
-        // for (int i = n - 1; i >= 0; i--)
-        // {
-        //     // 左边更大值
-        //     while (sright.size() > 0 && nums[sright.top()] < nums[i])
-        //     {
-        //         sright.pop();
-        //     }
-        //     right_big[i] = sright.size() > 0 ? sright.top() : n;
-        //     sright.push(i);
-        // }
-        int result = 0;
-        for (int i = 0; i < n; i++)
+        int reuslt = 0;
+        for (int i = 0; i < nums.size(); i++)
         {
             if (nums[i] >= left && nums[i] <= right)
             {
-                result += (right_big[i] - i) * (i - left_big[i]);
+                // std::cout << i << ":" << vi_l[i] << ":" << vi_r[i] << std::endl;
+
+                reuslt += (i - vi_l[i]) * (vi_r[i] - i);
             }
         }
-        return result;
+
+        return reuslt;
     }
 };
-
 // 1, 2, 1, 1, 1
 // @lc code=end
 
