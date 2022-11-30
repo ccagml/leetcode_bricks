@@ -1193,6 +1193,25 @@ void test_segment_tree()
     ;
 }
 
+vector<int> get_pre_sum(vector<int> &nums)
+{
+    vector<int> result;
+    int n = nums.size();
+    int sum = 0;
+    for (int i = 0; i < n; i++)
+    {
+        sum += nums[i];
+        result.push_back(sum);
+    }
+    return result;
+}
+
+double get_sum(vector<int> &pre_sum, int i, int j)
+{
+    int a = i > 0 ? pre_sum[i - 1] : 0;
+    int b = j < pre_sum.size() ? pre_sum[j] : pre_sum[pre_sum.size() - 1];
+    return b - a;
+}
 int main(int argc, char const *argv[])
 {
     // test_pair();
