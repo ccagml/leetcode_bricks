@@ -76,24 +76,25 @@ public:
                 break;
             }
         }
-        unordered_map<int, int> umii;
 
-        int da = 0;
-        int xiao = 0;
+        int small = 0;
+        int big = 0;
+        unordered_map<int, int> uui;
         for (int i = k_index; i >= 0; i--)
         {
-            (nums[i] > k) ? da++ : xiao++;
-            int jd = da - xiao;
-            umii[jd]++;
+            nums[i] > k ? big++ : small++;
+            uui[big - small]++;
+            // std::cout << i << ":净多:" << big - small << ":数量:" << uui[big - small] << std::endl;
         }
+        small = 0;
+        big = 0;
         int result = 0;
-        da = 0;
-        xiao = 0;
         for (int i = k_index; i < nums.size(); i++)
         {
-            (nums[i] >= k) ? da++ : xiao++;
-            int jd = da - xiao;
-            result += (umii[-jd] + umii[-jd + 1]);
+            nums[i] >= k ? big++ : small++;
+            int jingduo = big - small;
+            // std::cout << "add:" << i << ":净多:" << jingduo << ":-净多:" << uui[-jingduo] << ":-净多b:" << uui[-jingduo + 1] << std::endl;
+            result += uui[-jingduo] + uui[-jingduo + 1];
         }
         return result;
     }

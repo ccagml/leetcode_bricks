@@ -94,20 +94,17 @@ public:
             umii[b][a] = c;
         }
         //自定义比较函数pair//返回true使得第一个参数排后面
-        auto cmp_pair = [](const std::pair<int, int> &t1, const std::pair<int, int> &t2)
+
+        auto cmp = [](const pair<int, int> a, const pair<int, int> b)
         {
-            // true使得t1排后面?
-            if (t1.first < t2.first)
-            {
-                return true;
-            }
-            else if (t1.first == t2.first && t1.second < t2.second)
+            if (a.first < b.first)
             {
                 return true;
             }
             return false;
         };
-        std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(cmp_pair)> pair_pq(cmp_pair);
+
+        priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(cmp)> pair_pq(cmp);
 
         pair_pq.push({maxMoves, 0});
 
