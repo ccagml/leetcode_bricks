@@ -67,23 +67,23 @@ public:
         vector<int> vi(n + 1, 9999999);
         vi[0] = 0;
         vi[1] = 1;
-        // for (int has : all)
-        // {
-        //     for (int cur_price = n; cur_price >= has; cur_price--)
-        //     {
-        //         vi[cur_price] = min(vi[cur_price], vi[cur_price - has] + 1);
-        //     }
-        // }
-        for (int i = 1; i <= n; i++)
+        for (int has : all)
         {
-            for (int has : all)
+            for (int i = has; i <= n; i++)
             {
-                if (has <= i)
-                {
-                    vi[i] = min(vi[i], vi[i - has] + 1);
-                }
+                vi[i] = min(vi[i], vi[i - has] + 1);
             }
         }
+        // for (int i = 1; i <= n; i++)
+        // {
+        //     for (int has : all)
+        //     {
+        //         if (has <= i)
+        //         {
+        //             vi[i] = min(vi[i], vi[i - has] + 1);
+        //         }
+        //     }
+        // }
 
         return vi[n];
     }
