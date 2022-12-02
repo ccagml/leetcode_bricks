@@ -66,21 +66,28 @@ public:
     int findTargetSumWays(vector<int> &nums, int target)
     {
         target = abs(target);
-        // 正的合 + 负的合 = 总数
-        // 正的合 - 负的合 = target
-        // 正的合 = (总数 + target) / 2
-        int sum = accumulate(nums.begin(), nums.end(), 0);
-        if ((sum + target) % 2 != 0 || sum < target)
+        int sum = 0;
+        for (int i = 0; i < nums.size(); i++)
+        {
+            sum += nums[i];
+        }
+        // 正 + 负 = sum
+        // 正 - 负 = target
+        // 正 = (sum + target) / 2
+        int need = (sum + target) / 2;
+        if (target > sum)
         {
             return 0;
         }
-        int need = (sum + target) / 2;
-        vector<int> vi(need + 1);
-        // std::cout << "需要凑出:" << need;
-        vi[0]++;
-        for (int i = 0; i < nums.size(); i++)
+        if ((sum + target) % 2 == 1)
         {
-            int num = nums[i];
+            return 0;
+        }
+        vector<int> vi(need + 1);
+        // std::cout << "sum:" << sum << ":need:" << need << std::endl;
+        vi[0] = 1;
+        for (int num : nums)
+        {
             for (int j = need; j >= num; j--)
             {
                 vi[j] += vi[j - num];
@@ -92,6 +99,11 @@ public:
 // @lc code=end
 
 /*
+// @lcpr case=start
+// [7,9,3,8,0,2,4,8,3,9]\n0
+// @lcpr case=end
+
+
 // @lcpr case=start
 // [1,1,1,1,1]\n3\n
 // @lcpr case=end
