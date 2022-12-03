@@ -103,64 +103,6 @@ class Solution
 public:
     long long minimumFuelCost(vector<vector<int>> &roads, int seats)
     {
-        unordered_map<int, unordered_set<int>> uus;
-        for (int i = 0; i < roads.size(); i++)
-        {
-            uus[roads[i][0]].insert(roads[i][1]);
-            uus[roads[i][1]].insert(roads[i][0]);
-        }
-        // 某个点的深度,上个点是谁
-        unordered_map<int, int> node_deep;
-        unordered_map<int, unordered_set<int>> deep_node_list;
-        queue<int> qp;
-        unordered_map<int, int> n_fa;
-        qp.push(0);
-        int deep = 0;
-        while (qp.size() > 0)
-        {
-            int n = qp.size();
-            for (int i = 0; i < n; i++)
-            {
-                int node_id = qp.front();
-                qp.pop();
-                node_deep[node_id] = deep;
-                deep_node_list[deep].insert(node_id);
-                for (auto &next : uus[node_id])
-                {
-                    // 下一个节点
-                    if (node_deep.count(next) < 1)
-                    {
-                        qp.push(next);
-                        n_fa[next] = node_id;
-                    }
-                }
-            }
-            deep++;
-        }
-        long long result = 0;
-        int n_1 = roads.size();
-        int n = n_1 + 1;
-        vector<long long> vcur(n, 0);
-        for (int start_deep = deep - 1; start_deep > 0; start_deep--)
-        {
-            for (auto &dn : deep_node_list[start_deep])
-            {
-                vcur[dn]++;
-                if (vcur[dn] == 1)
-                {
-                    result += 1;
-                }
-                else
-                {
-                    result += (vcur[dn] % seats == 0) ? (vcur[dn] / seats) : (vcur[dn] / seats) + 1;
-                }
-
-                // dn 开去哪里
-                int fa = n_fa[dn];
-                vcur[fa] += vcur[dn];
-            }
-        }
-        return result;
     }
 };
 // @lc code=end
