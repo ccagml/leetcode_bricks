@@ -48,27 +48,26 @@ class Solution
 public:
     bool canPartition(vector<int> &nums)
     {
-        int target = 0;
-        for (int i = 0; i < nums.size(); i++)
+        int sum = 0;
+        for (int num : nums)
         {
-            target += nums[i];
+            sum += num;
         }
-        if (target % 2 == 1)
+        if (sum % 2 == 1)
         {
             return false;
         }
-        target /= 2;
-        vector<bool> temp(target + 1, false);
-        temp[0] = true;
-        for (int aaa : nums)
+        int target = sum / 2;
+        vector<bool> vi(target + 1);
+        vi[0] = true;
+        for (int num : nums)
         {
-            for (int j = target; j >= aaa; j--)
+            for (int j = target; j >= num; j--)
             {
-                temp[j] = temp[j] || temp[j - aaa];
+                vi[j] = vi[j - num] || vi[j];
             }
         }
-
-        return temp[target];
+        return vi[target];
     }
 };
 // @lc code=end

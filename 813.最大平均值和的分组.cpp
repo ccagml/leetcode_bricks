@@ -54,7 +54,20 @@
 // 2. 把前n个分成y组的最大和
 // 1题做一天 1:55:8
 using namespace std;
-#include "vector"
+#include <algorithm>
+#include <array>
+#include <climits>
+#include <deque>
+#include <functional>
+#include <iostream>
+#include <list>
+#include <queue>
+#include <stack>
+#include <tuple>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 
 // @lc code=start
 // class Solution
@@ -127,71 +140,129 @@ using namespace std;
 //     }
 // };
 
-#include "unordered_map"
+// #include "unordered_map"
+// class Solution
+// {
+// public:
+//     vector<int> get_pre_sum(vector<int> &nums)
+//     {
+//         vector<int> result;
+//         int n = nums.size();
+//         int sum = 0;
+//         for (int i = 0; i < n; i++)
+//         {
+//             sum += nums[i];
+//             result.push_back(sum);
+//         }
+//         return result;
+//     }
+
+//     double get_sum(vector<int> &pre_sum, int i, int j)
+//     {
+//         int a = i > 0 ? pre_sum[i - 1] : 0;
+//         int b = j < pre_sum.size() ? pre_sum[j] : pre_sum[pre_sum.size() - 1];
+//         return b - a;
+//     }
+
+//     double dfs(vector<int> &pre_sum, int cur_index, int cur_k, int need_k)
+//     {
+//         int n = pre_sum.size();
+//         // 如果不够分是错误的
+//         double have = n - cur_index;
+//         int have_k = need_k - cur_k;
+//         double result = -9999999;
+//         if (have / have_k < 1)
+//         {
+//             return result;
+//         }
+
+//         if (have_k == 1)
+//         {
+//             return get_sum(pre_sum, cur_index, n) / have;
+//         }
+
+//         if (temp[cur_index].count(cur_k) > 0)
+//         {
+//             return temp[cur_index][cur_k];
+//         }
+//         result = 0;
+//         for (int i = cur_index; i < n; i++)
+//         {
+//             double a = get_sum(pre_sum, cur_index, i);
+//             double b = dfs(pre_sum, i + 1, cur_k + 1, need_k);
+//             // std::cout << "(a:" << cur_index << "->" << i << "=" << a << "):(b:" << i + 1 << "->" << n << ":=" << b << ")";
+
+//             result = max(result, get_sum(pre_sum, cur_index, i) / (i + 1 - cur_index) + dfs(pre_sum, i + 1, cur_k + 1, need_k));
+//         }
+//         // std::cout << "cur_index:" << cur_index << ":" << result << std::endl;
+//         temp[cur_index][cur_k] = result;
+//         return result;
+//     }
+
+//     vector<int> pre_sum;
+//     unordered_map<int, unordered_map<int, double>> temp;
+//     double largestSumOfAverages(vector<int> &nums, int k)
+//     {
+//         pre_sum = this->get_pre_sum(nums);
+//         return dfs(pre_sum, 0, 0, k);
+//     }
+// };
 class Solution
 {
 public:
-    vector<int> get_pre_sum(vector<int> &nums)
+    unordered_map<int, unordered_map<int, double>> cur_k_value;
+
+    double get_sum(vector<int> &pre, int left, int right)
     {
-        vector<int> result;
-        int n = nums.size();
-        int sum = 0;
-        for (int i = 0; i < n; i++)
+        int left_value = (left > 0) ? pre[left - 1] : 0;
+        int right_value = (right >= pre.size()) ? pre[pre.size() - 1] : pre[right];
+        return right_value - left_value;
+    }
+    double dfs(vector<int> &pre, int cur, int k)
+    {
+
+        // 还有的数量
+        double has = pre.size() - cur;
+        if (k > has)
         {
-            sum += nums[i];
-            result.push_back(sum);
+            return 0;
         }
+        if (k == 1)
+        {
+            double bbb = get_sum(pre, cur, pre.size()) / has;
+            // std::cout << "bbb(" << cur << "->" << pre.size() << "=" << bbb << ")";
+            return bbb;
+        }
+        // 从cur开始分k份最大值
+        if (cur_k_value[cur].count(k) > 0)
+        {
+            return cur_k_value[cur][k];
+        }
+
+        double result = 0;
+        for (int start = cur; start < pre.size(); start++)
+        {
+            double a = get_sum(pre, cur, start) / (start - cur + 1);
+            // std::cout << "aaa(" << cur << "->" << start << "=" << a << ")";
+            double b = dfs(pre, start + 1, k - 1);
+            result = max(result, a + b);
+        }
+        // std::cout << "从" << cur << "分" << k << "=" << result << std::endl;
+        cur_k_value[cur][k] = result;
         return result;
     }
 
-    double get_sum(vector<int> &pre_sum, int i, int j)
-    {
-        int a = i > 0 ? pre_sum[i - 1] : 0;
-        int b = j < pre_sum.size() ? pre_sum[j] : pre_sum[pre_sum.size() - 1];
-        return b - a;
-    }
-
-    double dfs(vector<int> &pre_sum, int cur_index, int cur_k, int need_k)
-    {
-        int n = pre_sum.size();
-        // 如果不够分是错误的
-        double have = n - cur_index;
-        int have_k = need_k - cur_k;
-        double result = -9999999;
-        if (have / have_k < 1)
-        {
-            return result;
-        }
-
-        if (have_k == 1)
-        {
-            return get_sum(pre_sum, cur_index, n) / have;
-        }
-
-        if (temp[cur_index].count(cur_k) > 0)
-        {
-            return temp[cur_index][cur_k];
-        }
-        result = 0;
-        for (int i = cur_index; i < n; i++)
-        {
-            double a = get_sum(pre_sum, cur_index, i);
-            double b = dfs(pre_sum, i + 1, cur_k + 1, need_k);
-            // std::cout << "(a:" << cur_index << "->" << i << "=" << a << "):(b:" << i + 1 << "->" << n << ":=" << b << ")";
-
-            result = max(result, get_sum(pre_sum, cur_index, i) / (i + 1 - cur_index) + dfs(pre_sum, i + 1, cur_k + 1, need_k));
-        }
-        // std::cout << "cur_index:" << cur_index << ":" << result << std::endl;
-        temp[cur_index][cur_k] = result;
-        return result;
-    }
-
-    vector<int> pre_sum;
-    unordered_map<int, unordered_map<int, double>> temp;
     double largestSumOfAverages(vector<int> &nums, int k)
     {
-        pre_sum = this->get_pre_sum(nums);
-        return dfs(pre_sum, 0, 0, k);
+        int n = nums.size();
+        vector<int> pre;
+        int sum = 0;
+        for (int num : nums)
+        {
+            sum += num;
+            pre.push_back(sum);
+        }
+        return dfs(pre, 0, k);
     }
 };
 // @lc code=end
