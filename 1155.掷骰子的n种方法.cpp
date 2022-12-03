@@ -54,39 +54,62 @@
  *
  *
  */
-
+using namespace std;
+#include <algorithm>
+#include <array>
+#include <climits>
+#include <deque>
+#include <functional>
+#include <iostream>
+#include <list>
+#include <queue>
+#include <stack>
+#include <tuple>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 // @lc code=start
 class Solution
 {
 public:
     int numRollsToTarget(int n, int k, int target)
     {
-        if (n * k > target)
+        // i次点数为j的方法
+        vector<vector<long long>> vvll(n, vector<long long>(target + 1, 0));
+        int mod = 1e9 + 7;
+        for (int nn = 0; nn < n; nn++)
         {
-            return 0;
-        }
-        unordered_map<int, long long> uill;
-        int mod = (1e9 + 7);
-        for (int cnt = 0; cnt < n; cnt++)
-        {
-            unordered_map<int, long long> uill_new;
-            for (int cur = 1; cur <= k; cur++)
+            int big = k * (nn + 1);
+            int small = (nn + 1);
+            for (int kk = 1; kk <= k; kk++)
             {
-                if (cnt == 0)
+                if (nn == 0)
                 {
-                    uill_new[cur]++;
+                    if (kk <= target)
+                    {
+                        vvll[nn][kk] = 1;
+                    }
                 }
                 else
                 {
-                    for (pair<int, long long> ill : uill)
+                    for (int jj = min(big, target); jj >= small; jj--)
                     {
-                        uill_new[ill.first + cur] = ill.second % mod;
+                        if (jj - kk < 0)
+                        {
+                            break;
+                        }
+                        vvll[nn][jj] += vvll[nn - 1][jj - kk];
+                        vvll[nn][jj] %= mod;
                     }
                 }
             }
-            uill = uill_new;
+            // for (int jj = min(big, target); jj >= small; jj--)
+            // {
+            //     std::cout << "(投" << nn + 1 << "凑出:" << jj << "=" << vvll[nn][jj] << ")";
+            // }
         }
-        return uill[target];
+        return vvll[n - 1][target];
     }
 };
 // @lc code=end
