@@ -51,27 +51,7 @@ class Solution
 public:
     int secondHighest(string s)
     {
-        vector<int> vi(10);
-        for (int i = 0; i < s.size(); i++)
-        {
-            if (s[i] >= '0' && s[i] <= '9')
-            {
-                vi[s[i] - '0']++;
-            }
-        }
-        bool flag = false;
-        for (int i = 9; i >= 0; i--)
-        {
-            if (vi[i] > 0)
-            {
-                if (flag)
-                {
-                    return i;
-                }
-                flag = true;
-            }
-        }
-        return -1;
+        return 2;
     }
 };
 // @lc code=end

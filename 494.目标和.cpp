@@ -67,33 +67,28 @@ public:
     {
         target = abs(target);
         int sum = 0;
-        for (int i = 0; i < nums.size(); i++)
+        for (int num : nums)
         {
-            sum += nums[i];
+            sum += num;
         }
         // 正 + 负 = sum
         // 正 - 负 = target
-        // 正 = (sum + target) / 2
+        // 正 = (sum + target)/2
+        if (sum < target || (sum + target) % 2 == 1)
+        {
+            return 0;
+        }
         int need = (sum + target) / 2;
-        if (target > sum)
-        {
-            return 0;
-        }
-        if ((sum + target) % 2 == 1)
-        {
-            return 0;
-        }
-        vector<int> vi(need + 1);
-        // std::cout << "sum:" << sum << ":need:" << need << std::endl;
-        vi[0] = 1;
+        vector<int> vb(need + 1);
+        vb[0] = 1;
         for (int num : nums)
         {
             for (int j = need; j >= num; j--)
             {
-                vi[j] += vi[j - num];
+                vb[j] += vb[j - num];
             }
         }
-        return vi[need];
+        return vb[need];
     }
 };
 // @lc code=end
