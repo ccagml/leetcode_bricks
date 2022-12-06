@@ -1,6 +1,7 @@
 using namespace std;
 #include <algorithm>
 #include <array>
+#include <bitset>
 #include <climits>
 #include <deque>
 #include <functional>
@@ -103,6 +104,11 @@ void test_string()
     // A -> std::tolower -> a
     std::cout << "A"
               << " -> std::tolower -> " << char(std::tolower('A')) << std::endl;
+
+    //翻转字符串
+    string reverse_str = "abcdefghijklmn";
+    reverse(reverse_str.begin(), reverse_str.end());
+    std::cout << reverse_str << std::endl;
 }
 void test_array()
 {
@@ -289,6 +295,14 @@ void test_vector()
     //{10,16,};
     v.resize(2);
     std::cout << "{";
+    for (int n : v)
+    {
+        std::cout << n << ",";
+    }
+    std::cout << "};\n";
+    //翻转数组
+    reverse(v.begin(), v.end());
+    std::cout << "reverse{";
     for (int n : v)
     {
         std::cout << n << ",";
