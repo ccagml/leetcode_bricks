@@ -136,6 +136,20 @@ public:
         }
         return 0;
     }
+
+    bool is_leaf(int cur_node_id)
+    {
+        int b_ceng = uii[cur_node_id];
+        for (pair<int, int> pii : uiuii[cur_node_id])
+        {
+            if (uii[pii.first] > b_ceng)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     int mostProfitablePath(vector<vector<int>> &edges, int bob, vector<int> &amount)
     {
         for (vector<int> &ee : edges)
@@ -228,7 +242,7 @@ public:
                     qpii.push({next_id, cur_node_value + amount[next_id]});
                 }
             }
-            if (cur_ceng == max_ceng)
+            if (is_leaf(cur_node_id))
             {
                 max_result = max(max_result, cur_node_value);
             }
@@ -245,6 +259,11 @@ public:
 
 // @lcpr case=start
 // [[0,1]]\n1\n[-7280,2350]\n
+// @lcpr case=end
+
+
+// @lcpr case=start
+// [[0,2],[0,4],[1,3],[1,2]]\n1\n[3958,-9854,-8334,-9388,3410]
 // @lcpr case=end
 
  */
