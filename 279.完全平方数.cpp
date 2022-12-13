@@ -41,53 +41,98 @@
  *
  *
  */
-
+using namespace std;
+#include <algorithm>
+#include <array>
+#include <bitset>
+#include <climits>
+#include <deque>
+#include <functional>
+#include <iostream>
+#include <list>
+#include <queue>
+#include <stack>
+#include <tuple>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 // @lc code=start
 class Solution
 {
 public:
     int numSquares(int n)
     {
-        vector<int> all;
-        for (int i = 1; i < n; i++)
-        {
-            int a = i * i;
-            all.push_back(a);
-            if (a == n)
-            {
-                return 1;
-            }
-            if (a > n)
-            {
-                break;
-            }
-        }
-
-        // 凑够n的最小数量 // vi[x] 凑够x的最小次数
-        vector<int> vi(n + 1, 9999999);
-        vi[0] = 0;
-        vi[1] = 1;
-        for (int has : all)
-        {
-            for (int i = has; i <= n; i++)
-            {
-                vi[i] = min(vi[i], vi[i - has] + 1);
-            }
-        }
-        // for (int i = 1; i <= n; i++)
-        // {
-        //     for (int has : all)
-        //     {
-        //         if (has <= i)
-        //         {
-        //             vi[i] = min(vi[i], vi[i - has] + 1);
-        //         }
-        //     }
-        // }
-
-        return vi[n];
     }
 };
+
+// class Solution
+// {
+// public:
+//     int numSquares(int n)
+//     {
+//         vector<int> all;
+//         for (int i = 1; i < n; i++)
+//         {
+//             int a = i * i;
+//             all.push_back(a);
+//             if (a == n)
+//             {
+//                 return 1;
+//             }
+//             if (a > n)
+//             {
+//                 break;
+//             }
+//         }
+
+//         // 凑够n的最小数量 // vi[x] 凑够x的最小次数
+//         vector<int> vi(n + 1, 9999999);
+//         vi[0] = 0;
+//         vi[1] = 1;
+//         for (int has : all)
+//         {
+//             for (int i = has; i <= n; i++)
+//             {
+//                 vi[i] = min(vi[i], vi[i - has] + 1);
+//             }
+//         }
+
+//         return vi[n];
+//     }
+// };
+
+// class Solution
+// {
+// public:
+//     int numSquares(int n)
+//     {
+//         vector<int> vi;
+//         for (int i = 1; i < n; i++)
+//         {
+//             int temp = i * i;
+//             if (temp > n)
+//             {
+//                 break;
+//             }
+//             vi.push_back(temp);
+//         }
+//         vector<int> amount(n + 1, 999999);
+//         amount[0] = 0;
+//         amount[1] = 1;
+//         for (int need = 1; need <= n; need++)
+//         {
+//             for (int j : vi)
+//             {
+//                 if (j <= need)
+//                 {
+//                     amount[need] = min(amount[need], amount[need - j] + 1);
+//                 }
+//             }
+//         }
+//         return amount[n];
+//     }
+// };
 // @lc code=end
 
 /*
