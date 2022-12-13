@@ -56,7 +56,22 @@
  *
  *
  */
-
+using namespace std;
+#include <algorithm>
+#include <array>
+#include <bitset>
+#include <climits>
+#include <deque>
+#include <functional>
+#include <iostream>
+#include <list>
+#include <queue>
+#include <stack>
+#include <tuple>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 // @lc code=start
 
 // 前i个凑成j 的数量 x
@@ -67,30 +82,66 @@ public:
     {
         target = abs(target);
         int sum = 0;
-        for (int num : nums)
+        for (int j : nums)
         {
-            sum += num;
+            sum += j;
         }
+        if (target > sum)
+        {
+            return 0;
+        }
+
         // 正 + 负 = sum
         // 正 - 负 = target
-        // 正 = (sum + target)/2
-        if (sum < target || (sum + target) % 2 == 1)
+        // 2正 = sum + target
+        if ((sum + target) % 2 == 1)
         {
             return 0;
         }
         int need = (sum + target) / 2;
-        vector<int> vb(need + 1);
-        vb[0] = 1;
-        for (int num : nums)
+        vector<int> vi(need + 1);
+        vi[0] = 1;
+        for (int j : nums)
         {
-            for (int j = need; j >= num; j--)
+            for (int amount = need; amount >= j; amount--)
             {
-                vb[j] += vb[j - num];
+                vi[amount] += (vi[amount - j]);
             }
         }
-        return vb[need];
+        return vi[need];
     }
 };
+// class Solution
+// {
+// public:
+//     int findTargetSumWays(vector<int> &nums, int target)
+//     {
+//         target = abs(target);
+//         int sum = 0;
+//         for (int num : nums)
+//         {
+//             sum += num;
+//         }
+//         // 正 + 负 = sum
+//         // 正 - 负 = target
+//         // 正 = (sum + target)/2
+//         if (sum < target || (sum + target) % 2 == 1)
+//         {
+//             return 0;
+//         }
+//         int need = (sum + target) / 2;
+//         vector<int> vb(need + 1);
+//         vb[0] = 1;
+//         for (int num : nums)
+//         {
+//             for (int j = need; j >= num; j--)
+//             {
+//                 vb[j] += vb[j - num];
+//             }
+//         }
+//         return vb[need];
+//     }
+// };
 // @lc code=end
 
 /*
