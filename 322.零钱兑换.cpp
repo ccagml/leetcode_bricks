@@ -50,13 +50,41 @@
  *
  *
  */
-
+using namespace std;
+#include <algorithm>
+#include <array>
+#include <bitset>
+#include <climits>
+#include <deque>
+#include <functional>
+#include <iostream>
+#include <list>
+#include <queue>
+#include <stack>
+#include <tuple>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 // @lc code=start
 class Solution
 {
 public:
     int coinChange(vector<int> &coins, int amount)
     {
+        vector<long long> vi(amount + 1, 9999999);
+        vi[0] = 0;
+        for (long long i : coins)
+        {
+            for (long long j = 1; j <= amount; j++)
+            {
+                if (j >= i)
+                {
+                    vi[j] = min(vi[j], vi[j - i] + 1);
+                }
+            }
+        }
+        return vi[amount] == 9999999 ? -1 : vi[amount];
     }
 };
 
