@@ -41,38 +41,85 @@
  *
  *
  */
-
+using namespace std;
+#include <algorithm>
+#include <array>
+#include <bitset>
+#include <climits>
+#include <deque>
+#include <functional>
+#include <iostream>
+#include <list>
+#include <queue>
+#include <stack>
+#include <tuple>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 // @lc code=start
+
 class Solution
 {
 public:
     bool canPartition(vector<int> &nums)
     {
-        int sum = 0;
-        for (int num : nums)
+        int target = 0;
+        for (int j : nums)
         {
-            sum += num;
+            target += j;
         }
-        if (sum % 2 == 1)
+        if (target % 2 == 1)
         {
             return false;
         }
-        int target = sum / 2;
-        vector<bool> vi(target + 1);
-        vi[0] = true;
-        for (int num : nums)
+        int need = target / 2;
+
+        vector<bool> vb(need + 1);
+        vb[0] = true;
+        for (int j : nums)
         {
-            for (int j = target; j >= num; j--)
+            for (int i = need; i >= j; i--)
             {
-                vi[j] = vi[j - num] || vi[j];
+                vb[i] = vb[i] || vb[i - j];
             }
         }
-        return vi[target];
+        return vb[need];
     }
 };
+// class Solution
+// {
+// public:
+//     bool canPartition(vector<int> &nums)
+//     {
+//         int sum = 0;
+//         for (int num : nums)
+//         {
+//             sum += num;
+//         }
+//         if (sum % 2 == 1)
+//         {
+//             return false;
+//         }
+//         int target = sum / 2;
+//         vector<bool> vi(target + 1);
+//         vi[0] = true;
+//         for (int num : nums)
+//         {
+//             for (int j = target; j >= num; j--)
+//             {
+//                 vi[j] = vi[j - num] || vi[j];
+//             }
+//         }
+//         return vi[target];
+//     }
+// };
 // @lc code=end
 
 /*
+// @lcpr case=start
+// [1,2,5]\n
+// @lcpr case=end
 // @lcpr case=start
 // [1,5,11,5]\n
 // @lcpr case=end
