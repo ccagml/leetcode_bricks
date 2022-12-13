@@ -58,30 +58,81 @@
  * 进阶：如果给定的数组中含有负数会发生什么？问题会产生何种变化？如果允许负数出现，需要向题目中添加哪些限制条件？
  *
  */
-
+using namespace std;
+#include <algorithm>
+#include <array>
+#include <bitset>
+#include <climits>
+#include <deque>
+#include <functional>
+#include <iostream>
+#include <list>
+#include <queue>
+#include <stack>
+#include <tuple>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 // @lc code=start
+// class Solution
+// {
+// public:
+//     int combinationSum4(vector<int> &nums, int target)
+//     {
+//         vector<long long> vi(target + 1);
+//         // vi[x] = 数量?
+//         vi[0] = 1;
+//         for (int i = 1; i <= target; i++)
+//         {
+//             // std::cout << "(凑成" << i;
+//             for (int price : nums)
+//             {
+//                 if (i >= price)
+//                 {
+//                     int add = (vi[i - price]);
+//                     // std::cout << ":price:" << price << ":add:" << add << ",";
+//                     vi[i] += add;
+//                 }
+//             }
+//             // std::cout << ":" << vi[i] << ")";
+//         }
+//         return vi[target];
+//     }
+// };
 class Solution
 {
 public:
     int combinationSum4(vector<int> &nums, int target)
     {
+
         vector<long long> vi(target + 1);
-        // vi[x] = 数量?
         vi[0] = 1;
-        for (int i = 1; i <= target; i++)
+        // for (int num : nums)
+        // {
+        //     std::cout << "(现在" << num << ",";
+        //     for (int j = num; j <= target; j++)
+        //     {
+        //         vi[j] += (vi[j - num]);
+        //         std::cout << "凑" << j << ":" << vi[j - num] << ",";
+        //     }
+        // }
+        for (int i = 0; i <= target; i++)
         {
-            // std::cout << "(凑成" << i;
-            for (int price : nums)
+            for (int j : nums)
             {
-                if (i >= price)
+                if (i >= j)
                 {
-                    int add = (vi[i - price]);
-                    // std::cout << ":price:" << price << ":add:" << add << ",";
-                    vi[i] += add;
+                    vi[i] += (vi[i - j]);
+                    if (vi[i] > INT_MAX)
+                    {
+                        vi[i] = INT_MAX;
+                    }
+                    // vi[i] = min(vi[i], );
                 }
             }
-            // std::cout << ":" << vi[i] << ")";
         }
+
         return vi[target];
     }
 };
