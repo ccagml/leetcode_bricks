@@ -98,38 +98,56 @@ class Solution
 public:
     long long totalCost(vector<int> &costs, int k, int candidates)
     {
-        priority_queue<int, vector<int>, greater<int>> pq1, pq2;
-        long long ans = 0;
-        int start = 0;
-        int end = costs.size() - 1;
-        int cnt = 0;
-        while (cnt < k)
+        auto cmp = [](const pair<int, int> &left, const pair<int, int> &right)
         {
-            while (pq1.size() < candidates && start <= end)
+            // true使得left排后面
+            if (left.first > right.first)
             {
-                pq1.push(costs[start++]);
+                return true;
             }
-            while (pq2.size() < candidates && end >= start)
+            else if (left.first == right.first)
             {
-                pq2.push(costs[end--]);
+                return left.second > right.second;
             }
-            int a = pq1.size() > 0 ? pq1.top() : INT_MAX;
-            int b = pq2.size() > 0 ? pq2.top() : INT_MAX;
-            if (a <= b)
+            return false;
+        };
+        priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(cmp)>
+            qi(cmp);
+        long long result = 0;
+        int left_index = 0;
+        int left_in = 0;
+        int right_index = costs.size() - 1;
+        int right_in = 0;
+        for (int i = 0; i < k; i++)
+        {
+            while (left_in < candidates && left_index <= right_index)
             {
-                ans += a;
-                // std::cout << "(a:" << a << ")";
-                pq1.pop();
+                qi.push({costs[left_index], left_index});
+                // std::cout << "(jin" << costs[left_index] << "," << left_index << ")";
+                left_in++;
+                left_index++;
             }
-            else
+            while (right_in < candidates && right_index >= left_index)
             {
-                ans += b;
-                // std::cout << "(b:" << b << ")";
-                pq2.pop();
+                qi.push({costs[right_index], right_index});
+                // std::cout << "(jin" << costs[right_index] << "," << right_index << ")";
+                right_in++;
+                right_index--;
             }
-            cnt++;
+            pair<int, int> cur = qi.top();
+            qi.pop();
+            result += cur.first;
+            // std::cout << "(" << cur.first << "," << cur.second << ")";
+            if (cur.second > right_index)
+            {
+                right_in--;
+            }
+            if (cur.second < left_index)
+            {
+                left_in--;
+            }
         }
-        return ans;
+        return result;
     }
 };
 // @lc code=end
