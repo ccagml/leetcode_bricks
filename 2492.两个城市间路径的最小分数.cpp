@@ -88,78 +88,8 @@ using namespace std;
 class Solution
 {
 public:
-    int loop_min = 999999999;
-    int path_min = 999999999;
-
-    unordered_map<int, unordered_map<int, int>> uiuii;
-    unordered_map<int, int> um_flag;
-    void dfs(int cur, int fa, int cur_min)
-    {
-        um_flag[cur] = fa;
-        for (pair<int, int> sun : uiuii[cur])
-        {
-            int next = sun.first;
-            if (um_flag.count(next) > 0)
-            {
-                loop_min = min(loop_min, sun.second);
-            }
-            else
-            {
-                dfs(next, cur, min(cur_min, sun.second));
-            }
-        }
-    }
-
     int minScore(int n, vector<vector<int>> &roads)
     {
-        for (int i = 0; i < roads.size(); i++)
-        {
-            int a = roads[i][0];
-            int b = roads[i][1];
-            int c = roads[i][2];
-            uiuii[a][b] = c;
-            uiuii[b][a] = c;
-        }
-        // std::cout << "1111111111111" << std::endl;
-        dfs(1, 1, 99999999);
-
-        queue<pair<int, int>> qi;
-        unordered_map<int, int> in_min;
-        for (pair<int, int> end : uiuii[n])
-        {
-            int nextb = end.first;
-            int len = end.second;
-            if (in_min.count(nextb) < 1 || in_min[nextb] > len)
-            {
-                in_min[nextb] = len;
-                qi.push(end);
-            }
-        }
-
-        // std::cout << "22222" << std::endl;
-        while (qi.size() > 0)
-        {
-            pair<int, int> cur_top = qi.front();
-            qi.pop();
-            int cur_b = cur_top.first;
-            int cur_b_min = cur_top.second;
-            for (pair<int, int> next_ob : uiuii[cur_b])
-            {
-                int next_b = next_ob.first;
-                int next_b_len = next_ob.second;
-                if (next_b == 1)
-                {
-                    path_min = min(path_min, min(next_b_len, cur_b_min));
-                }
-                else if (in_min.count(next_b) < 1 || in_min[next_b] > min(next_b_len, cur_b_min))
-                {
-                    in_min[next_b] = min(next_b_len, cur_b_min);
-                    // std::cout << cur_b << "->" << next_b << "=" << in_min[next_b] << "),";
-                    qi.push({next_b, min(next_b_len, cur_b_min)});
-                }
-            }
-        }
-        return min(path_min, loop_min);
     }
 };
 // @lc code=end
