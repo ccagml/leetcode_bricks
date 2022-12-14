@@ -74,9 +74,9 @@ public:
         vi[0] = 1;
         for (int c : coins)
         {
-            for (int j = c; j <= amount; j++)
+            for (int i = c; i <= amount; i++)
             {
-                vi[j] += vi[j - c];
+                vi[i] += vi[i - c];
             }
         }
         return vi[amount];
