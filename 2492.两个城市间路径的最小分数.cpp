@@ -84,12 +84,76 @@ using namespace std;
 #include <vector>
 
 // @lc code=start
-// 路径最小 , 环最小
+// 思路1:路径最小 , 环最小
+// 思路2:并查集思路
+
+class unionFind
+{
+public:
+    unordered_map<int, int> quan;
+    unordered_map<int, int> fa;
+    unionFind(int n)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            quan[i] = 1e9;
+            fa[i] = i;
+        }
+    }
+    int get_fa_quan(int i)
+    {
+        return quan[get(i)];
+    }
+    void set_fa_quan(int i, int v)
+    {
+        quan[get(i)] = min(quan[get(i)], v);
+    }
+    int get(int i)
+    {
+        if (fa[i] == i)
+        {
+            return i;
+        }
+        fa[i] = get(fa[i]);
+        return fa[i];
+    }
+    void set(int a, int b)
+    {
+        int fa_id = get(a);
+        int fb_id = get(b);
+        int fa_quan_a = get_fa_quan(a);
+        int fa_quan_b = get_fa_quan(b);
+        if (fa_quan_a > fa_quan_b)
+        {
+            fa[fa_id] = fb_id;
+        }
+        else if (fa_quan_a == fa_quan_b && fa_id > fb_id)
+        {
+            fa[fa_id] = fb_id;
+        }
+        else
+        {
+            fa[fb_id] = fa_id;
+        }
+    }
+};
+
 class Solution
 {
 public:
+    unordered_map<int, unordered_map<int, int>> a_to_b;
     int minScore(int n, vector<vector<int>> &roads)
     {
+        unionFind *uf = new unionFind(n + 1);
+        for (vector<int> &r : roads)
+        {
+            a_to_b[r[0]][r[1]] = r[2];
+            a_to_b[r[1]][r[0]] = r[2];
+            uf->set_fa_quan(r[0], r[2]);
+            uf->set_fa_quan(r[1], r[2]);
+            uf->set(r[0], r[1]);
+        }
+        return uf->get_fa_quan(1);
     }
 };
 // @lc code=end
