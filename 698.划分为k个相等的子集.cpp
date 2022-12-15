@@ -49,6 +49,7 @@ using namespace std;
 #include <functional>
 #include <iostream>
 #include <list>
+#include <numeric>
 #include <queue>
 #include <stack>
 #include <tuple>
@@ -61,94 +62,47 @@ using namespace std;
 class Solution
 {
 public:
-    unordered_map<int, bool> all;
-    int need = 0;
-    vector<int> nnn;
-
-    int set_bit_1(int x, int index)
+    bool canPartitionKSubsets(vector<int> &nums, int k)
     {
-        x |= (1 << index);
-        return x;
-    }
-
-    void dfs(int cur_index, int cur_flag, int cur_value)
-    {
-        if (cur_index >= nnn.size())
+        int all = accumulate(nums.begin(), nums.end(), 0);
+        if (all % k > 0)
         {
-            return;
-        }
-        if (cur_value > need)
-        {
-            return;
-        }
-        int has_cur_flag = set_bit_1(cur_flag, cur_index);
-        int has_cur_value = cur_value + nnn[cur_index];
-
-        if (cur_value < need)
-        {
-            dfs(cur_index + 1, cur_flag, cur_value);
-        }
-        if (has_cur_value == need)
-        {
-            all[has_cur_flag] = true;
-        }
-        else if (has_cur_value < need)
-        {
-            dfs(cur_index + 1, has_cur_flag, has_cur_value);
-        }
-    }
-
-    vector<int> vi;
-    int value_need = 0;
-    int kkk;
-    bool get_result(int all_index, int cur_flag, int cur_k)
-    {
-        if (cur_k == kkk && cur_flag == value_need)
-        {
-            return true;
-        }
-        if (cur_k == kkk)
-        {
-
             return false;
         }
-        for (int i = all_index; i < vi.size(); i++)
+        int per = all / k;
+        sort(nums.begin(), nums.end());
+        if (nums.back() > per)
         {
-            int index_flag = vi[i];
-            if ((index_flag & cur_flag) == 0)
+            return false;
+        }
+        int n = nums.size();
+        vector<bool> dp(1 << n, false);
+        vector<int> curSum(1 << n, 0);
+        dp[0] = true;
+        for (int i = 0; i < 1 << n; i++)
+        {
+            if (!dp[i])
             {
-
-                bool temp = get_result(i + 1, (index_flag | cur_flag), cur_k + 1);
-                // std::cout << all_index << ":" << cur_flag << ":" << cur_k << ":i:" << i << "temp:" << temp << std::endl;
-                if (temp)
+                continue;
+            }
+            for (int j = 0; j < n; j++)
+            {
+                if (curSum[i] + nums[j] > per)
                 {
-                    return true;
+                    break;
+                }
+                if (((i >> j) & 1) == 0)
+                {
+                    int next = i | (1 << j);
+                    if (!dp[next])
+                    {
+                        curSum[next] = (curSum[i] + nums[j]) % per;
+                        dp[next] = true;
+                    }
                 }
             }
         }
-        return false;
-    }
-    bool canPartitionKSubsets(vector<int> &nums, int k)
-    {
-        nnn = nums;
-        kkk = k;
-        int sum = 0;
-        for (int i = 0; i < nums.size(); i++)
-        {
-            sum += nums[i];
-            value_need = set_bit_1(value_need, i);
-        }
-        if (sum % k != 0)
-        {
-            return false;
-        }
-        need = sum / k;
-        dfs(0, 0, 0);
-        for (pair<int, bool> pib : all)
-        {
-            vi.push_back(pib.first);
-        }
-        return get_result(0, 0, 0);
+        return dp[(1 << n) - 1];
     }
 };
 // @lc code=end
