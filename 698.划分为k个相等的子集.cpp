@@ -62,6 +62,21 @@ using namespace std;
 class Solution
 {
 public:
+    int set_bit_1(int x, int index)
+    {
+        x |= (1 << index);
+        return x;
+    }
+    int set_bit_0(int x, int index)
+    {
+        x &= ~(1 << index);
+        return x;
+    }
+
+    bool is_bit_1(int x, int index)
+    {
+        return ((1 << index) & (x));
+    }
     bool canPartitionKSubsets(vector<int> &nums, int k)
     {
         int all = accumulate(nums.begin(), nums.end(), 0);
@@ -76,33 +91,37 @@ public:
             return false;
         }
         int n = nums.size();
-        vector<bool> dp(1 << n, false);
-        vector<int> curSum(1 << n, 0);
+        int all_flag = 0;
+        for (int i = 0; i < n; i++)
+        {
+            all_flag = set_bit_1(all_flag, i);
+        }
+
+        vector<bool> dp(all_flag + 1);
         dp[0] = true;
-        for (int i = 0; i < 1 << n; i++)
+        vector<int> sum(all_flag + 1);
+        for (int i = 0; i < all_flag; i++)
         {
             if (!dp[i])
             {
                 continue;
             }
-            for (int j = 0; j < n; j++)
+            // 如果可以累加
+            for (int j_new = 0; j_new < n; j_new++)
             {
-                if (curSum[i] + nums[j] > per)
+                if (sum[i] + nums[j_new] > per)
                 {
                     break;
                 }
-                if (((i >> j) & 1) == 0)
+                if (!is_bit_1(i, j_new))
                 {
-                    int next = i | (1 << j);
-                    if (!dp[next])
-                    {
-                        curSum[next] = (curSum[i] + nums[j]) % per;
-                        dp[next] = true;
-                    }
+                    int next = set_bit_1(i, j_new);
+                    dp[next] = true;
+                    sum[next] = (sum[i] + nums[j_new]) % per;
                 }
             }
         }
-        return dp[(1 << n) - 1];
+        return dp[all_flag];
     }
 };
 // @lc code=end
