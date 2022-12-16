@@ -104,10 +104,6 @@ public:
                     }
                 }
             }
-            // for (int jj = min(big, target); jj >= small; jj--)
-            // {
-            //     std::cout << "(投" << nn + 1 << "凑出:" << jj << "=" << vvll[nn][jj] << ")";
-            // }
         }
         return vvll[n - 1][target];
     }

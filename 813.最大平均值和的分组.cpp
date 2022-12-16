@@ -207,62 +207,36 @@ using namespace std;
 //         return dfs(pre_sum, 0, 0, k);
 //     }
 // };
+
+// dp前i个分成j段的最大值
 class Solution
 {
 public:
-    unordered_map<int, unordered_map<int, double>> cur_k_value;
-
-    double get_sum(vector<int> &pre, int left, int right)
-    {
-        int left_value = (left > 0) ? pre[left - 1] : 0;
-        int right_value = (right >= pre.size()) ? pre[pre.size() - 1] : pre[right];
-        return right_value - left_value;
-    }
-    double dfs(vector<int> &pre, int cur, int k)
-    {
-
-        // 还有的数量
-        double has = pre.size() - cur;
-        if (k > has)
-        {
-            return 0;
-        }
-        if (k == 1)
-        {
-            double bbb = get_sum(pre, cur, pre.size()) / has;
-            // std::cout << "bbb(" << cur << "->" << pre.size() << "=" << bbb << ")";
-            return bbb;
-        }
-        // 从cur开始分k份最大值
-        if (cur_k_value[cur].count(k) > 0)
-        {
-            return cur_k_value[cur][k];
-        }
-
-        double result = 0;
-        for (int start = cur; start < pre.size(); start++)
-        {
-            double a = get_sum(pre, cur, start) / (start - cur + 1);
-            // std::cout << "aaa(" << cur << "->" << start << "=" << a << ")";
-            double b = dfs(pre, start + 1, k - 1);
-            result = max(result, a + b);
-        }
-        // std::cout << "从" << cur << "分" << k << "=" << result << std::endl;
-        cur_k_value[cur][k] = result;
-        return result;
-    }
-
     double largestSumOfAverages(vector<int> &nums, int k)
     {
         int n = nums.size();
-        vector<int> pre;
-        int sum = 0;
-        for (int num : nums)
+        vector<double> prefix(n + 1);
+        for (int i = 0; i < n; i++)
         {
-            sum += num;
-            pre.push_back(sum);
+            prefix[i + 1] = prefix[i] + nums[i];
         }
-        return dfs(pre, 0, k);
+        vector<vector<double>> dp(n + 1, vector<double>(k + 1));
+        for (int i = 1; i <= n; i++)
+        {
+            dp[i][1] = prefix[i] / i;
+        }
+        for (int j = 2; j <= k; j++)
+        {
+            for (int i = j; i <= n; i++)
+            {
+                for (int x = j - 1; x < i; x++)
+                {
+                    dp[i][j] = max(dp[i][j], dp[x][j - 1] + (prefix[i] - prefix[x]) / (i - x));
+                }
+            }
+        }
+
+        return dp[n][k];
     }
 };
 // @lc code=end
