@@ -1226,6 +1226,32 @@ double get_sum(vector<int> &pre_sum, int i, int j)
     int b = j < pre_sum.size() ? pre_sum[j] : pre_sum[pre_sum.size() - 1];
     return b - a;
 }
+
+// 字符串滚动哈希
+void loop_hash(string s)
+{
+    int p_131 = 131;
+    vector<unsigned long long> f(1001);
+    vector<unsigned long long> p(1001);
+    p[0] = 1;
+    f[0] = (s[0] - 'a' + 1);
+    for (int i = 1; i < s.size(); i++)
+    {
+        f[i] = f[i - 1] * p_131 + (s[i] - 'a' + 1);
+        p[i] = p[i - 1] * 131;
+    }
+
+    // 计算某部分的哈希
+    // unsigned long long get_h(vector<unsigned long long> f, vector<unsigned long long> p, int left, int right)
+    // {
+    //     if (left == 0)
+    //     {
+    //         return f[right];
+    //     }
+    //     return f[right] - f[left - 1] * p[right - left + 1];
+    // }
+}
+
 int main(int argc, char const *argv[])
 {
     // test_pair();
