@@ -83,21 +83,37 @@ public:
     vector<vector<int>> rangeAddQueries(int n, vector<vector<int>> &queries)
     {
         vector<vector<int>> result(n, vector<int>(n));
+        vector<vector<int>> result111(n, vector<int>(n));
         for (int i = 0; i < queries.size(); i++)
         {
             int row1i = queries[i][0];
             int col1i = queries[i][1];
             int row2i = queries[i][2];
             int col2i = queries[i][3];
-            for (int xx = row1i; xx <= row2i; xx++)
+            for (int yyy = row1i; yyy <= row2i; yyy++)
             {
-                for (int yy = col1i; yy <= col2i; yy++)
+                result[yyy][col1i]++;
+                if (col2i + 1 < n)
                 {
-                    result[xx][yy]++;
+                    result[yyy][col2i + 1]--;
                 }
+                // for (int xxx = col1i; xxx <= col2i; xxx++)
+                // {
+                //     result[yyy][xxx]++;
+                // }
             }
         }
-        return result;
+        for (int yyy = 0; yyy < n; yyy++)
+        {
+            int temp = 0;
+            for (int xxx = 0; xxx < n; xxx++)
+            {
+                temp += result[yyy][xxx];
+                result111[yyy][xxx] = temp;
+            }
+        }
+
+        return result111;
     }
 };
 // @lc code=end
