@@ -77,65 +77,156 @@ using namespace std;
 class Solution
 {
 public:
+    string get(vector<int> &vi)
+    {
+        bool flag = false;
+        string result = "";
+        for (int i = 9; i >= 0; i--)
+        {
+            for (int j = 0; j < vi[i]; j++)
+            {
+                if (i > 0)
+                {
+                    flag = true;
+                    result.push_back('0' + i);
+                }
+                else
+                {
+                    if (flag)
+                    {
+                        result.push_back('0');
+                    }
+                    else
+                    {
+                        return "0";
+                    }
+                }
+            }
+        }
+        return result;
+    }
     string largestMultipleOfThree(vector<int> &digits)
     {
-        vector<int> cnt(10), modulo(3);
+        vector<int> vi(10);
         int sum = 0;
-        for (int digit : digits)
+        for (int j : digits)
         {
-            ++cnt[digit];
-            ++modulo[digit % 3];
-            sum += digit;
+            vi[j]++;
+            sum += j;
         }
 
-        int remove_mod = 0, rest = 0;
         if (sum % 3 == 1)
         {
-            if (modulo[1] >= 1)
+            // 减少一个147
+            // 或者两个258
+            // std::cout << sum << "余数1";
+            int cut_1 = vi[1] + vi[4] + vi[7];
+            int cut_2 = vi[2] + vi[5] + vi[8];
+            if (cut_1 >= 1)
             {
-                remove_mod = 1;
-                rest = 1;
+
+                int cost_need = 1;
+                while (cost_need >= 1 && vi[1] >= 1)
+                {
+                    cost_need--;
+                    vi[1]--;
+                    // std::cout << "cost:" << 1;
+                }
+                while (cost_need >= 1 && vi[4] >= 1)
+                {
+                    cost_need--;
+                    vi[4]--;
+                    // std::cout << "cost:" << 4;
+                }
+                while (cost_need >= 1 && vi[7] >= 1)
+                {
+                    cost_need--;
+                    vi[7]--;
+                    // std::cout << "cost:" << 7;
+                }
+
+                return get(vi);
             }
-            else
+            else if (cut_2 >= 2)
             {
-                remove_mod = 2;
-                rest = 2;
+                int cost_need = 2;
+                while (cost_need >= 1 && vi[2] >= 1)
+                {
+                    cost_need--;
+                    vi[2]--;
+                    // std::cout << "cost:" << 2;
+                }
+                while (cost_need >= 1 && vi[5] >= 1)
+                {
+                    cost_need--;
+                    vi[5]--;
+                    // std::cout << "cost:" << 5;
+                }
+                while (cost_need >= 1 && vi[8] >= 1)
+                {
+                    cost_need--;
+                    vi[8]--;
+                    // std::cout << "cost:" << 8;
+                }
+                return get(vi);
             }
         }
         else if (sum % 3 == 2)
         {
-            if (modulo[2] >= 1)
+            // 减少一个258
+            // 或者两个147
+            // std::cout << "余数2";
+            int cut_1 = vi[1] + vi[4] + vi[7];
+            int cut_2 = vi[2] + vi[5] + vi[8];
+            if (cut_2 >= 1)
             {
-                remove_mod = 2;
-                rest = 1;
-            }
-            else
-            {
-                remove_mod = 1;
-                rest = 2;
-            }
-        }
-        string ans;
-        for (int i = 0; i <= 9; ++i)
-        {
-            for (int j = 0; j < cnt[i]; ++j)
-            {
-                if (rest && remove_mod == i % 3)
+                int cost_need = 1;
+                while (cost_need >= 1 && vi[2] >= 1)
                 {
-                    --rest;
+                    cost_need--;
+                    vi[2]--;
+                    // std::cout << "cost:" << 2;
                 }
-                else
+                while (cost_need >= 1 && vi[5] >= 1)
                 {
-                    ans += static_cast<char>(i + 48);
+                    cost_need--;
+                    vi[5]--;
+                    // std::cout << "cost:" << 5;
                 }
+                while (cost_need >= 1 && vi[8] >= 1)
+                {
+                    cost_need--;
+                    vi[8]--;
+                    // std::cout << "cost:" << 8;
+                }
+                return get(vi);
+            }
+            else if (cut_1 >= 2)
+            {
+                int cost_need = 2;
+                while (cost_need >= 1 && vi[1] >= 1)
+                {
+                    cost_need--;
+                    vi[1]--;
+                    // std::cout << "cost:" << 1;
+                }
+                while (cost_need >= 1 && vi[4] >= 1)
+                {
+                    cost_need--;
+                    vi[4]--;
+                    // std::cout << "cost:" << 4;
+                }
+                while (cost_need >= 1 && vi[7] >= 1)
+                {
+                    cost_need--;
+                    vi[7]--;
+                    // std::cout << "cost:" << 7;
+                }
+                return get(vi);
             }
         }
-        if (ans.size() && ans.back() == '0')
-        {
-            ans = "0";
-        }
-        reverse(ans.begin(), ans.end());
-        return ans;
+        return get(vi);
+        // 处理前置0
     }
 };
 // @lc code=end

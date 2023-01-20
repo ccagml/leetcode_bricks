@@ -65,39 +65,55 @@
  *
  *
  */
-
+using namespace std;
+#include <algorithm>
+#include <array>
+#include <climits>
+#include <deque>
+#include <functional>
+#include <iostream>
+#include <list>
+#include <numeric>
+#include <queue>
+#include <stack>
+#include <tuple>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 // @lc code=start
 class Solution
 {
 public:
     int maxDotProduct(vector<int> &nums1, vector<int> &nums2)
     {
-        int m = nums1.size();
-        int n = nums2.size();
-        vector<vector<int>> f(m, vector<int>(n));
+        int s1 = nums1.size();
+        int s2 = nums2.size();
+        vector<vector<int>> vvi(s1, vector<int>(s2));
 
-        for (int i = 0; i < m; ++i)
+        for (int i = 0; i < s1; i++)
         {
-            for (int j = 0; j < n; ++j)
+            for (int j = 0; j < s2; j++)
             {
-                int xij = nums1[i] * nums2[j];
-                f[i][j] = xij;
+                int ixj = nums1[i] * nums2[j];
+                vvi[i][j] = ixj;
                 if (i > 0)
                 {
-                    f[i][j] = max(f[i][j], f[i - 1][j]);
+                    vvi[i][j] = max(vvi[i][j], vvi[i - 1][j]);
                 }
+
                 if (j > 0)
                 {
-                    f[i][j] = max(f[i][j], f[i][j - 1]);
+                    vvi[i][j] = max(vvi[i][j], vvi[i][j - 1]);
                 }
-                if (i > 0 && j > 0)
+
+                if (j > 0 && i > 0)
                 {
-                    f[i][j] = max(f[i][j], f[i - 1][j - 1] + xij);
+                    vvi[i][j] = max(vvi[i][j], vvi[i - 1][j - 1] + ixj);
                 }
             }
         }
-
-        return f[m - 1][n - 1];
+        return vvi[s1 - 1][s2 - 1];
     }
 };
 // @lc code=end
