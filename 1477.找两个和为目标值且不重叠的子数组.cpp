@@ -90,93 +90,6 @@ using namespace std;
 // 设置范围值
 // 查询范围最小值
 
-class nodeHead
-{
-
-public:
-    nodeHead *leftNode;
-    nodeHead *rightNode;
-    int cur_left;
-    int cur_right;
-    int cur_min = 99999999;
-    nodeHead(int left, int right)
-    {
-        this->cur_left = left;
-        this->cur_right = right;
-        this->leftNode = nullptr;
-        this->rightNode = nullptr;
-    }
-    int update(int left, int right, int value)
-    {
-        if (this->cur_left >= left && right <= this->cur_right)
-        {
-            // 到这里结束
-            this->cur_min = min(this->cur_min, value);
-        }
-        else if (right < this->cur_left || left > this->cur_right)
-        {
-            // 没有
-            return 99999999;
-        }
-        else
-        {
-            int mid = (this->cur_left + this->cur_right) / 2;
-            if (this->leftNode == nullptr)
-            {
-                this->leftNode = new nodeHead(this->cur_left, mid);
-            }
-            this->leftNode->update(left, mid, value);
-
-            if (this->rightNode == nullptr)
-            {
-                this->rightNode = new nodeHead(mid + 1, this->cur_right);
-            }
-            this->rightNode->update(mid + 1, right, value);
-        }
-        return this->cur_min;
-    }
-    int range_min(int left, int right)
-    {
-        if (this->cur_left > right)
-        {
-            return 99999999;
-        }
-        else if (this->cur_right < left)
-        {
-            return 99999999;
-        }
-        else if (this->cur_left >= left && this->cur_right <= right)
-        {
-            return this->cur_min;
-        }
-        else
-        {
-            int mid = (this->cur_left + this->cur_right) / 2;
-            int left_min = 99999999;
-            if (this->leftNode != nullptr)
-            {
-                if (left <= mid)
-                {
-                    left_min = this->leftNode->range_min(left, mid);
-                }
-            }
-
-            int right_min = 99999999;
-            if (this->rightNode != nullptr)
-            {
-                if (right >= mid + 1)
-                {
-                    right_min = this->rightNode->range_min(mid + 1, right);
-                }
-            }
-            int ccc = min(left_min, right_min);
-
-            std::cout << "cha(" << left << "," << right << ":" << ccc << ")";
-            return ccc;
-        }
-    }
-};
-
 class Solution
 {
 public:
@@ -188,10 +101,17 @@ public:
         int sum = 0;
         vector<pair<int, int>> vpii;
         int n = arr.size();
-        nodeHead *nnn = new nodeHead(0, 100001);
+        // nodeHead *nnn = new nodeHead(0, 100001);
+        int max_result = 99999999;
+        int result = max_result;
+        vector<int> vi(arr.size(), max_result);
+        int cur_min = max_result;
         while (right < arr.size() && left < arr.size())
         {
             sum += arr[right];
+            vi[right] = cur_min;
+            // std::cout << "|" << right << "=" << cur_min << "|)";
+
             right++;
             while (sum > target)
             {
@@ -200,44 +120,30 @@ public:
             }
             if (sum == target)
             {
+                int temp_len = right - left;
                 vpii.push_back({left, right - 1});
-                nnn->update(left, right - 1, (right - left));
-                std::cout << "update(" << left << "," << right - 1 << ":" << (right - left) << "|";
+                // std::cout << "(" << left << "," << right - 1 << "=" << temp_len << ")";
+                cur_min = min(temp_len, cur_min);
+                vi[right - 1] = cur_min;
+                if (left - 1 >= 0)
+                {
+                    result = min(result, vi[left - 1] + temp_len);
+                }
             }
         }
-        int result = 9999999;
-        // for (int i = 0; i < vpii.size(); i++)
-        // {
-        //     for (int j = i + 1; j < vpii.size(); j++)
-        //     {
-        //         if (vpii[j].first > vpii[i].second)
-        //         {
-        //             int a_len = vpii[i].second - vpii[i].first + 1;
-        //             int b_len = vpii[j].second - vpii[j].first + 1;
-        //             result = min(result, a_len + b_len);
-        //         }
-        //     }
-        // }
 
-        // 一个快速查询 k-尾最短的长度 方法 // 线段树?
-        sort(vpii.begin(), vpii.end(), [](pair<int, int> &a, pair<int, int> &b)
-             { return a.second < b.second; });
-
-        for (int i = 0; i < vpii.size(); i++)
-        {
-            int a_len = vpii[i].second - vpii[i].first + 1;
-            int a_min = nnn->range_min(vpii[i].second + 1, 100001);
-            std::cout << "(" << vpii[i].first << "," << vpii[i].second << ")" << a_min << "|";
-            result = min(result, a_len + a_min);
-        }
-        return result == 9999999
-                   ? -1
-                   : result;
+        return result == max_result ? -1 : result;
     }
 };
 // @lc code=end
 
 /*
+
+// @lcpr case=start
+// [1,1,1,2,2,2,4,4]\n6\n
+// @lcpr case=end
+
+
 // @lcpr case=start
 // [3,2,2,4,3]\n3\n
 // @lcpr case=end
