@@ -1,3 +1,11 @@
+// @before-stub-for-debug-begin
+#include "commoncppproblem15.h"
+#include <string>
+#include <vector>
+
+using namespace std;
+// @before-stub-for-debug-end
+
 /*
  * @lc app=leetcode.cn id=15 lang=cpp
  * @lcpr version=21301
@@ -91,31 +99,28 @@ public:
             {
                 continue;
             }
-            int y = x + 1;
+            int temp = nums[x];
             int z = nums.size() - 1;
-            while (y < z)
+            for (int y = x + 1; y < nums.size(); y++)
             {
-                if (nums[x] + nums[y] + nums[z] > 0)
+                if (y > x + 1 && nums[y] == nums[y - 1])
+                {
+                    continue;
+                }
+                int temp_y = nums[y];
+                int temp_z = nums[z];
+                while (z > y && temp + temp_y + temp_z > 0)
                 {
                     z--;
+                    temp_z = nums[z];
                 }
-                else if (nums[x] + nums[y] + nums[z] < 0)
+                if (z == y)
                 {
-                    y++;
+                    break;
                 }
-                else
+                if (temp + temp_y + temp_z == 0)
                 {
-                    result.push_back({nums[x], nums[y], nums[z]});
-                    z--;
-                    y++;
-                    while (y < z && nums[z] == nums[z + 1])
-                    {
-                        z--;
-                    }
-                    while (y < z && nums[y] == nums[y - 1])
-                    {
-                        y++;
-                    }
+                    result.push_back({temp, temp_y, temp_z});
                 }
             }
         }
@@ -126,7 +131,7 @@ public:
 
 /*
 // @lcpr case=start
-// [-1,0,1]\n
+// [-1,0,1,2,-1,-4]\n
 // @lcpr case=end
 /*
 // @lcpr case=start
