@@ -124,37 +124,86 @@ using namespace std;
 //         // return reuslt;
 //     }
 // };
+// class Solution
+// {
+// public:
+//     void dfs(vector<int> &candidates, int target, vector<vector<int>> &ans, vector<int> &combine, int idx)
+//     {
+//         if (idx == candidates.size())
+//         {
+//             return;
+//         }
+//         if (target == 0)
+//         {
+//             ans.emplace_back(combine);
+//             return;
+//         }
+//         // 直接跳过
+//         dfs(candidates, target, ans, combine, idx + 1);
+//         // 选择当前数
+//         if (target - candidates[idx] >= 0)
+//         {
+//             combine.emplace_back(candidates[idx]);
+//             dfs(candidates, target - candidates[idx], ans, combine, idx);
+//             combine.pop_back();
+//         }
+//     }
+
+//     vector<vector<int>> combinationSum(vector<int> &candidates, int target)
+//     {
+//         vector<vector<int>> ans;
+//         vector<int> combine;
+//         dfs(candidates, target, ans, combine, 0);
+//         return ans;
+//     }
+// };
+
 class Solution
 {
 public:
-    void dfs(vector<int> &candidates, int target, vector<vector<int>> &ans, vector<int> &combine, int idx)
-    {
-        if (idx == candidates.size())
-        {
-            return;
-        }
-        if (target == 0)
-        {
-            ans.emplace_back(combine);
-            return;
-        }
-        // 直接跳过
-        dfs(candidates, target, ans, combine, idx + 1);
-        // 选择当前数
-        if (target - candidates[idx] >= 0)
-        {
-            combine.emplace_back(candidates[idx]);
-            dfs(candidates, target - candidates[idx], ans, combine, idx);
-            combine.pop_back();
-        }
-    }
-
     vector<vector<int>> combinationSum(vector<int> &candidates, int target)
     {
-        vector<vector<int>> ans;
-        vector<int> combine;
-        dfs(candidates, target, ans, combine, 0);
-        return ans;
+        unordered_map<int, vector<vector<int>>> uivvi;
+        uivvi[0] = {{}};
+        sort(candidates.begin(), candidates.end());
+
+        // 讲究顺序 钱在外面
+        for (int j : candidates)
+        {
+            for (int need_tar = 1; need_tar <= target; need_tar++)
+            {
+                if (j <= need_tar)
+                {
+                    int other = need_tar - j;
+                    if (uivvi.count(other) > 0)
+                    {
+                        for (auto pp : uivvi[other])
+                        {
+                            pp.push_back(j);
+                            string ss(pp.begin(), pp.end());
+                            uivvi[need_tar].push_back(pp);
+                        }
+                    }
+                }
+            }
+        }
+
+        return uivvi[target];
+        // // 随便去重一下
+        // unordered_set<string> us;
+        // vector<vector<int>> reuslt;
+        // for (auto pp : uivvi[target])
+        // {
+        //     sort(pp.begin(), pp.end());
+        //     std::string str(pp.begin(), pp.end());
+        //     if (us.count(str) < 1)
+        //     {
+        //         us.insert(str);
+        //         reuslt.push_back(pp);
+        //     }
+        // }
+
+        // return reuslt;
     }
 };
 // @lc code=end
