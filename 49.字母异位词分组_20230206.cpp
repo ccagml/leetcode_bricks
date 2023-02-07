@@ -75,14 +75,22 @@ public:
 
     vector<vector<string>> groupAnagrams(vector<string> &strs)
     {
-        unordered_map<int, vector<string>> uivs;
+        unordered_map<string, vector<string>> uivs;
         for (int i = 0; i < strs.size(); i++)
         {
             string cur = strs[i];
-            int temp = 0;
+            // int temp = 0;
+            vector<int> temp_v(26);
             for (char c : cur)
             {
-                temp = set_bit_1(temp, c - 'a');
+                // temp = set_bit_1(temp, c - 'a');
+                temp_v[c - 'a']++;
+            }
+            string temp = "";
+            for (int i = 0; i < 26; i++)
+            {
+                temp.append(std::to_string(temp_v[i]));
+                temp.push_back('|');
             }
             uivs[temp].push_back(cur);
         }
