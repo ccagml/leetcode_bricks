@@ -89,7 +89,7 @@ public:
             string temp = "";
             for (int i = 0; i < 26; i++)
             {
-                temp.append(std::to_string(temp_v[i]));
+                temp.append(temp_v[i]);
                 temp.push_back('|');
             }
             uivs[temp].push_back(cur);
