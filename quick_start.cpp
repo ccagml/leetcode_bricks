@@ -42,7 +42,7 @@ void test_string()
     std::string str2 = str1 + "world";
     // helloworld
     std::cout << str2 << '\n';
-    //查找find
+    // 查找find
     std::string::size_type pos1 = str2.find("o"); // pos1 = 4
     // 4
     std::cout << pos1 << '\n';
@@ -50,19 +50,19 @@ void test_string()
     std::cout << pos2 << '\n';
     std::string::size_type pos3 = str2.find("rl"); // pos3 = 7
     std::cout << pos3 << '\n';
-    //裁剪substr
+    // 裁剪substr
     std::string str3 = "helloworld";
     std::string str4 = str3.substr(0, 5); // hello
     std::string str5 = str3.substr(6);    // world
     std::string str6 = str3.substr(1, 3); // ell
-    //插入某个位置insert
+    // 插入某个位置insert
     std::string s = "hello";
     // insert(size_typeindex,size_typecount,charch)
     s.insert(0, 1, 'a'); // ahello
     // insert(size_typeindex,const char*s)
     s.insert(2, "bbb"); // ahbbbello
-    //尾部插入
-    // push_back尾部插入一个字符char
+    // 尾部插入
+    //  push_back尾部插入一个字符char
     s.push_back('c'); // ahbbbelloc
     // append尾部插入字符串
     s.append("ddd"); // ahbbbellocddd
@@ -71,27 +71,27 @@ void test_string()
     // append插入一部分
     s.append("hello", 3, 3); // ahbbbellocdddffflo
     s.append("hello", 1, 2); // ahbbbellocdddfffloel
-    //替换
+    // 替换
     std::string str{"Thequickbrownfoxjumpsoverthelazydog."};
     // 从第10位开始的后5位替换成 red
     str.replace(10, 5, "red"); // Thequickbrredxjumpsoverthelazydog.
     // 前3位替换成 A
     str.replace(str.begin(), str.begin() + 3, 1, 'A'); // Aquickbrredxjumpsoverthelazydog.
-    //重置长度
+    // 重置长度
     std::string new_resize_str = "helloworld";
     new_resize_str.resize(5); // hello
-    //交换
+    // 交换
     std::string a = "AAA";
     std::string b = "BBB";
     a.swap(b); // a=BBB  b=AAA
-    //字符串转数字
+    // 字符串转数字
     std::string str_int = "123456";
     std::string str_long = "123456789987";
     std::string str_longlong = "123456789987654321";
     int int_str = std::stoi(str_int);                   // 123456
     long long_str = std::stol(str_long);                // 123456789987
     long long long_long_str = std::stoll(str_longlong); // 123456789987654321
-    //数字转字符串
+    // 数字转字符串
     double f = 23.43;
     double f1 = 123456;
     std::string f_str = std::to_string(f);   // 23.430000
@@ -105,7 +105,7 @@ void test_string()
     std::cout << "A"
               << " -> std::tolower -> " << char(std::tolower('A')) << std::endl;
 
-    //翻转字符串
+    // 翻转字符串
     string reverse_str = "abcdefghijklmn";
     reverse(reverse_str.begin(), reverse_str.end());
     std::cout << reverse_str << std::endl;
@@ -117,14 +117,14 @@ void test_array()
     // 3,2,1
     std::cout << a1[0] << "," << a1[1] << "," << a1[2] << '\n';
     std::sort(a1.begin(), a1.end()); // 1,2,3
-    //交换
+    // 交换
     std::swap(a1[0], a1[1]); // 2,1,3
 }
 void test_unordered_map()
 {
     // Createanunordered_mapofthreestrings(thatmaptostrings)
     std::unordered_map<std::string, std::string> um = {{"RED", "#FF0000"}, {"GREEN", "#00FF00"}, {"BLUE", "#0000FF"}};
-    //遍历
+    // 遍历
 
     // 遍历方式1 = {
     // "BLUE" = "#0000FF"
@@ -145,7 +145,7 @@ void test_unordered_map()
     // "RED" = "#FF0000"
     // }
     std::cout << "遍历方式2 = {\n";
-    //遍历
+    // 遍历
     for (const auto &n : um)
     {
         std::cout << "\"" << n.first << "\" = \"" << n.second << "\"\n";
@@ -158,7 +158,7 @@ void test_unordered_map()
     // "RED" = "#FF0000"
     // }
     std::cout << "遍历方式3 = {\n";
-    //遍历
+    // 遍历
     for (auto n : um)
     {
         std::cout << "\"" << n.first << "\" = \"" << n.second << "\"\n";
@@ -171,7 +171,7 @@ void test_unordered_map()
     // "RED" = "#FF0000"
     // }
     std::cout << "遍历方式4 = {\n";
-    //指针遍历
+    // 指针遍历
     for (auto iter = um.begin(); iter != um.end(); ++iter)
     {
         std::cout << "\"" << iter->first << "\" = \"" << iter->second << "\"\n";
@@ -191,7 +191,7 @@ void test_unordered_map()
         }
     }
 
-    //设置
+    // 设置
     um["BLACK"] = "#000000";
     // 设置值 "BLACK" = "#000000"
     std::cout << "设置值 \"BLACK\" = \"" << um["BLACK"] << "\"\n";
@@ -199,7 +199,7 @@ void test_unordered_map()
     std::cout << "判断空 um.empty() 是否为空" << um.empty() << '\n';
     // 判断 size:4
     std::cout << "判断 size:" << um.size() << '\n';
-    //清空
+    // 清空
     um.clear();
     // 清空 um.clear() 后是否为空1
     std::cout << "清空 um.clear() 后是否为空" << um.empty() << '\n';
@@ -241,18 +241,18 @@ void test_unordered_map()
 void test_unordered_set()
 {
     std::unordered_set<int> nums = {2, 3, 4};
-    //插入
+    // 插入
     auto p = nums.insert(1);
     // insertelement
-    //查找
+    // 查找
     auto search = nums.find(2);
     if (search != nums.end())
     {
         // nums.find(2) 有找到2
         std::cout << "nums.find(2) 有找到" << (*search) << '\n';
     }
-    //查找
-    // nums.count(2):1
+    // 查找
+    //  nums.count(2):1
     std::cout << "nums.count(2):" << nums.count(2) << '\n';
     // nums.erase(nums.begin())0
     // nums.erase(nums.begin())1
@@ -260,12 +260,12 @@ void test_unordered_set()
     // nums.erase(nums.begin())0
     // nums.erase(nums.begin())1
     // nums.erase(nums.begin())0
-    //删除具体值
+    // 删除具体值
     nums.erase(2);
     std::cout << "nums.erase(nums.begin())" << nums.count(2) << '\n';
     std::cout << "nums.erase(nums.begin())" << nums.count(3) << '\n';
     std::cout << "nums.erase(nums.begin())" << nums.count(4) << '\n';
-    //根据位置删除
+    // 根据位置删除
     nums.erase(++nums.begin());
     std::cout << "nums.erase(nums.begin())" << nums.count(2) << '\n';
     std::cout << "nums.erase(nums.begin())" << nums.count(3) << '\n';
@@ -285,9 +285,9 @@ void test_vector()
     v.push_back(25);
     v[1] = 10;
     //{7,10,16,8,25,};
-    //删除最后一个{7,10,16,8,};
+    // 删除最后一个{7,10,16,8,};
     v.pop_back();
-    //删除某个位置
+    // 删除某个位置
     //{10,16,8,};
     v.erase(v.begin());
     //{10,16,8,0,0,0,0,0,0,0,};
@@ -300,7 +300,7 @@ void test_vector()
         std::cout << n << ",";
     }
     std::cout << "};\n";
-    //翻转数组
+    // 翻转数组
     reverse(v.begin(), v.end());
     std::cout << "reverse{";
     for (int n : v)
@@ -387,7 +387,7 @@ void test_queue()
     std::cout << c3.front() << ','; // 3
     std::cout << c3.back() << ',';  // 5
     std::cout << c3.empty() << ','; // 0
-    //移除头
+    // 移除头
     c3.pop();
     std::cout << c3.front() << ','; // 1
 }
@@ -413,7 +413,7 @@ struct CompareTime
 void test_priority_queue()
 {
     //====================================================================================================================================
-    //整数升序
+    // 整数升序
     // sort的greater是降序,priority_queue的greater是升序
     std::priority_queue<int, std::vector<int>, std::greater<int>> q;
     const auto data = {1, 8, 5, 6, 3, 4, 0, 9, 7, 2};
@@ -422,10 +422,10 @@ void test_priority_queue()
         q.push(n);
     }
     // 0123456789
-    //一样的函数可以用{}初始化sort的greater是降序,priority_queue的greater是升序
+    // 一样的函数可以用{}初始化sort的greater是降序,priority_queue的greater是升序
     std::priority_queue<int, std::vector<int>, std::greater<int>> q1{q};
     //====================================================================================================================================
-    //整数降序
+    // 整数降序
     // 9,8,7,6,5,4,3,2,1,0,sort的less是升序,priority_queue的less是降序
     std::priority_queue<int, std::vector<int>, std::less<int>> q2;
     for (int n : data)
@@ -440,8 +440,8 @@ void test_priority_queue()
     }
     std::cout << '\n';
     //====================================================================================================================================
-    //绑定pair
-    //第一个小的排前面,第一个相同比较第二个
+    // 绑定pair
+    // 第一个小的排前面,第一个相同比较第二个
     std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> coll;
     std::pair<int, int> a(3, 4);
     std::pair<int, int> b(3, 5);
@@ -461,7 +461,7 @@ void test_priority_queue()
     }
     std::cout << '\n';
     //====================================================================================================================================
-    //通过struct和自定义struct比较的方式
+    // 通过struct和自定义struct比较的方式
     std::priority_queue<Time, std::vector<Time>, CompareTime> pq;
     Time t[4] = {{3, 2, 40}, {3, 2, 26}, {5, 16, 13}, {5, 14, 20}};
     for (int i = 0; i < 4; ++i)
@@ -483,7 +483,7 @@ void test_priority_queue()
         pq.pop();
     }
     //====================================================================================================================================
-    //自定义lambda函数方式
+    // 自定义lambda函数方式
     auto cmp = [](const Time &t1, const Time &t2)
     {
         // true使得t1排后面?
@@ -518,7 +518,7 @@ void test_priority_queue()
     }
     std::cout << '\n';
     //====================================================================================================================================
-    //自定义比较函数pair//返回true使得第一个参数排后面
+    // 自定义比较函数pair//返回true使得第一个参数排后面
     auto cmp_pair = [](const std::pair<int, int> &t1, const std::pair<int, int> &t2)
     {
         // true使得t1排后面?
@@ -589,29 +589,29 @@ void test_priority_queue()
         cus_s["test"].pop();
     }
 }
-//排序函数
+// 排序函数
 void tset_sort()
 {
     std::vector<int> v = {7, 5, 16, 8};
     //====================================================================================================================================
-    //升序5,7,8,16,
+    // 升序5,7,8,16,
     std::sort(v.begin(), v.end());
     //====================================================================================================================================
-    //降序16,8,7,5,sort的greater是降序,priority_queue的greater是升序
+    // 降序16,8,7,5,sort的greater是降序,priority_queue的greater是升序
     std::sort(v.begin(), v.end(), std::greater<int>());
-    //升序5,7,8,16,sort的less是升序,priority_queue的less是降序
+    // 升序5,7,8,16,sort的less是升序,priority_queue的less是降序
     std::sort(v.begin(), v.end(), std::less<int>());
-    //使用lambda函数
+    // 使用lambda函数
     //====================================================================================================================================
-    // 16,8,7,5,true排前面
+    //  16,8,7,5,true排前面
     std::sort(v.begin(), v.end(), [](int a, int b)
               { return a > b; });
     // 5,7,8,16,true排前面
     std::sort(v.begin(), v.end(), [](int a, int b)
               { return a < b; });
     //====================================================================================================================================
-    //排序pair
-    //自定义比较函数pair//返回true使得第一个参数排后面
+    // 排序pair
+    // 自定义比较函数pair//返回true使得第一个参数排后面
     std::vector<std::pair<int, int>> v_pair;
     std::pair<int, int> p4{4, 3};
     std::pair<int, int> p5{3, 5};
@@ -639,7 +639,7 @@ void tset_sort()
                   return false;
               });
     //====================================================================================================================================
-    //排序unordered_map?
+    // 排序unordered_map?
     std::vector<std::unordered_map<std::string, int>> v_map;
     std::unordered_map<std::string, int> um1 = {{"a", 1}, {"b", 1}};
     std::unordered_map<std::string, int> um2 = {{"a", 1}, {"b", 5}};
@@ -651,11 +651,11 @@ void tset_sort()
     v_map.push_back(um3);
     v_map.push_back(um4);
     v_map.push_back(um5);
-    //大的排前面//(key:5,value:1),(key:4,value:1),(key:3,value:1),(key:1,value:5),(key:1,value:1),
+    // 大的排前面//(key:5,value:1),(key:4,value:1),(key:3,value:1),(key:1,value:5),(key:1,value:1),
     std::sort(v_map.begin(), v_map.end(),
               [](const std::unordered_map<std::string, int> &left, const std::unordered_map<std::string, int> &right)
               {
-                  //好像const 中不能直接用[]
+                  // 好像const 中不能直接用[]
                   auto left_a_it = left.find("a");
                   auto left_b_it = left.find("b");
                   auto right_a_it = right.find("a");
@@ -695,7 +695,7 @@ void tset_sort()
     std::sort(v_map.begin(), v_map.end(),
               [](const std::unordered_map<std::string, int> &left, const std::unordered_map<std::string, int> &right)
               {
-                  //好像const 中不能直接用[]
+                  // 好像const 中不能直接用[]
                   auto left_a_it = left.find("a");
                   auto left_b_it = left.find("b");
                   auto right_a_it = right.find("a");
@@ -741,7 +741,7 @@ void tset_sort()
 class TestClass
 {
 private:
-    //静态数据成员，必须在外部定义和初始化，内部不能直接初始化！
+    // 静态数据成员，必须在外部定义和初始化，内部不能直接初始化！
     static int static_int_var;
 
 public:
@@ -752,7 +752,7 @@ public:
 };
 TestClass::TestClass(/* args */) {}
 TestClass::~TestClass() {}
-//必须在类外定义和初始化，用(::)来指明所属的类。
+// 必须在类外定义和初始化，用(::)来指明所属的类。
 int TestClass::static_int_var = 0;
 void TestClass::static_void_func(TestClass tc)
 {
@@ -863,7 +863,7 @@ void test_lower_bound()
         std::cout << '\n';
     }
 }
-//第一个大于 i
+// 第一个大于 i
 void test_upper_bound()
 {
     struct PriceInfo
@@ -1250,6 +1250,38 @@ void loop_hash(string s)
     //     }
     //     return f[right] - f[left - 1] * p[right - left + 1];
     // }
+}
+
+// 弗洛伊德 松弛k遍, x 到 y 的最短路
+int test_floyd(int n, vector<vector<int>> &edges, int distanceThreshold)
+{
+    vector<vector<int>> vvi(n, vector<int>(n, 99999));
+    // vvi[x][y] = 最小 ?
+    for (int i = 0; i < n; i++)
+    {
+        vvi[i][i] = 0;
+    }
+    for (int i = 0; i < edges.size(); i++)
+    {
+        int a = edges[i][0];
+        int b = edges[i][1];
+        int v = edges[i][2];
+        vvi[a][b] = v;
+        vvi[b][a] = v;
+    }
+
+    for (int k = 0; k < n; ++k)
+    {
+        for (int i = 0; i < n; ++i)
+        {
+            for (int j = 0; j < n; ++j)
+            {
+                int i_k_j = vvi[i][k] + vvi[k][j];
+                vvi[i][j] = min(vvi[i][j], i_k_j);
+                vvi[j][i] = min(vvi[j][i], i_k_j);
+            }
+        }
+    }
 }
 
 int main(int argc, char const *argv[])
