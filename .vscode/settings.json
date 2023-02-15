@@ -88,7 +88,9 @@
         "stop_token": "cpp",
         "thread": "cpp",
         "typeindex": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "ranges": "cpp",
+        "span": "cpp"
     },
     "makefile.launchConfigurations": [
         {
