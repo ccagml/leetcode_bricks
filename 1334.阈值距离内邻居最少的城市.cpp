@@ -105,19 +105,28 @@ public:
             vvi[a][b] = v;
             vvi[b][a] = v;
         }
-        for (int x = 0; x < n; x++)
+        // for (int x = 0; x < n; x++)
+        // {
+        //     for (int y = 0; y < n; y++)
+        //     {
+        //         for (int k = 0; k < n; k++)
+        //         {
+        //             int x_k_y = vvi[x][k] + vvi[k][y];
+        //             vvi[x][y] = min(vvi[x][y], x_k_y);
+        //             vvi[y][x] = min(vvi[y][x], x_k_y);
+        //         }
+        //     }
+        // }
+
+        for (int k = 0; k < n; ++k)
         {
-            for (int y = 0; y < n; y++)
+            for (int i = 0; i < n; ++i)
             {
-                if (x == y)
+                for (int j = 0; j < n; ++j)
                 {
-                    continue;
-                }
-                for (int k = 0; k < n; k++)
-                {
-                    int x_k_y = vvi[x][k] + vvi[k][y];
-                    vvi[x][y] = min(vvi[x][y], x_k_y);
-                    vvi[y][x] = min(vvi[y][x], x_k_y);
+                    int i_k_j = vvi[i][k] + vvi[k][j];
+                    vvi[i][j] = min(vvi[i][j], i_k_j);
+                    vvi[j][i] = min(vvi[j][i], i_k_j);
                 }
             }
         }
@@ -163,10 +172,10 @@ public:
         //     std::cout << "(" << vpii[i].second << "," << vpii[i].first << ")|";
         // }
 
-        if (vpii.size() > 2 && vpii[2].first == 38 && vpii[2].second == 38)
-        {
-            return 38;
-        }
+        // if (vpii.size() > 2 && vpii[2].first == 38 && vpii[2].second == 38)
+        // {
+        //     return 38;
+        // }
 
         return vpii[0].second;
     }
