@@ -1282,9 +1282,83 @@ int test_floyd(int n, vector<vector<int>> &edges, int distanceThreshold)
             }
         }
     }
+    // 输出 x 到 y 最短路
+    // return vvi[x][y];
+    return vvi[0][0];
 }
 
-int main(int argc, char const *argv[])
+// dijkstra单点最短路模板 带 优先级队列
+void djik(vector<vector<int>> &vvi, vector<int> &d, int start)
+{
+    // 自定义比较函数pair//返回true使得第一个参数排后面
+    auto cmp_pair = [](const std::pair<int, int> &t1, const std::pair<int, int> &t2)
+    {
+        // true使得t1排后面?
+        if (t1.first > t2.first)
+        {
+            return true;
+        }
+        else if (t1.first == t2.first && t1.second < t2.second)
+        {
+            return true;
+        }
+        return false;
+    };
+    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(cmp_pair)> pair_pq(cmp_pair);
+    d[start] = 0;
+    pair_pq.push({d[start], start});
+    while (!pair_pq.empty())
+    {
+        pair<int, int> cur = pair_pq.top();
+        pair_pq.pop();
+        int cur_len = cur.first;
+        int cur_node = cur.second;
+
+        // 可以继续走
+        for (int i_node = 0; i_node < vvi.size(); i_node++)
+        {
+            if (i_node != cur_node)
+            {
+                int cur_to_i = vvi[cur_node][i_node];
+                if (d[i_node] > (cur_len + cur_to_i))
+                {
+                    d[i_node] = (cur_len + cur_to_i);
+                    // 这里可以进
+                    pair_pq.push({d[i_node], i_node});
+                }
+            }
+        }
+    }
+}
+
+int test_dijkstra(int n, vector<vector<int>> &edges)
+{
+    vector<vector<int>> vvi(n, vector<int>(n, 99999));
+    // vvi[x][y] = 最小 ?
+    for (int i = 0; i < n; i++)
+    {
+        vvi[i][i] = 0;
+    }
+    for (int i = 0; i < edges.size(); i++)
+    {
+        int a = edges[i][0];
+        int b = edges[i][1];
+        int v = edges[i][2];
+        vvi[a][b] = v;
+        vvi[b][a] = v;
+    }
+    for (int i = 0; i < n; i++)
+    {
+        vector<int> i_to_x(n, 99999);
+        djik(vvi, i_to_x, i);
+        for (int j = 0; j < n; j++)
+        {
+            std::cout << "输出i 到 j 的最短路" << i_to_x[j];
+        }
+    }
+}
+
+int_fast8_t main(int argc, char const *argv[])
 {
     // test_pair();
     // test_tuple();
