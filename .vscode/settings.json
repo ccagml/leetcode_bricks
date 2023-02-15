@@ -90,7 +90,20 @@
         "typeindex": "cpp",
         "valarray": "cpp",
         "ranges": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "any": "cpp",
+        "barrier": "cpp",
+        "cfenv": "cpp",
+        "charconv": "cpp",
+        "cinttypes": "cpp",
+        "coroutine": "cpp",
+        "csetjmp": "cpp",
+        "csignal": "cpp",
+        "cuchar": "cpp",
+        "source_location": "cpp",
+        "latch": "cpp",
+        "syncstream": "cpp",
+        "variant": "cpp"
     },
     "makefile.launchConfigurations": [
         {

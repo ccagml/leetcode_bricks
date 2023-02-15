@@ -89,6 +89,49 @@ using namespace std;
 class Solution
 {
 public:
+    void djik(vector<vector<int>> &vvi, vector<int> &d, int start)
+    {
+        // 自定义比较函数pair//返回true使得第一个参数排后面
+        auto cmp_pair = [](const std::pair<int, int> &t1, const std::pair<int, int> &t2)
+        {
+            // true使得t1排后面?
+            if (t1.first > t2.first)
+            {
+                return true;
+            }
+            else if (t1.first == t2.first && t1.second < t2.second)
+            {
+                return true;
+            }
+            return false;
+        };
+        std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(cmp_pair)> pair_pq(cmp_pair);
+        d[start] = 0;
+        pair_pq.push({d[start], start});
+        while (!pair_pq.empty())
+        {
+            pair<int, int> cur = pair_pq.top();
+            pair_pq.pop();
+            int cur_len = cur.first;
+            int cur_node = cur.second;
+
+            // 可以继续走
+            for (int i_node = 0; i_node < vvi.size(); i_node++)
+            {
+                if (i_node != cur_node)
+                {
+                    int cur_to_i = vvi[cur_node][i_node];
+                    if (d[i_node] > (cur_len + cur_to_i))
+                    {
+                        d[i_node] = (cur_len + cur_to_i);
+                        // 这里可以进
+                        pair_pq.push({d[i_node], i_node});
+                    }
+                }
+            }
+        }
+    }
+
     int findTheCity(int n, vector<vector<int>> &edges, int distanceThreshold)
     {
         vector<vector<int>> vvi(n, vector<int>(n, 99999));
@@ -105,79 +148,43 @@ public:
             vvi[a][b] = v;
             vvi[b][a] = v;
         }
-        // for (int x = 0; x < n; x++)
+
+        // for (int k = 0; k < n; ++k)
         // {
-        //     for (int y = 0; y < n; y++)
+        //     for (int i = 0; i < n; ++i)
         //     {
-        //         for (int k = 0; k < n; k++)
+        //         for (int j = 0; j < n; ++j)
         //         {
-        //             int x_k_y = vvi[x][k] + vvi[k][y];
-        //             vvi[x][y] = min(vvi[x][y], x_k_y);
-        //             vvi[y][x] = min(vvi[y][x], x_k_y);
+        //             int i_k_j = vvi[i][k] + vvi[k][j];
+        //             vvi[i][j] = min(vvi[i][j], i_k_j);
+        //             vvi[j][i] = min(vvi[j][i], i_k_j);
         //         }
         //     }
         // }
 
-        for (int k = 0; k < n; ++k)
-        {
-            for (int i = 0; i < n; ++i)
-            {
-                for (int j = 0; j < n; ++j)
-                {
-                    int i_k_j = vvi[i][k] + vvi[k][j];
-                    vvi[i][j] = min(vvi[i][j], i_k_j);
-                    vvi[j][i] = min(vvi[j][i], i_k_j);
-                }
-            }
-        }
-
-        vector<unordered_set<int>> vus(n);
-        for (int x = 0; x < n; x++)
-        {
-            for (int y = 0; y < n; y++)
-            {
-                if (x == y)
-                {
-                    continue;
-                }
-                if (vvi[x][y] <= distanceThreshold)
-                {
-                    vus[x].insert(y);
-                }
-                if (vvi[y][x] <= distanceThreshold)
-                {
-                    vus[y].insert(x);
-                }
-            }
-        }
-        vector<pair<int, int>> vpii;
+        // 全路djiksra的做法
+        int max_count = 99999;
+        int id = -1;
         for (int i = 0; i < n; i++)
         {
-            vpii.push_back({vus[i].size(), i});
+            vector<int> i_to_x(n, 99999);
+            djik(vvi, i_to_x, i);
+            int count = 0;
+            for (int j = 0; j < n; j++)
+            {
+                // std::cout << i << "->" << j << "=" << i_to_x[j] << ")";
+                if (i != j && i_to_x[j] <= distanceThreshold)
+                {
+                    count++;
+                }
+            }
+            if ((count < max_count) || (count == max_count && i > id))
+            {
+                max_count = count;
+                id = i;
+            }
         }
-        sort(vpii.begin(), vpii.end(), [](const std::pair<int, int> &left, const std::pair<int, int> &right)
-             {
-                  // true使得left排前面
-                  if (left.first < right.first)
-                  {
-                      return true;
-                  }
-                  else if (left.first == right.first && left.second > right.second)
-                  {
-                      return true;
-                  }
-                  return false; });
-        // for (int i = 0; i < n; i++)
-        // {
-        //     std::cout << "(" << vpii[i].second << "," << vpii[i].first << ")|";
-        // }
-
-        // if (vpii.size() > 2 && vpii[2].first == 38 && vpii[2].second == 38)
-        // {
-        //     return 38;
-        // }
-
-        return vpii[0].second;
+        return id;
     }
 };
 // @lc code=end
