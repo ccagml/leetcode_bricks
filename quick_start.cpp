@@ -533,6 +533,7 @@ void test_priority_queue()
         return false;
     };
     std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(cmp_pair)> pair_pq(cmp_pair);
+
     std::pair<int, int> p4{4, 3};
     std::pair<int, int> p5{3, 5};
     std::pair<int, int> p1{1, 3};
@@ -1432,6 +1433,88 @@ int test_bellman_ford(int n, vector<vector<int>> &edges, int distanceThreshold)
             if (i != j && len[j] <= distanceThreshold)
             {
                 count++;
+            }
+        }
+        if ((count < max_count) || (count == max_count && i > id))
+        {
+            max_count = count;
+            id = i;
+        }
+    }
+    return id;
+}
+
+// 带优先级队列的spfa 最短路
+void spfa_bellman_pri_que(vector<vector<pair<int, int>>> &vvpii, vector<int> &d, int start)
+{
+    auto cmp_pair = [](const std::pair<int, int> &t1, const std::pair<int, int> &t2)
+    {
+        // true使得t1排后面?
+        if (t1.first > t2.first)
+        {
+            return true;
+        }
+        else if (t1.first == t2.first && t1.second > t2.second)
+        {
+            return true;
+        }
+        return false;
+    };
+    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(cmp_pair)> pair_pq(cmp_pair);
+    // 初始化start的距离
+    for (pair<int, int> pp : vvpii[start])
+    {
+        d[pp.first] = pp.second;
+        pair_pq.push({pp.second, pp.first});
+    }
+    while (!pair_pq.empty())
+    {
+        pair<int, int> top = pair_pq.top();
+        pair_pq.pop();
+        int len = top.first;
+        int y_nodex = top.second;
+        // 出来已经有更短的了,说明这个没优势
+        if (len <= d[y_nodex])
+        {
+            for (pair<int, int> pp : vvpii[y_nodex])
+            {
+                if (d[pp.first] > len + pp.second)
+                {
+                    d[pp.first] = len + pp.second;
+                    pair_pq.push({d[pp.first], pp.first});
+                }
+            }
+        }
+    }
+}
+// 带优先级队列的spfa 最短路
+int test_spfa_bellman_pri_que(int n, vector<vector<int>> &edges, int distanceThreshold)
+{
+
+    vector<vector<pair<int, int>>> vvpii(n, vector<pair<int, int>>(0));
+
+    for (int i = 0; i < edges.size(); i++)
+    {
+        int x = edges[i][0];
+        int y = edges[i][1];
+        int value = edges[i][2];
+        vvpii[x].push_back({y, value});
+        vvpii[y].push_back({x, value});
+    }
+
+    int max_count = 99999;
+    int id = -1;
+    for (int i = 0; i < n; i++)
+    {
+        vector<int> len(n, 99999);
+        spfa_bellman_pri_que(vvpii, len, i);
+        int count = 0;
+        for (int j = 0; j < n; j++)
+        {
+            if (i != j && len[j] <= distanceThreshold)
+            {
+                count++;
+                // std::cout << "(" << i << "to" << j << "=" << count << ")";
             }
         }
         if ((count < max_count) || (count == max_count && i > id))

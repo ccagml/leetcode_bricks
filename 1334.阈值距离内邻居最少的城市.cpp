@@ -89,29 +89,44 @@ using namespace std;
 class Solution
 {
 public:
-    void bellman_ford(vector<vector<pair<int, int>>> &vvpii, vector<int> &d, int node_num, int start)
+    // 带优先级队列的spfa
+    void spfa_bellman_pri_que(vector<vector<pair<int, int>>> &vvpii, vector<int> &d, int start)
     {
-
+        auto cmp_pair = [](const std::pair<int, int> &t1, const std::pair<int, int> &t2)
+        {
+            // true使得t1排后面?
+            if (t1.first > t2.first)
+            {
+                return true;
+            }
+            else if (t1.first == t2.first && t1.second > t2.second)
+            {
+                return true;
+            }
+            return false;
+        };
+        std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(cmp_pair)> pair_pq(cmp_pair);
         // 初始化start的距离
         for (pair<int, int> pp : vvpii[start])
         {
             d[pp.first] = pp.second;
+            pair_pq.push({pp.second, pp.first});
         }
-
-        // node_num - 1 次松弛
-        for (int i = 0; i < node_num - 1; i++)
+        while (!pair_pq.empty())
         {
-            // 松弛所有的边
-            for (int x = 0; x < vvpii.size(); x++)
+            pair<int, int> top = pair_pq.top();
+            pair_pq.pop();
+            int len = top.first;
+            int y_nodex = top.second;
+            // 出来已经有更短的了,说明这个没优势
+            if (len <= d[y_nodex])
             {
-                for (int x_len = 0; x_len < vvpii[x].size(); x_len++)
+                for (pair<int, int> pp : vvpii[y_nodex])
                 {
-                    pair<int, int> pii = vvpii[x][x_len];
-                    int y = pii.first;
-                    int value = pii.second;
-                    if (d[y] > d[x] + value)
+                    if (d[pp.first] > len + pp.second)
                     {
-                        d[y] = d[x] + value;
+                        d[pp.first] = len + pp.second;
+                        pair_pq.push({d[pp.first], pp.first});
                     }
                 }
             }
@@ -137,13 +152,14 @@ public:
         for (int i = 0; i < n; i++)
         {
             vector<int> len(n, 99999);
-            bellman_ford(vvpii, len, n, i);
+            spfa_bellman_pri_que(vvpii, len, i);
             int count = 0;
             for (int j = 0; j < n; j++)
             {
                 if (i != j && len[j] <= distanceThreshold)
                 {
                     count++;
+                    // std::cout << "(" << i << "to" << j << "=" << count << ")";
                 }
             }
             if ((count < max_count) || (count == max_count && i > id))
