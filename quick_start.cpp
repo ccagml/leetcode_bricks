@@ -1358,6 +1358,91 @@ int test_dijkstra(int n, vector<vector<int>> &edges)
     }
 }
 
+void bellman_ford(vector<vector<pair<int, int>>> &vvpii, vector<int> &d, int node_num, int start)
+{
+
+    // 初始化start的距离
+    for (pair<int, int> pp : vvpii[start])
+    {
+        d[pp.first] = pp.second;
+    }
+
+    // node_num - 1 次松弛
+    for (int i = 0; i < node_num - 1; i++)
+    {
+        // 松弛所有的边
+        for (int x = 0; x < vvpii.size(); x++)
+        {
+            for (int x_len = 0; x_len < vvpii[x].size(); x_len++)
+            {
+                pair<int, int> pii = vvpii[x][x_len];
+                int y = pii.first;
+                int value = pii.second;
+                if (d[y] > d[x] + value)
+                {
+                    d[y] = d[x] + value;
+                }
+            }
+        }
+    }
+
+    // 如果松弛了n - 1次后还能松弛,说明有负环
+    // 松弛所有的边
+    for (int x = 0; x < vvpii.size(); x++)
+    {
+        for (int x_len = 0; x_len < vvpii[x].size(); x_len++)
+        {
+            pair<int, int> pii = vvpii[x][x_len];
+            int y = pii.first;
+            int value = pii.second;
+            if (d[y] > d[x] + value)
+            {
+                d[y] = d[x] + value;
+                // 有负环
+            }
+        }
+    }
+}
+
+// 测试贝尔弗曼
+int test_bellman_ford(int n, vector<vector<int>> &edges, int distanceThreshold)
+{
+
+    // 如果用unordered_map<int, unordered_map<int, int>> uiuii; 的结构会超时
+    vector<vector<pair<int, int>>> vvpii(n, vector<pair<int, int>>(0));
+
+    for (int i = 0; i < edges.size(); i++)
+    {
+        int x = edges[i][0];
+        int y = edges[i][1];
+        int value = edges[i][2];
+        vvpii[x].push_back({y, value});
+        vvpii[y].push_back({x, value});
+    }
+
+    int max_count = 99999;
+    int id = -1;
+    for (int i = 0; i < n; i++)
+    {
+        vector<int> len(n, 99999);
+        bellman_ford(vvpii, len, n, i);
+        int count = 0;
+        for (int j = 0; j < n; j++)
+        {
+            if (i != j && len[j] <= distanceThreshold)
+            {
+                count++;
+            }
+        }
+        if ((count < max_count) || (count == max_count && i > id))
+        {
+            max_count = count;
+            id = i;
+        }
+    }
+    return id;
+}
+
 int_fast8_t main(int argc, char const *argv[])
 {
     // test_pair();

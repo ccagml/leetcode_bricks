@@ -89,43 +89,29 @@ using namespace std;
 class Solution
 {
 public:
-    void djik(vector<vector<int>> &vvi, vector<int> &d, int start)
+    void bellman_ford(vector<vector<pair<int, int>>> &vvpii, vector<int> &d, int node_num, int start)
     {
-        // 自定义比较函数pair//返回true使得第一个参数排后面
-        auto cmp_pair = [](const std::pair<int, int> &t1, const std::pair<int, int> &t2)
-        {
-            // true使得t1排后面?
-            if (t1.first > t2.first)
-            {
-                return true;
-            }
-            else if (t1.first == t2.first && t1.second < t2.second)
-            {
-                return true;
-            }
-            return false;
-        };
-        std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(cmp_pair)> pair_pq(cmp_pair);
-        d[start] = 0;
-        pair_pq.push({d[start], start});
-        while (!pair_pq.empty())
-        {
-            pair<int, int> cur = pair_pq.top();
-            pair_pq.pop();
-            int cur_len = cur.first;
-            int cur_node = cur.second;
 
-            // 可以继续走
-            for (int i_node = 0; i_node < vvi.size(); i_node++)
+        // 初始化start的距离
+        for (pair<int, int> pp : vvpii[start])
+        {
+            d[pp.first] = pp.second;
+        }
+
+        // node_num - 1 次松弛
+        for (int i = 0; i < node_num - 1; i++)
+        {
+            // 松弛所有的边
+            for (int x = 0; x < vvpii.size(); x++)
             {
-                if (i_node != cur_node)
+                for (int x_len = 0; x_len < vvpii[x].size(); x_len++)
                 {
-                    int cur_to_i = vvi[cur_node][i_node];
-                    if (d[i_node] > (cur_len + cur_to_i))
+                    pair<int, int> pii = vvpii[x][x_len];
+                    int y = pii.first;
+                    int value = pii.second;
+                    if (d[y] > d[x] + value)
                     {
-                        d[i_node] = (cur_len + cur_to_i);
-                        // 这里可以进
-                        pair_pq.push({d[i_node], i_node});
+                        d[y] = d[x] + value;
                     }
                 }
             }
@@ -134,46 +120,28 @@ public:
 
     int findTheCity(int n, vector<vector<int>> &edges, int distanceThreshold)
     {
-        vector<vector<int>> vvi(n, vector<int>(n, 99999));
-        // vvi[x][y] = 最小 ?
-        for (int i = 0; i < n; i++)
-        {
-            vvi[i][i] = 0;
-        }
+
+        vector<vector<pair<int, int>>> vvpii(n, vector<pair<int, int>>(0));
+
         for (int i = 0; i < edges.size(); i++)
         {
-            int a = edges[i][0];
-            int b = edges[i][1];
-            int v = edges[i][2];
-            vvi[a][b] = v;
-            vvi[b][a] = v;
+            int x = edges[i][0];
+            int y = edges[i][1];
+            int value = edges[i][2];
+            vvpii[x].push_back({y, value});
+            vvpii[y].push_back({x, value});
         }
 
-        // for (int k = 0; k < n; ++k)
-        // {
-        //     for (int i = 0; i < n; ++i)
-        //     {
-        //         for (int j = 0; j < n; ++j)
-        //         {
-        //             int i_k_j = vvi[i][k] + vvi[k][j];
-        //             vvi[i][j] = min(vvi[i][j], i_k_j);
-        //             vvi[j][i] = min(vvi[j][i], i_k_j);
-        //         }
-        //     }
-        // }
-
-        // 全路djiksra的做法
         int max_count = 99999;
         int id = -1;
         for (int i = 0; i < n; i++)
         {
-            vector<int> i_to_x(n, 99999);
-            djik(vvi, i_to_x, i);
+            vector<int> len(n, 99999);
+            bellman_ford(vvpii, len, n, i);
             int count = 0;
             for (int j = 0; j < n; j++)
             {
-                // std::cout << i << "->" << j << "=" << i_to_x[j] << ")";
-                if (i != j && i_to_x[j] <= distanceThreshold)
+                if (i != j && len[j] <= distanceThreshold)
                 {
                     count++;
                 }
