@@ -94,16 +94,66 @@
 class Solution
 {
 public:
+    // vector<vector<int>> findSolution(CustomFunction &customfunction, int z)
+    // {
+    //     // 暴力
+    //     // 45/45 cases passed (132 ms)
+    //     // Your runtime beats 9.68 % of cpp submissions
+    //     // Your memory usage beats 26.88 % of cpp submissions (6.3 MB)
+    //     // 耗时 0:1:50
+    //     vector<vector<int>> result;
+    //     for (int x = 1; x <= 1000; x++)
+    //     {
+    //         for (int y = 1; y <= 1000; y++)
+    //         {
+    //             if (customfunction.f(x, y) == z)
+    //             {
+    //                 result.push_back({x, y});
+    //             }
+    //         }
+    //     }
+    //     return result;
+    // }
+
+    // 二分
     vector<vector<int>> findSolution(CustomFunction &customfunction, int z)
     {
+
+        // Accepted
+        // 45/45 cases passed (4 ms)
+        // Your runtime beats 51.61 % of cpp submissions
+        // Your memory usage beats 26.88 % of cpp submissions (6.3 MB)
+
+        // 处理 r_right 为上一次的大小
+        // Accepted
+        // 45/45 cases passed (0 ms)
+        // Your runtime beats 100 % of cpp submissions
+        // Your memory usage beats 80.64 % of cpp submissions (6.2 MB)
         vector<vector<int>> result;
         for (int x = 1; x <= 1000; x++)
         {
-            for (int y = 1; y <= 1000; y++)
+            int y_left = 1;
+            // x 变大 y只能更小
+            int y_right = 1000;
+            if (result.size() > 0)
             {
-                if (customfunction.f(x, y) == z)
+                y_right = result[result.size() - 1][1];
+            }
+            while (y_left < y_right)
+            {
+                int y_mid = (y_right + y_left) / 2;
+                if (customfunction.f(x, y_mid) > z)
                 {
-                    result.push_back({x, y});
+                    y_right = y_mid;
+                }
+                else if (customfunction.f(x, y_mid) < z)
+                {
+                    y_left = y_mid + 1;
+                }
+                else
+                {
+                    result.push_back({x, y_mid});
+                    break;
                 }
             }
         }
