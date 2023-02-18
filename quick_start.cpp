@@ -1526,6 +1526,45 @@ int test_spfa_bellman_pri_que(int n, vector<vector<int>> &edges, int distanceThr
     return id;
 }
 
+int mykmp(string &text, string &pattern)
+{
+    // 计算前缀
+    int size = pattern.size();
+    int *pie = new int[size];
+    pie[0] = 0;
+    int k = 0;
+    for (int i = 1; i < size; i++)
+    {
+        while (k > 0 && pattern[k] != pattern[i])
+        {
+            k = pie[k - 1];
+        }
+        if (pattern[k] == pattern[i])
+        {
+            k = k + 1;
+        }
+        pie[i] = k;
+    }
+    // 开始查找
+
+    int matched_pos = 0;
+    for (int current = 0; current < text.length(); current++)
+    {
+        while (matched_pos > 0 && pattern[matched_pos] != text[current])
+            matched_pos = pie[matched_pos - 1];
+
+        if (pattern[matched_pos] == text[current])
+            matched_pos = matched_pos + 1;
+
+        if (matched_pos == (pattern.length()))
+        {
+            matched_pos = pie[matched_pos - 1];
+            return current - (pattern.length() - 1);
+        }
+    }
+    return -1;
+}
+
 int_fast8_t main(int argc, char const *argv[])
 {
     // test_pair();
