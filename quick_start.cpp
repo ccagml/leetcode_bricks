@@ -1661,9 +1661,12 @@ public:
 // 质素筛选 埃筛 O(nloglogn)
 int Eratosthenes(int n)
 {
-    vector<bool> is_prime(n, true);
+    vector<bool> is_prime(n + 1, true);
     vector<int> prime;
-    int p = 0;
+    if (n < 2)
+    {
+        return 0;
+    }
     is_prime[0] = false;
     is_prime[1] = false;
     for (int i = 2; i <= n; ++i)
@@ -1672,13 +1675,15 @@ int Eratosthenes(int n)
         {
             prime.push_back(i);
             if ((long long)i * i <= n)
+            {
                 for (int j = i * i; j <= n; j += i)
-                    // 因为从 2 到 i - 1 的倍数我们之前筛过了，这里直接从 i
-                    // 的倍数开始，提高了运行速度
-                    is_prime[j] = false; // 是i的倍数的均不是素数
+                {
+                    is_prime[j] = false; // 是i的倍数的均不是素数    因为从 2 到 i - 1 的倍数我们之前筛过了，这里直接从 i 的倍数开始，提高了运行速度
+                }
+            }
         }
     }
-    return p;
+    return prime.size();
 }
 
 // 质素筛选 欧拉筛, 线筛  O(n)

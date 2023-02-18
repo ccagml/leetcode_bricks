@@ -66,9 +66,35 @@ using namespace std;
 class Solution
 {
 public:
-    int countPrimes(int n)
+    int Eratosthenes(int n)
     {
-        n = n - 1;
+        vector<bool> is_prime(n + 1, true);
+        vector<int> prime;
+        if (n < 2)
+        {
+            return 0;
+        }
+        is_prime[0] = false;
+        is_prime[1] = false;
+        for (int i = 2; i <= n; ++i)
+        {
+            if (is_prime[i])
+            {
+                prime.push_back(i);
+                if ((long long)i * i <= n)
+                {
+                    for (int j = i * i; j <= n; j += i)
+                    {
+                        is_prime[j] = false; // 是i的倍数的均不是素数    因为从 2 到 i - 1 的倍数我们之前筛过了，这里直接从 i 的倍数开始，提高了运行速度
+                    }
+                }
+            }
+        }
+        return prime.size();
+    }
+
+    int ola(int n)
+    {
         vector<int> vis(n + 1);
         vector<int> prime;
         for (int i = 2; i <= n; ++i)
@@ -94,6 +120,12 @@ public:
             }
         }
         return prime.size();
+    }
+
+    int countPrimes(int n)
+    {
+        // return Eratosthenes(n - 1);
+        return ola(n - 1);
     }
 };
 // @lc code=end
