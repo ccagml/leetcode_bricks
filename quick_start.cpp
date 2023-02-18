@@ -1577,9 +1577,9 @@ private:
 public:
     MyTrie(int n, char s)
     {
-        t.resize(n);
-        start = s;
-        cur_flag = -1;
+        t.resize(n);   // 初始化字典树存放长度
+        start = s;     // 第一个字符, 例如 '0', 'a'
+        cur_flag = -1; // 到这边是否是结尾
     }
 
     void insert(string &temp, int cur, int flag)
