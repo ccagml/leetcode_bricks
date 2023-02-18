@@ -1528,7 +1528,7 @@ int test_spfa_bellman_pri_que(int n, vector<vector<int>> &edges, int distanceThr
 
 int mykmp(string &text, string &pattern)
 {
-    // 计算前缀
+    // 计算前
     int size = pattern.size();
     int *pie = new int[size];
     pie[0] = 0;
@@ -1618,6 +1618,42 @@ public:
         {
             // 到头了
             return t[cur_index]->cur_flag;
+        }
+    }
+};
+
+// 并查集
+class unionFind
+{
+public:
+    vector<int> v_father;
+    unionFind(int n)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            v_father.push_back(i);
+        }
+    }
+    int get(int i)
+    {
+        if (v_father[i] == i)
+        {
+            return i;
+        }
+        v_father[i] = get(v_father[i]);
+        return v_father[i];
+    }
+    void set(int a, int b)
+    {
+        int fa = get(a);
+        int fb = get(b);
+        if (fa > fb)
+        {
+            v_father[fa] = fb;
+        }
+        else if (fb > fa)
+        {
+            v_father[fb] = fa;
         }
     }
 };
