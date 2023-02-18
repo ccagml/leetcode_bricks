@@ -816,6 +816,7 @@ void test_quick_pow()
     std::cout << "quick_pow(2,4):16" << quick_pow(2, 4) << "\n";
 }
 // 第一个不小于 i 的位置
+// 二分
 void test_lower_bound()
 {
     struct PriceInfo
@@ -865,6 +866,7 @@ void test_lower_bound()
     }
 }
 // 第一个大于 i
+// 二分
 void test_upper_bound()
 {
     struct PriceInfo
