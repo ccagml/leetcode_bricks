@@ -1658,6 +1658,59 @@ public:
     }
 };
 
+// 质素筛选 埃筛 O(nloglogn)
+int Eratosthenes(int n)
+{
+    vector<bool> is_prime(n, true);
+    vector<int> prime;
+    int p = 0;
+    is_prime[0] = false;
+    is_prime[1] = false;
+    for (int i = 2; i <= n; ++i)
+    {
+        if (is_prime[i])
+        {
+            prime.push_back(i);
+            if ((long long)i * i <= n)
+                for (int j = i * i; j <= n; j += i)
+                    // 因为从 2 到 i - 1 的倍数我们之前筛过了，这里直接从 i
+                    // 的倍数开始，提高了运行速度
+                    is_prime[j] = false; // 是i的倍数的均不是素数
+        }
+    }
+    return p;
+}
+
+// 质素筛选 欧拉筛, 线筛  O(n)
+int ola(int n)
+{
+    vector<int> vis(n + 1);
+    vector<int> prime;
+    for (int i = 2; i <= n; ++i)
+    {
+        if (!vis[i])
+        {
+            prime.push_back(i);
+        }
+        for (int j = 0; j < prime.size(); ++j)
+        {
+            if (1ll * i * prime[j] > n)
+                break;
+            vis[i * prime[j]] = true;
+            if (i % prime[j] == 0)
+            {
+                // i % pri[j] == 0
+                // 换言之，i 之前被 pri[j] 筛过了
+                // 由于 pri 里面质数是从小到大的，所以 i乘上其他的质数的结果一定会被
+                // pri[j]的倍数筛掉，就不需要在这里先筛一次，所以这里直接 break
+                // 掉就好了
+                break;
+            }
+        }
+    }
+    return prime.size();
+}
+
 int_fast8_t main(int argc, char const *argv[])
 {
     // test_pair();
