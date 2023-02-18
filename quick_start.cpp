@@ -1565,6 +1565,63 @@ int mykmp(string &text, string &pattern)
     return -1;
 }
 
+// 字典树
+class MyTrie
+{
+private:
+    /* data */
+    vector<MyTrie *> t;
+    char start;
+    int cur_flag;
+
+public:
+    MyTrie(int n, char s)
+    {
+        t.resize(n);
+        start = s;
+        cur_flag = -1;
+    }
+
+    void insert(string &temp, int cur, int flag)
+    {
+        int cur_index = temp[cur] - start;
+        if (t[cur_index] == nullptr)
+        {
+            t[cur_index] = new MyTrie(t.size(), start);
+        }
+        if (cur < temp.size() - 1)
+        {
+            t[cur_index]->insert(temp, cur + 1, flag);
+        }
+        else
+        {
+            // 到头了
+            if (t[cur_index]->cur_flag == -1)
+            {
+                t[cur_index]->cur_flag = flag;
+            }
+        }
+    }
+
+    int get(string &temp, int cur)
+    {
+        int cur_index = temp[cur] - start;
+        if (t[cur_index] == nullptr)
+        {
+            return -1;
+        }
+        if (cur < temp.size() - 1)
+        {
+            return t[cur_index]->get(temp, cur + 1);
+        }
+        else
+        {
+            // 到头了
+            return t[cur_index]->cur_flag;
+        }
+    }
+};
+
 int_fast8_t main(int argc, char const *argv[])
 {
     // test_pair();

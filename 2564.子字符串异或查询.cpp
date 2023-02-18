@@ -87,14 +87,66 @@ using namespace std;
 #include <vector>
 // @lc code=start
 
+// 字典树
+class MyTrie
+{
+private:
+    /* data */
+    vector<MyTrie *> t;
+    char start;
+    int cur_flag;
+
+public:
+    MyTrie(int n, char s)
+    {
+        t.resize(n);
+        start = s;
+        cur_flag = -1;
+    }
+
+    void insert(string &temp, int cur, int flag)
+    {
+        int cur_index = temp[cur] - start;
+        if (t[cur_index] == nullptr)
+        {
+            t[cur_index] = new MyTrie(t.size(), start);
+        }
+        if (cur < temp.size() - 1)
+        {
+            t[cur_index]->insert(temp, cur + 1, flag);
+        }
+        else
+        {
+            // 到头了
+            if (t[cur_index]->cur_flag == -1)
+            {
+                t[cur_index]->cur_flag = flag;
+            }
+        }
+    }
+
+    int get(string &temp, int cur)
+    {
+        int cur_index = temp[cur] - start;
+        if (t[cur_index] == nullptr)
+        {
+            return -1;
+        }
+        if (cur < temp.size() - 1)
+        {
+            return t[cur_index]->get(temp, cur + 1);
+        }
+        else
+        {
+            // 到头了
+            return t[cur_index]->cur_flag;
+        }
+    }
+};
+
 class Solution
 {
 public:
-    bool is_bit_1(int x, int index)
-    {
-        return ((1 << index) & (x));
-    }
-
     string int_to_b_str(int need)
     {
         string temp = "";
@@ -102,7 +154,7 @@ public:
         for (int i = 31; i >= 0; i--)
         {
             char ci = '0';
-            if (is_bit_1(need, i))
+            if (((1 << i) & (need)))
             {
                 ci = '1';
             }
@@ -124,46 +176,26 @@ public:
         return temp;
     }
 
-    int kmp(string &text, string &pattern)
-    {
-        // 计算前缀
-        int size = pattern.size();
-        int *pie = new int[size];
-        pie[0] = 0;
-        int k = 0;
-        for (int i = 1; i < size; i++)
-        {
-            while (k > 0 && pattern[k] != pattern[i])
-            {
-                k = pie[k - 1];
-            }
-            if (pattern[k] == pattern[i])
-            {
-                k = k + 1;
-            }
-            pie[i] = k;
-        }
-        // 开始查找
-
-        int matched_pos = 0;
-        for (int current = 0; current < text.length(); current++)
-        {
-            while (matched_pos > 0 && pattern[matched_pos] != text[current])
-                matched_pos = pie[matched_pos - 1];
-
-            if (pattern[matched_pos] == text[current])
-                matched_pos = matched_pos + 1;
-
-            if (matched_pos == (pattern.length()))
-            {
-                matched_pos = pie[matched_pos - 1];
-                return current - (pattern.length() - 1);
-            }
-        }
-        return -1;
-    }
     vector<vector<int>> substringXorQueries(string s, vector<vector<int>> &queries)
     {
+        MyTrie *mt = new MyTrie(2, '0');
+        for (int i = 0; i < s.size(); i++)
+        {
+            string cur = "";
+            cur.push_back(s[i]);
+            mt->insert(cur, 0, i);
+            if (s[i] == '1')
+            {
+                for (int j = 1; j < 31; j++)
+                {
+                    if (j + i < s.size())
+                    {
+                        cur.push_back(s[i + j]);
+                    }
+                    mt->insert(cur, 0, i);
+                }
+            }
+        }
 
         vector<vector<int>> result;
         for (int i = 0; i < queries.size(); i++)
@@ -172,7 +204,7 @@ public:
             // std::cout << "(int_to_b_str  " << need << ":";
             string temp = int_to_b_str(need);
             // std::cout << "计算" << temp << "|";
-            int index = kmp(s, temp);
+            int index = mt->get(temp, 0);
             // std::cout << "index" << temp << ":" << index << ")";
             if (index >= 0)
             {
