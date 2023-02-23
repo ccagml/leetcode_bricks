@@ -1718,6 +1718,25 @@ int ola(int n)
     return prime.size();
 }
 
+// 分解质因数
+unordered_map<int, int> get_primes_list(int n)
+{
+    unordered_map<int, int> result;
+    int num = n;
+    while (num > 1)
+    {
+        for (int i = 2; i <= n; i++)
+        {
+            while (num > 1 && num % i == 0)
+            {
+                result[i]++;
+                num /= i;
+            }
+        }
+    }
+    return result;
+}
+
 int_fast8_t main(int argc, char const *argv[])
 {
     // test_pair();
