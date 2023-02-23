@@ -1,16 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define ll long long
-#define ld long double
-#define ar array
-
-template <typename T>
-#define vt vector
-#define pb push_back
-#define all(c) (c).begin(), (c).end()
-#define sz(x) (int)(x).size()
-
 #define F_OR(i, a, b, s) for (int i = (a); (s) > 0 ? i < (b) : i > (b); i += (s))
 #define F_OR1(e) F_OR(i, 0, e, 1)
 #define F_OR2(i, e) F_OR(i, 0, e, 1)
@@ -19,31 +9,11 @@ template <typename T>
 #define GET5(a, b, c, d, e, ...) e
 #define F_ORC(...) GET5(__VA_ARGS__, F_OR4, F_OR3, F_OR2, F_OR1)
 #define FOR(...) F_ORC(__VA_ARGS__)(__VA_ARGS__)
-#define EACH(x, a) for (auto &x : a)
-
-ll FIRSTTRUE(function<bool(ll)> f, ll lb, ll rb)
-{
-    while (lb < rb)
-    {
-        ll mb = (lb + rb) / 2;
-        f(mb) ? rb = mb : lb = mb + 1;
-    }
-    return lb;
-}
-ll LASTTRUE(function<bool(ll)> f, ll lb, ll rb)
-{
-    while (lb < rb)
-    {
-        ll mb = (lb + rb + 1) / 2;
-        f(mb) ? lb = mb : rb = mb - 1;
-    }
-    return lb;
-}
 
 template <class A>
-void read(vt<A> &v);
+void read(vector<A> &v);
 template <class A, size_t S>
-void read(ar<A, S> &a);
+void read(array<A, S> &a);
 template <class T>
 void read(T &x)
 {
@@ -68,16 +38,17 @@ void read(H &h, T &...t)
     read(t...);
 }
 template <class A>
-void read(vt<A> &x)
+void read(vector<A> &x)
 {
-    EACH(a, x)
-    read(a);
+
+    for (auto &a : x)
+        read(a);
 }
 template <class A, size_t S>
 void read(array<A, S> &x)
 {
-    EACH(a, x)
-    read(a);
+    for (auto &a : x)
+        read(a);
 }
 
 string to_string(char c)
@@ -96,10 +67,10 @@ string to_string(string s)
 {
     return s;
 }
-string to_string(vt<bool> v)
+string to_string(vector<bool> v)
 {
     string res;
-    FOR(sz(v))
+    FOR(v.size())
     res += char('0' + v[i]);
     return res;
 }
@@ -117,7 +88,8 @@ string to_string(T v)
 {
     bool f = 1;
     string res;
-    EACH(x, v)
+
+    for (auto &x : v)
     {
         if (!f)
             res += ' ';
@@ -170,75 +142,66 @@ void DBG(H h, T... t)
 #endif
 
 template <class T>
-void offset(ll o, T &x)
+void offset(long long o, T &x)
 {
     x += o;
 }
 template <class T>
-void offset(ll o, vt<T> &x)
+void offset(long long o, vector<T> &x)
 {
-    EACH(a, x)
-    offset(o, a);
+
+    for (auto &a : x)
+        offset(o, a);
 }
 template <class T, size_t S>
-void offset(ll o, ar<T, S> &x)
+void offset(long long o, array<T, S> &x)
 {
-    EACH(a, x)
-    offset(o, a);
+    for (auto &a : x)
+        offset(o, a);
 }
 
 mt19937 mt_rng(chrono::steady_clock::now().time_since_epoch().count());
-ll randint(ll a, ll b)
+long long randint(long long a, long long b)
 {
-    return uniform_int_distribution<ll>(a, b)(mt_rng);
+    return uniform_int_distribution<long long>(a, b)(mt_rng);
 }
 
 template <class T, class U>
-void vti(vt<T> &v, U x, size_t n)
+void vectori(vector<T> &v, U x, size_t n)
 {
-    v = vt<T>(n, x);
+    v = vector<T>(n, x);
 }
 template <class T, class U>
-void vti(vt<T> &v, U x, size_t n, size_t m...)
+void vectori(vector<T> &v, U x, size_t n, size_t m...)
 {
-    v = vt<T>(n);
-    EACH(a, v)
-    vti(a, x, m);
+    v = vector<T>(n);
+    for (auto &a : v)
+        vectori(a, x, m);
 }
 
-const int d4i[4] = {-1, 0, 1, 0}, d4j[4] = {0, 1, 0, -1};
-const int d8i[8] = {-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8] = {0, 1, 1, 1, 0, -1, -1, -1};
-
-long long quick_pow(long long a, long long b)
+void solve(int k, int l, int m, int n, int d)
 {
-    // static const int MOD = 1e9 + 7;
-    long long ret = 1;
-    while (b)
+    int result = 0;
+    for (int i = 1; i <= d; i++)
     {
-        if (b & 1)
+        if (i % k == 0)
         {
-            ret = ret * a;
+            result++;
         }
-        a = a * a;
-        b >>= 1;
+        else if (i % l == 0)
+        {
+            result++;
+        }
+        else if (i % m == 0)
+        {
+            result++;
+        }
+        else if (i % n == 0)
+        {
+            result++;
+        }
     }
-    return ret;
-}
-
-void solve(int a)
-{
-    if (a % 2 == 0)
-    {
-        write(a / 2);
-        write(" ");
-        write(1);
-        print();
-        // std::cout << "结果:" << aa << " " << bb << ";";
-        return;
-    }
-
-    write(-1);
-    print();
+    write(result);
 }
 
 int main()
@@ -246,14 +209,21 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    int cnt;
-    read(cnt);
-    FOR(cnt)
+    char c;
+    unordered_set<char> usc;
+    while (true)
     {
-        int ttt;
-        read(ttt);
-        // std::cout << "读到" << t << ";";
-        solve(ttt);
+        read(c);
+        if (c == '}')
+        {
+            break;
+        }
+        else if (c >= 'a' && c <= 'z')
+        {
+            usc.insert(c);
+        }
     }
+    int result = usc.size();
+    write(result);
     return 0;
 }

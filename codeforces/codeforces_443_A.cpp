@@ -1,16 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define ll long long
-#define ld long double
-#define ar array
-
-template <typename T>
-#define vt vector
-#define pb push_back
-#define all(c) (c).begin(), (c).end()
-#define sz(x) (int)(x).size()
-
 #define F_OR(i, a, b, s) for (int i = (a); (s) > 0 ? i < (b) : i > (b); i += (s))
 #define F_OR1(e) F_OR(i, 0, e, 1)
 #define F_OR2(i, e) F_OR(i, 0, e, 1)
@@ -21,29 +11,29 @@ template <typename T>
 #define FOR(...) F_ORC(__VA_ARGS__)(__VA_ARGS__)
 #define EACH(x, a) for (auto &x : a)
 
-ll FIRSTTRUE(function<bool(ll)> f, ll lb, ll rb)
+long long FIRSTTRUE(function<bool(long long)> f, long long lb, long long rb)
 {
     while (lb < rb)
     {
-        ll mb = (lb + rb) / 2;
+        long long mb = (lb + rb) / 2;
         f(mb) ? rb = mb : lb = mb + 1;
     }
     return lb;
 }
-ll LASTTRUE(function<bool(ll)> f, ll lb, ll rb)
+long long LASTTRUE(function<bool(long long)> f, long long lb, long long rb)
 {
     while (lb < rb)
     {
-        ll mb = (lb + rb + 1) / 2;
+        long long mb = (lb + rb + 1) / 2;
         f(mb) ? lb = mb : rb = mb - 1;
     }
     return lb;
 }
 
 template <class A>
-void read(vt<A> &v);
+void read(vector<A> &v);
 template <class A, size_t S>
-void read(ar<A, S> &a);
+void read(array<A, S> &a);
 template <class T>
 void read(T &x)
 {
@@ -68,7 +58,7 @@ void read(H &h, T &...t)
     read(t...);
 }
 template <class A>
-void read(vt<A> &x)
+void read(vector<A> &x)
 {
     EACH(a, x)
     read(a);
@@ -96,10 +86,11 @@ string to_string(string s)
 {
     return s;
 }
-string to_string(vt<bool> v)
+string to_string(vector<bool> v)
 {
     string res;
-    FOR(sz(v))
+    int v_size = v.size();
+    FOR(v_size)
     res += char('0' + v[i]);
     return res;
 }
@@ -170,44 +161,41 @@ void DBG(H h, T... t)
 #endif
 
 template <class T>
-void offset(ll o, T &x)
+void offset(long long o, T &x)
 {
     x += o;
 }
 template <class T>
-void offset(ll o, vt<T> &x)
+void offset(long long o, vector<T> &x)
 {
     EACH(a, x)
     offset(o, a);
 }
 template <class T, size_t S>
-void offset(ll o, ar<T, S> &x)
+void offset(long long o, array<T, S> &x)
 {
     EACH(a, x)
     offset(o, a);
 }
 
 mt19937 mt_rng(chrono::steady_clock::now().time_since_epoch().count());
-ll randint(ll a, ll b)
+long long randint(long long a, long long b)
 {
-    return uniform_int_distribution<ll>(a, b)(mt_rng);
+    return uniform_int_distribution<long long>(a, b)(mt_rng);
 }
 
 template <class T, class U>
-void vti(vt<T> &v, U x, size_t n)
+void vectori(vector<T> &v, U x, size_t n)
 {
-    v = vt<T>(n, x);
+    v = vector<T>(n, x);
 }
 template <class T, class U>
-void vti(vt<T> &v, U x, size_t n, size_t m...)
+void vectori(vector<T> &v, U x, size_t n, size_t m...)
 {
-    v = vt<T>(n);
+    v = vector<T>(n);
     EACH(a, v)
-    vti(a, x, m);
+    vectori(a, x, m);
 }
-
-const int d4i[4] = {-1, 0, 1, 0}, d4j[4] = {0, 1, 0, -1};
-const int d8i[8] = {-1, -1, 0, 1, 1, 1, 0, -1}, d8j[8] = {0, 1, 1, 1, 0, -1, -1, -1};
 
 void solve(int k, int l, int m, int n, int d)
 {
