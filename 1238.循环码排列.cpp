@@ -131,7 +131,6 @@ public:
     vector<int> circularPermutation(int n, int start)
     {
         vector<int> ret;
-        ret.reserve(1 << n);
         ret.push_back(start);
         for (int i = 1; i <= n; i++)
         {
