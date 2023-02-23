@@ -97,56 +97,81 @@ public:
     }
     int squareFreeSubsets(vector<int> &nums)
     {
-        vector<int> PRIMES = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
+        // 计算一个数有没有因子
+        vector<int> vi(31);
+        // 给i分解质因数
 
-        vector<int> i_ms(32);
-        // 计算某个数 是不是 有包含这个质数
+        vector<int> PRIMES = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
+        unordered_map<int, int> num_to_p_index;
+        for (int i = 0; i < PRIMES.size(); i++)
+        {
+            num_to_p_index[PRIMES[i]] = i;
+        }
         for (int i = 2; i <= 30; i++)
         {
-            for (int j = 0; j < PRIMES.size(); j++)
+
+            unordered_map<int, int> temp = get_primes_list(i);
+
+            for (pair<int, int> pp : temp)
             {
-                int cur_p = PRIMES[j];
-                if (i % cur_p == 0)
+                if (pp.second > 1)
                 {
-                    if ((i % (cur_p * cur_p)) == 0)
-                    {
-                        i_ms[i] = -1;
-                        break;
-                    }
-                    i_ms[i] = set_bit_1(i_ms[i], j);
+                    vi[i] = -1;
+                    break;
                 }
+                vi[i] = set_bit_1(vi[i], num_to_p_index[pp.first]);
             }
         }
 
-        vector<int> vi(2000);
-        // 空集合
-        vi[0] = 1;
+        vector<int> result(2000);
+        result[0] = 1;
+
         int e9 = 1e9 + 7;
-        for (int num : nums)
-        {
-            int num_ms = i_ms[num];
-            if (num_ms >= 0)
-            {
-                for (int check = 1024; check >= num_ms; check--)
-                {
-                    if ((check | num_ms) == check)
-                    {
 
-                        vi[check] = (vi[check] + vi[check ^ num_ms]) % e9;
-                        // std::cout << "(" << check << "," << vi[check] << ")";
+        // result[msk] = 1 数量是msk的数量
+        for (int x : nums)
+        {
+            // x拥有的质因子
+            int x_msk = vi[x];
+
+            if (x_msk >= 0)
+            {
+                // y 质因子的结果数
+                for (int all_msk = 1024; all_msk >= x_msk; all_msk--)
+                {
+                    if ((all_msk | x_msk) == all_msk)
+                    {
+                        result[all_msk] = (result[all_msk] + result[all_msk ^ x_msk]);
+                        result[all_msk] %= e9;
                     }
                 }
             }
         }
-
-        int result = 0;
-        vi[0]--;
-        for (int i = 0; i < vi.size(); i++)
+        result[0]--;
+        int int_result = 0;
+        for (int i = 0; i < result.size(); i++)
         {
-            result += vi[i];
-            result %= e9;
+            int_result += result[i];
+            int_result %= e9;
         }
+        return int_result;
+    }
 
+    unordered_map<int, int> get_primes_list(int n)
+    {
+        unordered_map<int, int> result;
+        int num = n;
+        while (num > 1)
+        {
+            for (int i = 2; i <= n; i++)
+            {
+                while (num > 1 && num % i == 0)
+                {
+                    result[i]++;
+                    num /= i;
+                }
+            }
+        }
         return result;
     }
 };
