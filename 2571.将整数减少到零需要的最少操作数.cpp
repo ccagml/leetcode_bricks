@@ -85,36 +85,6 @@ public:
     int minOperations(int n)
     {
 
-        int result = 0;
-        // 二进制
-        int cnt = 0;
-        vector<int> temp;
-        for (int i = 31; i >= 0; i--)
-        {
-
-            if (is_bit_1(n, i))
-            {
-                cnt++;
-            }
-            else
-            {
-                // 0 后面是1
-                int next = i - 1;
-                int nnext = i - 2;
-                if (nnext >= 0 && ((cnt >= 2 && is_bit_1(n, next)) || (cnt == 1 && is_bit_1(n, next) && is_bit_1(n, nnext))))
-                {
-                    result++;
-                    cnt++;
-                }
-                else
-                {
-                    result += min(2, cnt);
-                    cnt = 0;
-                }
-            }
-        }
-        result += min(2, cnt);
-
         return result;
     }
 };
