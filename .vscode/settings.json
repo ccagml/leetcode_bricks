@@ -117,4 +117,10 @@
     "editor.formatOnSave": true, // optional
     "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: LLVM, UseTab: Never, IndentWidth: 4, TabWidth: 4, BreakBeforeBraces: Allman, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: false, ColumnLimit: 0, AccessModifierOffset: -4, NamespaceIndentation: All, FixNamespaceComments: false }",
     "C_Cpp.default.intelliSenseMode": "",
+    "leetcode-problem-rating.filePath": {
+        "default": {
+            "folder": "",
+            "filename": "${id}.${kebab-case-name}_${yyyymmdd}.${ext}"
+        }
+    },
 }
