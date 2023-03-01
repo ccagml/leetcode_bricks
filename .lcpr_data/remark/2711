@@ -1,0 +1,1 @@
+{"data":[{"name":"2023-03-01 16:56:02","id":1677660962310,"body":"调了很久\n想到 01, 10 都大于 1就 -1\n需要dp[i][j] 判断最小到达\n\n想不到用dijikaster\n\nAccepted\n40/40 cases passed (456 ms)\nYour runtime beats 65.43 % of cpp submissions\nYour memory usage beats 54.47 % of cpp submissions (49.8 MB)\n耗时 0:56:21\n\n"}]}
