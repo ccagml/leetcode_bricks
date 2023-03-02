@@ -108,6 +108,7 @@ private:
     // 真正递推
     void pushdown(int node_id, long long add)
     {
+
         // 需要递推
         // 继续下推
         int cur_l = node_left[node_id];
@@ -192,21 +193,62 @@ public:
     vector<long long> node_val;
     vector<long long> node_sum;
     vector<long long> node_temp_add;
-
+    vector<int> node_leaf; // 叶子节点对应的node_id
+    int all_left;
+    int all_right;
     segmentTree(int need_value, int left, int right)
     {
+        all_left = left;
+        all_right = right;
         // 整个数的节点大概是2倍的叶子节点
         int MX = 4 * need_value + 2;
 
         node_left.resize(MX, default_left_right);
         node_right.resize(MX, default_left_right);
-        node_left[first_id] = left;
-        node_right[first_id] = right;
 
-        node_push_down_flag.resize(MX, false);
+        node_push_down_flag.resize(MX, true);
         node_val.resize(MX, 0);
         node_sum.resize(MX, 0);
         node_temp_add.resize(MX, 0);
+        node_leaf.resize(need_value + 1);
+
+        build_tree(first_id, left, right);
+    }
+
+    // 初始化整个树
+    void build_tree(int node_id, int cur_l, int cur_r)
+    {
+
+        if (node_id >= node_left.size())
+        {
+            return;
+        }
+
+        node_left[node_id] = cur_l;
+        node_right[node_id] = cur_r;
+
+        // 叶子节点
+        if (cur_l == cur_r)
+        {
+            // cout << "(" << node_leaf.size() << "," << cur_l << "," << node_id << ")";
+            node_leaf[cur_l] = node_id;
+        }
+        else
+        {
+            int mid = (cur_l + cur_r) >> 1;
+            build_tree(node_id * 2, cur_l, mid);
+            build_tree(node_id * 2 + 1, (mid + 1), cur_r);
+        }
+    }
+
+    void init_leaf(vector<int> &nums1)
+    {
+        for (int i = 0; i < nums1.size(); i++)
+        {
+            int leaf_node_id = node_leaf[i];
+            node_val[leaf_node_id] = nums1[i];
+        }
+        pushdown(first_id, 0);
     }
 
     // 检查初始化
@@ -228,6 +270,15 @@ public:
     {
         return query_sum(first_id, l, r);
     }
+    void print_tree()
+    {
+        cout << "[";
+        for (int i = all_left; i <= all_right; i++)
+        {
+            cout << query_sum(i, i) << ",";
+        }
+        cout << "]" << std::endl;
+    }
 };
 
 class Solution
@@ -235,6 +286,7 @@ class Solution
 public:
     vector<long long> handleQuery(vector<int> &nums1, vector<int> &nums2, vector<vector<int>> &queries)
     {
+
         segmentTree *st = new segmentTree(nums1.size(), 0, nums1.size());
         long long cur_sum = 0;
         for (int j : nums2)
@@ -242,14 +294,8 @@ public:
             cur_sum += j;
         }
 
-        for (int i = 0; i < nums1.size(); i++)
-        {
-            if (nums1[i] == 1)
-            {
-                st->modify(i, i, 1);
-            }
-        }
-
+        st->init_leaf(nums1);
+        // st->print_tree();
         vector<long long> result;
         for (int i = 0; i < queries.size(); i++)
         {
@@ -261,7 +307,7 @@ public:
             {
                 st->modify(b, c, 1);
                 // st->print_tree();
-                // int jj = 0;
+                int jj = 1;
             }
             else if (a == 2)
             {
