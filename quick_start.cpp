@@ -1372,6 +1372,161 @@ void seg_tree()
     };
 }
 
+void test_seg_time_out()
+{
+    // 使用vector存数据,好像还是会超时
+    class segmentTree
+    {
+    private:
+        void pushup(int node_id)
+        {
+            node_sum[node_id] = node_sum[left_right_son_id[node_id].first] + node_sum[left_right_son_id[node_id].second];
+        }
+
+        void wait_pushdown(int node_id, long long add)
+        {
+            // 到底了
+            int left = left_right_range[node_id].first;
+            int right = left_right_range[node_id].second;
+
+            if (left == right)
+            {
+                node_val[node_id] = ((node_val[node_id] + add) % 2);
+                node_sum[node_id] = node_val[node_id];
+            }
+            else
+            {
+                node_temp_add[node_id] += add;
+            }
+        }
+
+        // 真正递推
+        void pushdown(int node_id, long long add)
+        {
+            // 需要递推
+            // 继续下推
+            int cur_l = left_right_range[node_id].first;
+            int cur_r = left_right_range[node_id].second;
+            int mid = (cur_l + cur_r) >> 1;
+            if (left_right_son_id[node_id].first == -1)
+            {
+                int left_son_id = create_node(cur_l, mid);
+                left_right_son_id[node_id].first = left_son_id;
+            }
+            if (left_right_son_id[node_id].second == -1)
+            {
+                int right_son_id = create_node((mid + 1), cur_r);
+                left_right_son_id[node_id].second = right_son_id;
+            }
+
+            // 到底了
+            if (cur_l == cur_r)
+            {
+                node_val[node_id] = ((node_val[node_id] + add) % 2);
+                node_sum[node_id] = node_val[node_id];
+                return;
+            }
+            long long next_add = add + node_temp_add[node_id];
+            if (node_push_down_flag[node_id] || next_add > 0)
+            {
+                pushdown(left_right_son_id[node_id].first, next_add);
+                pushdown(left_right_son_id[node_id].second, next_add);
+                pushup(node_id);
+                node_push_down_flag[node_id] = false;
+                node_temp_add[node_id] = 0;
+            }
+        }
+
+        void modify(int node_id, int need_L, int need_R, long long add)
+        {
+            int cur_l = left_right_range[node_id].first;
+            int cur_r = left_right_range[node_id].second;
+
+            node_push_down_flag[node_id] = true;
+            //  cur_l   need_L  need_R  cur_r
+            //  范围外
+            if (cur_l > need_R || cur_r < need_L)
+            {
+                return;
+            }
+
+            // 全包含了,不往下递推
+            if (need_L <= cur_l && cur_r <= need_R)
+            {
+                wait_pushdown(node_id, add);
+                return;
+            }
+
+            // 继续下推
+            int mid = (cur_l + cur_r) >> 1;
+            if (left_right_son_id[node_id].first == -1)
+            {
+                int left_son_id = create_node(cur_l, mid);
+                left_right_son_id[node_id].first = left_son_id;
+            }
+            if (left_right_son_id[node_id].second == -1)
+            {
+                int right_son_id = create_node((mid + 1), cur_r);
+                left_right_son_id[node_id].second = right_son_id;
+            }
+
+            modify(left_right_son_id[node_id].first, need_L, need_R, add);
+            modify(left_right_son_id[node_id].second, need_L, need_R, add);
+            // pushup(cur_node);
+        }
+
+        long long query_sum(int node_id, int NEED_L, int NEED_R)
+        {
+            pushdown(node_id, 0);
+            int cur_l = left_right_range[node_id].first;
+            int cur_r = left_right_range[node_id].second;
+            if (cur_l > NEED_R || cur_r < NEED_L)
+                return 0;
+            if (NEED_L <= cur_l && cur_r <= NEED_R)
+                return node_sum[node_id];
+            // pushdown(cur_node, 0);
+            long mid = (cur_l + cur_r) >> 1;
+            return query_sum(left_right_son_id[node_id].first, NEED_L, NEED_R) + query_sum(left_right_son_id[node_id].second, NEED_L, NEED_R);
+        }
+
+    public:
+        vector<pair<int, int>> left_right_range;
+        vector<pair<int, int>> left_right_son_id;
+        segmentTree(int left, int right)
+        {
+            create_node(left, right);
+        }
+
+        // 额外的数据
+        vector<bool> node_push_down_flag;
+        vector<long long> node_val;
+        vector<long long> node_sum;
+        vector<long long> node_temp_add;
+
+        // 创建一个新的点信息
+        int create_node(int left, int right)
+        {
+            left_right_range.push_back({left, right});
+            left_right_son_id.push_back({-1, -1});
+            node_push_down_flag.push_back(false);
+            node_val.push_back(0);
+            node_sum.push_back(0);
+            node_temp_add.push_back(0);
+            return left_right_range.size() - 1;
+        }
+
+        void modify(int l, int r, long long add)
+        {
+            modify(0, l, r, add);
+        }
+
+        long long query_sum(int l, int r)
+        {
+            return query_sum(0, l, r);
+        }
+    };
+}
+
 vector<int> get_pre_sum(vector<int> &nums)
 {
     vector<int> result;
