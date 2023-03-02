@@ -1210,6 +1210,168 @@ void test_segment_tree()
     ;
 }
 
+void seg_tree()
+{
+    // 延迟递推,好像会超时,很慢的线段是
+    class segmentTree
+    {
+    private:
+        class segmentTreeNode
+        {
+        public:
+            segmentTreeNode(int l, int r)
+            {
+                left = l;
+                right = r;
+                val = 0;
+                temp_add = 0;
+                sum = 0;
+                left_son = nullptr;
+                right_son = nullptr;
+                push_down_flag = true;
+            }
+            int id;
+            int left;
+            int right;
+            int sum = 0;
+            bool push_down_flag;
+            long long val;
+            long long temp_add;
+            segmentTreeNode *left_son;
+            segmentTreeNode *right_son;
+        };
+
+        int all_left, all_right;
+
+        void pushup(segmentTreeNode *cur_node)
+        {
+            cur_node->sum = (cur_node->left_son->sum + cur_node->right_son->sum);
+        }
+
+        void wait_pushdown(segmentTreeNode *cur_node, long long add)
+        {
+            // 到底了
+            if (cur_node->left == cur_node->right)
+            {
+                cur_node->val = ((cur_node->val + add) % 2);
+                cur_node->sum = cur_node->val;
+            }
+            else
+            {
+                cur_node->temp_add += add;
+            }
+        }
+
+        // 真正递推
+        void pushdown(segmentTreeNode *cur_node, long long add)
+        {
+            // 需要递推
+            // 继续下推
+            int mid = (cur_node->left + cur_node->right) >> 1;
+            if (cur_node->left_son == nullptr)
+            {
+                cur_node->left_son = new segmentTreeNode(cur_node->left, mid);
+            }
+            if (cur_node->right_son == nullptr)
+            {
+                cur_node->right_son = new segmentTreeNode((mid + 1), cur_node->right);
+            }
+
+            // 到底了
+            if (cur_node->left == cur_node->right)
+            {
+                cur_node->val = ((cur_node->val + add) % 2);
+                cur_node->sum = cur_node->val;
+                return;
+            }
+            long long next_add = add + cur_node->temp_add;
+            if (cur_node->push_down_flag || next_add > 0)
+            {
+                pushdown(cur_node->left_son, next_add);
+                pushdown(cur_node->right_son, next_add);
+                pushup(cur_node);
+                cur_node->push_down_flag = false;
+                cur_node->temp_add = 0;
+            }
+        }
+
+        void modify(segmentTreeNode *cur_node, int cur_l, int cur_r, int need_L, int need_R, long long add)
+        {
+            cur_node->push_down_flag = true;
+            //  cur_l   need_L  need_R  cur_r
+            //  范围外
+            if (cur_l > need_R || cur_r < need_L)
+            {
+                return;
+            }
+
+            // 全包含了,不往下递推
+            if (need_L <= cur_l && cur_r <= need_R)
+            {
+                wait_pushdown(cur_node, add);
+                return;
+            }
+
+            // 继续下推
+            int mid = (cur_l + cur_r) >> 1;
+            if (cur_node->left_son == nullptr)
+            {
+                cur_node->left_son = new segmentTreeNode(cur_l, mid);
+            }
+            if (cur_node->right_son == nullptr)
+            {
+                cur_node->right_son = new segmentTreeNode((mid + 1), cur_r);
+            }
+            modify(cur_node->left_son, cur_l, mid, need_L, need_R, add);
+            modify(cur_node->right_son, mid + 1, cur_r, need_L, need_R, add);
+            // pushup(cur_node);
+        }
+
+        segmentTreeNode *root;
+        long long query_sum(segmentTreeNode *cur_node, int cur_l, int cur_r, int NEED_L, int NEED_R)
+        {
+            pushdown(cur_node, 0);
+            if (cur_l > NEED_R || cur_r < NEED_L)
+                return 0;
+            if (NEED_L <= cur_l && cur_r <= NEED_R)
+                return cur_node->sum;
+            // pushdown(cur_node, 0);
+            long mid = (cur_l + cur_r) >> 1;
+            return query_sum(cur_node->left_son, cur_l, mid, NEED_L, NEED_R) + query_sum(cur_node->right_son, mid + 1, cur_r, NEED_L, NEED_R);
+        }
+
+    public:
+        segmentTree(int left, int right)
+        {
+
+            root = new segmentTreeNode(left, right);
+            all_left = left;
+            all_right = right;
+            // build(root, all_left, all_right, _initValue);
+        }
+
+        void modify(int l, int r, long long add)
+        {
+            modify(root, all_left, all_right, l, r, add);
+        }
+
+        long long query_sum(int l, int r)
+        {
+            return query_sum(root, all_left, all_right, l, r);
+        }
+        void print_tree()
+        {
+            std::cout << "[";
+            for (int j = all_left; j <= all_right; j++)
+            {
+                std::cout << query_sum(j, j) << ",";
+            }
+            std::cout << "]" << std::endl;
+            ;
+        }
+    };
+}
+
 vector<int> get_pre_sum(vector<int> &nums)
 {
     vector<int> result;
