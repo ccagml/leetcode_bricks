@@ -193,7 +193,7 @@ public:
     vector<long long> node_val;
     vector<long long> node_sum;
     vector<long long> node_temp_add;
-    vector<int> node_leaf; // 叶子节点对应的node_id
+    vector<int> leaf_node_; // 叶子节点对应的node_id
     int all_left;
     int all_right;
     segmentTree(int need_value, int left, int right)
@@ -206,11 +206,11 @@ public:
         node_left.resize(MX, default_left_right);
         node_right.resize(MX, default_left_right);
 
-        node_push_down_flag.resize(MX, true);
+        node_push_down_flag.resize(MX, false);
         node_val.resize(MX, 0);
         node_sum.resize(MX, 0);
         node_temp_add.resize(MX, 0);
-        node_leaf.resize(need_value + 1);
+        leaf_node_.resize(need_value + 1);
 
         build_tree(first_id, left, right);
     }
@@ -230,8 +230,8 @@ public:
         // 叶子节点
         if (cur_l == cur_r)
         {
-            // cout << "(" << node_leaf.size() << "," << cur_l << "," << node_id << ")";
-            node_leaf[cur_l] = node_id;
+            // cout << "(" << leaf_node_.size() << "," << cur_l << "," << node_id << ")";
+            leaf_node_[cur_l] = node_id;
         }
         else
         {
@@ -245,10 +245,29 @@ public:
     {
         for (int i = 0; i < nums1.size(); i++)
         {
-            int leaf_node_id = node_leaf[i];
+            int leaf_node_id = leaf_node_[i];
             node_val[leaf_node_id] = nums1[i];
+            node_sum[leaf_node_id] = nums1[i];
         }
-        pushdown(first_id, 0);
+        init_sum(first_id);
+    }
+
+    void init_sum(int node_id)
+    {
+        if (node_id >= node_left.size())
+        {
+            return;
+        }
+        int cur_l = node_left[node_id];
+        int cur_r = node_right[node_id];
+        if (cur_l == cur_r)
+        {
+            return;
+        }
+
+        init_sum(node_id * 2);
+        init_sum(node_id * 2 + 1);
+        pushup(node_id);
     }
 
     // 检查初始化
@@ -307,7 +326,6 @@ public:
             {
                 st->modify(b, c, 1);
                 // st->print_tree();
-                int jj = 1;
             }
             else if (a == 2)
             {
