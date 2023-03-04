@@ -87,7 +87,8 @@ class Solution
 public:
     int countTriplets(vector<int> &nums)
     {
-        vector<int> temp(65537);
+        // vector<int> temp(65537);
+        unordered_map<int, int> uii;
         for (int i = 0; i < nums.size(); i++)
         {
             for (int j = 0; j < nums.size(); j++)
@@ -95,18 +96,18 @@ public:
                 int new_k = nums[i] & nums[j];
                 // std::cout << nums[i] << "&" << nums[j] << "=" << new_k << ")";
 
-                temp[new_k]++;
+                uii[new_k]++;
             }
         }
         std::cout << std::endl;
         int result = 0;
         for (int i : nums)
         {
-            for (int j = 0; j < temp.size(); j++)
+            for (pair<int, int> pii : uii)
             {
-                if ((i & j) == 0)
+                if ((i & pii.first) == 0)
                 {
-                    result += temp[j];
+                    result += pii.second;
                 }
             }
         }
