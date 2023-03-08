@@ -2054,6 +2054,26 @@ unordered_map<int, int> get_primes_list(int n)
     return result;
 }
 
+// 更快速的分解质因数
+unordered_set<int> get_primes_list_fast(int x)
+{
+    unordered_set<int> result;
+    for (int d = 2; d * d <= x; ++d)
+    { // 分解质因数
+        if (x % d == 0)
+        {
+            result.insert(d);
+            for (x /= d; x % d == 0; x /= d)
+                ;
+        }
+    }
+    if (x > 1)
+    {
+        result.insert(x);
+    }
+    return result;
+}
+
 int_fast8_t main(int argc, char const *argv[])
 {
     // test_pair();

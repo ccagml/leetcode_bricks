@@ -87,9 +87,9 @@ class Solution
 {
 public:
     // 分解质因数
-    unordered_map<int, int> get_primes_list(int n)
+    unordered_set<int> get_primes_list(int n)
     {
-        unordered_map<int, int> result;
+        unordered_set<int> result;
         int num = n;
         while (num > 1)
         {
@@ -97,7 +97,7 @@ public:
             {
                 while (num > 1 && num % i == 0)
                 {
-                    result[i]++;
+                    result.insert(i);
                     num /= i;
                 }
             }
@@ -105,47 +105,57 @@ public:
         return result;
     }
 
+    unordered_set<int> fff(int x)
+    {
+        unordered_set<int> result;
+        for (int d = 2; d * d <= x; ++d)
+        { // 分解质因数
+            if (x % d == 0)
+            {
+                result.insert(d);
+                for (x /= d; x % d == 0; x /= d)
+                    ;
+            }
+        }
+        if (x > 1)
+        {
+            result.insert(x);
+        }
+        return result;
+    }
+
     int findValidSplit(vector<int> &nums)
     {
 
-        unordered_map<int, unordered_map<int, int>> uivi;
+        unordered_map<int, unordered_set<int>> uivi;
 
-        unordered_map<int, int> left;
         unordered_map<int, int> right;
+        vector<int> nums_right(nums.size());
 
         for (int i = 0; i < nums.size(); i++)
         {
             int j = nums[i];
             if (uivi.count(j) < 1)
             {
-                uivi[j] = get_primes_list(j);
+                uivi[j] = fff(j);
             }
-            for (pair<int, int> pii : uivi[j])
+            for (int p : uivi[j])
             {
-                if (left.count(pii.first) < 1)
-                {
-                    left[pii.first] = i;
-                }
-                right[pii.first] = i;
+                right[p] = i;
             }
         }
 
-        int cur = -1;
-
+        int cur_cut = 0;
         for (int i = 0; i < nums.size(); i++)
         {
             int j = nums[i];
-            if (uivi.count(j) < 1)
+            for (int p : uivi[j])
             {
-                uivi[j] = get_primes_list(j);
+                cur_cut = max(cur_cut, right[p]);
             }
-            for (pair<int, int> pii : uivi[j])
+            if (cur_cut <= i)
             {
-                if (left.count(pii.first) < 1)
-                {
-                    left[pii.first] = i;
-                }
-                right[pii.first] = i;
+                return (i < nums.size() - 1) ? i : -1;
             }
         }
 
