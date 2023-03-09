@@ -865,6 +865,33 @@ void test_lower_bound()
         std::cout << '\n';
     }
 }
+
+int test_two_bouns()
+{
+    int left = 0;
+    int right = 100;
+    auto check = [](int a)
+    {
+        return true;
+    };
+    while (left < right)
+    {
+        int mid = (left + right + 1) / 2;
+
+        // [left, mid - 1]
+        // [mid, right]
+        if (check(mid))
+        {
+            left = mid;
+        }
+        else
+        {
+            right = mid - 1;
+        }
+    }
+    return left * 2;
+}
+
 // 第一个大于 i
 // 二分
 void test_upper_bound()
