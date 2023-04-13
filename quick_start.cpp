@@ -1872,6 +1872,30 @@ int test_spfa_bellman_pri_que(int n, vector<vector<int>> &edges, int distanceThr
     return id;
 }
 
+// 开方
+long long mysqrt(long long a)
+{
+    long long min = 0;
+    // long long max=1<<32;
+    long long max = ((long long)1) << 32; // chux' bugfix
+    while (1)
+    {
+        if (max <= 1 + min)
+            return min;
+
+        long long sqt = min + (max - min) / 2;
+        long long sq = sqt * sqt;
+
+        if (sq == a)
+            return sqt;
+
+        if (sq > a)
+            max = sqt;
+        else
+            min = sqt;
+    };
+}
+
 int mykmp(string &text, string &pattern)
 {
     // 计算前
