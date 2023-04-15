@@ -161,29 +161,36 @@ void vectori(vector<T> &v, U x, size_t n, size_t m...)
         vectori(a, x, m);
 }
 
-void solve(int k, int l, int m, int n, int d)
+void solve(vector<int> c)
 {
     int result = 0;
-    for (int i = 1; i <= d; i++)
+    bool flag = true;
+    for (int i = 0; i < c.size(); i++)
     {
-        if (i % k == 0)
+        if (c[i] != c[0])
         {
-            result++;
+            flag = false;
         }
-        else if (i % l == 0)
+        if (c[i] > c[result])
         {
-            result++;
+            result = i;
         }
-        else if (i % m == 0)
-        {
-            result++;
-        }
-        else if (i % n == 0)
+    }
+    if (flag)
+    {
+        write(-1);
+        print();
+        return;
+    }
+    if (result == 0)
+    {
+        while (c[result] == c[result + 1])
         {
             result++;
         }
     }
-    write(result);
+    write(result + 1);
+    print();
 }
 
 int main()
@@ -191,21 +198,16 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    char c;
-    unordered_set<char> usc;
-    while (true)
+    int a;
+    read(a);
+    for (int i = 0; i < a; i++)
     {
+        int b;
+        read(b);
+        vector<int> c(b);
         read(c);
-        if (c == '}')
-        {
-            break;
-        }
-        else if (c >= 'a' && c <= 'z')
-        {
-            usc.insert(c);
-        }
+        solve(c);
     }
-    int result = usc.size();
-    write(result);
+
     return 0;
 }
