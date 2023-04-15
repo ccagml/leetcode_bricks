@@ -161,74 +161,35 @@ void vectori(vector<T> &v, U x, size_t n, size_t m...)
         vectori(a, x, m);
 }
 
-void solve(int b)
+void solve(int k, int l, int m, int n, int d)
 {
-    vector<int> v1;
-    vector<int> v2;
-    int max_v = b * 2;
-    int min_v = 1;
-    int flag = true;
-    while (max_v > min_v)
+    int result = 0;
+    for (int i = 1; i <= d; i++)
     {
-        if (flag)
+        if (i % k == 0)
         {
-            v1.push_back(max_v);
-            v2.push_back(min_v);
-            flag = false;
-            max_v--;
-            min_v++;
+            result++;
         }
-        else
+        else if (i % l == 0)
         {
-            if (v2.size() < b)
-            {
-                v2.push_back(max_v);
-                max_v--;
-            }
-            if (v2.size() < b)
-            {
-                v2.push_back(min_v);
-                min_v++;
-            }
+            result++;
         }
-        if (v2.size() == b)
+        else if (i % m == 0)
         {
-            if (v1.size() < b)
-            {
-                v1.push_back(max_v);
-                max_v--;
-            }
-            if (v1.size() < b)
-            {
-                v1.push_back(min_v);
-                min_v++;
-            }
+            result++;
+        }
+        else if (i % n == 0)
+        {
+            result++;
         }
     }
-    if (v1.size() < b)
-    {
-        v1.push_back(min_v);
-        min_v++;
-    }
-    write(v1);
-    print();
-    write(v2);
-    print();
+    write(result);
 }
 
 int main()
 {
-    int n, i, t;
-    cin >> t;
-    while (cin >> n)
-    {
-        for (i = 0; i < n / 2; ++i)
-            cout << 2 * n - 2 * i << ' ' << 2 * i + 2 << ' ';
-        cout << endl;
-        for (i = 0; i < n / 2; ++i)
-            cout << 2 * i + 1 << ' ' << n + 2 * i + 1 << ' ';
-        cout << endl;
-    }
+    ios::sync_with_stdio(0);
+    cin.tie(0);
 
     return 0;
 }
