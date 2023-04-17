@@ -104,23 +104,10 @@ void write(A x)
 {
     cout << to_string(x);
 }
-template <class H, class... T>
-void write(const H &h, const T &...t)
-{
-    write(h);
-    write(t...);
-}
+
 void print()
 {
     write("\n");
-}
-template <class H, class... T>
-void print(const H &h, const T &...t)
-{
-    write(h);
-    if (sizeof...(t))
-        write(' ');
-    print(t...);
 }
 
 void solve(int b)
