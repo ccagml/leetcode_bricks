@@ -10,10 +10,6 @@ using namespace std;
 #define F_ORC(...) GET5(__VA_ARGS__, F_OR4, F_OR3, F_OR2, F_OR1)
 #define FOR(...) F_ORC(__VA_ARGS__)(__VA_ARGS__)
 
-template <class A>
-void read(vector<A> &v);
-template <class A, size_t S>
-void read(array<A, S> &a);
 template <class T>
 void read(T &x)
 {
@@ -121,44 +117,6 @@ void print(const H &h, const T &...t)
     if (sizeof...(t))
         write(' ');
     print(t...);
-}
-
-template <class T>
-void offset(long long o, T &x)
-{
-    x += o;
-}
-template <class T>
-void offset(long long o, vector<T> &x)
-{
-
-    for (auto &a : x)
-        offset(o, a);
-}
-template <class T, size_t S>
-void offset(long long o, array<T, S> &x)
-{
-    for (auto &a : x)
-        offset(o, a);
-}
-
-mt19937 mt_rng(chrono::steady_clock::now().time_since_epoch().count());
-long long randint(long long a, long long b)
-{
-    return uniform_int_distribution<long long>(a, b)(mt_rng);
-}
-
-template <class T, class U>
-void vectori(vector<T> &v, U x, size_t n)
-{
-    v = vector<T>(n, x);
-}
-template <class T, class U>
-void vectori(vector<T> &v, U x, size_t n, size_t m...)
-{
-    v = vector<T>(n);
-    for (auto &a : v)
-        vectori(a, x, m);
 }
 
 void solve(int k, int n)
