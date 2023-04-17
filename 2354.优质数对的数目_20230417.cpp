@@ -107,35 +107,25 @@ public:
             usi.insert(nums[i]);
         }
         vector<int> temp;
+        vector<long long> cal_1(33);
         for (auto p : usi)
         {
             umii[p] = check(p);
             temp.push_back(p);
         }
+
         for (int i = 0; i < temp.size(); i++)
         {
             int cur = temp[i];
-            if (umii[cur] + umii[cur] >= k)
+            int cur_1 = umii[cur];
+            cal_1[cur_1]++;
+            int need_other = max(0, k - cur_1);
+            for (int j = need_other; j < 33; j++)
             {
-                result += 1;
-            }
-            for (int j = i + 1; j < temp.size(); j++)
-            {
-                int and_i = temp[i] & temp[j];
-                int or_i = temp[i] | temp[j];
-                if (umii.count(and_i) < 1)
+                result += (cal_1[j] * 2);
+                if (cur_1 == j)
                 {
-                    umii[and_i] = check(and_i);
-                }
-
-                if (umii.count(or_i) < 1)
-                {
-                    umii[or_i] = check(or_i);
-                }
-
-                if (umii[and_i] + umii[or_i] >= k)
-                {
-                    result += 2;
+                    result -= 1;
                 }
             }
         }
@@ -156,6 +146,10 @@ public:
 
 // @lcpr case=start
 // [5,1,1]\n10\n
+// @lcpr case=end
+
+// @lcpr case=start
+// [1,2,3,1,536870911]\n3\n
 // @lcpr case=end
 
  */
