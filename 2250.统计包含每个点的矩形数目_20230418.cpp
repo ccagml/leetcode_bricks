@@ -1,3 +1,7 @@
+// @lcpr-before-debug-begin
+
+// @lcpr-before-debug-end
+
 /*
  * @lc app=leetcode.cn id=2250 lang=cpp
  * @lcpr version=21906
@@ -92,9 +96,41 @@ class Solution
 public:
     vector<int> countRectangles(vector<vector<int>> &rectangles, vector<vector<int>> &points)
     {
+        vector<vector<int>> vvii(101);
+        for (int i = 0; i < rectangles.size(); i++)
+        {
+            int li = rectangles[i][0];
+            int hi = rectangles[i][1];
+            vvii[hi].push_back(li);
+        }
+        for (int i = 0; i < 101; i++)
+        {
+            sort(vvii[i].begin(), vvii[i].end());
+        }
+        vector<int> result(points.size());
+        for (int i = 0; i < points.size(); i++)
+        {
+            int px = points[i][0];
+            int ph = points[i][1];
+            for (int hi = ph; hi <= 100; hi++)
+            {
+
+                auto lower = std::lower_bound(vvii[hi].begin(), vvii[hi].end(), px);
+                if (lower != vvii[hi].end())
+                {
+                    result[i] += (vvii[hi].size() - std::distance(vvii[hi].begin(), lower));
+                }
+            }
+        }
+        return result;
     }
 };
 // @lc code=end
+
+// @lcpr-div-debug-arg-start
+// funName=countRectangles
+// paramTypes= ["number[][]","number[][]"]
+// @lcpr-div-debug-arg-end
 
 /*
 // @lcpr case=start
