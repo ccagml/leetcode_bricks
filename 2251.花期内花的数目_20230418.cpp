@@ -75,57 +75,24 @@ using namespace std;
 class Solution
 {
 public:
-    vector<int> fullBloomFlowers(vector<vector<int>> &flowers, vector<int> &people)
+    vector<int> fullBloomFlowers(vector<vector<int>> &flowers, vector<int> &persons)
     {
-        unordered_map<int, vector<int>> umivi;
-        for (int i = 0; i < flowers.size(); i++)
+        int n = flowers.size();
+        vector<int> starts(n), ends(n);
+        for (int i = 0; i < n; ++i)
         {
-            umivi[flowers[i][0]].push_back(flowers[i][1]);
+            starts[i] = flowers[i][0];
+            ends[i] = flowers[i][1];
         }
+        sort(starts.begin(), starts.end());
+        sort(ends.begin(), ends.end());
 
-        vector<pair<int, vector<int>>> vpi;
-        for (pair<int, vector<int>> pv : umivi)
-        {
-            sort(pv.second.begin(), pv.second.end());
-            vpi.push_back(pv);
-        }
-        sort(vpi.begin(), vpi.end());
-        unordered_set<int> us;
-        for (int j : people)
-        {
-            us.insert(j);
-        }
-        vector<int> vi;
-        for (int p : us)
-        {
-            vi.push_back(p);
-        }
-        sort(vi.begin(), vi.end());
-        unordered_map<int, int> umii;
-        for (int i = 0; i < vi.size(); i++)
-        {
-            int cur = vi[i];
-            // 开始小于等于 cur, 结束 大于等于 cur
-            int cur_has = 0;
-            for (int left = 0; left < vpi.size(); left++)
-            {
-                if (vpi[left].first > cur)
-                {
-                    break;
-                }
-
-                // 第一个大于等于 i 的位置
-                auto lower = std::lower_bound(vpi[left].second.begin(), vpi[left].second.end(), cur);
-                cur_has += (vpi[left].second.end() - lower);
-            }
-            umii[cur] = cur_has;
-        }
-        vector<int> result;
-        for (int p : people)
-        {
-            result.push_back(umii[p]);
-        }
-        return result;
+        n = persons.size();
+        vector<int> ans(n);
+        for (int i = 0; i < n; ++i)
+            ans[i] = (upper_bound(starts.begin(), starts.end(), persons[i]) - starts.begin()) -
+                     (lower_bound(ends.begin(), ends.end(), persons[i]) - ends.begin());
+        return ans;
     }
 };
 // @lc code=end
