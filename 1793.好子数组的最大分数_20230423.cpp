@@ -74,50 +74,49 @@ class Solution
 public:
     int maximumScore(vector<int> &nums, int k)
     {
+        int result = nums[k];
+        int left = k;
+        int right = k;
+        // 大的往外移动
+        int cur_min = nums[k];
+        while (left >= 0 && right < nums.size())
+        {
+            while (left >= 0 && nums[left] >= cur_min)
+            {
+                left--;
+            }
+            while (right < nums.size() && nums[right] >= cur_min)
+            {
+                right++;
+            }
+            result = max(result, cur_min * (right - left - 1));
+            if (left >= 0 && right < nums.size())
+            {
+                cur_min = min(cur_min, max(nums[left], nums[right]));
+            }
+            else if (left >= 0)
+            {
+                cur_min = min(cur_min, nums[left]);
+            }
+            else if (right < nums.size())
+            {
+                cur_min = min(cur_min, nums[right]);
+            }
+        }
+        while (left >= 0 && nums[left] >= cur_min)
+        {
+            cur_min = min(cur_min, nums[left]);
+            result = max(result, cur_min * (right - left));
+            left--;
+        }
+        while (right < nums.size() && nums[right] >= cur_min)
+        {
+            cur_min = min(cur_min, nums[right]);
+            result = max(result, cur_min * (right - left));
+            right++;
+        }
 
-        int n = nums.size();
-        vector<int> left(n, -1);
-        vector<int> right(n, n);
-        stack<pair<int, int>> sp;
-        for (int j = 0; j < n; j++)
-        {
-            int cur = nums[j];
-            while (sp.size() > 0 && sp.top().first >= cur)
-            {
-                sp.pop();
-            }
-            if (sp.size() > 0)
-            {
-                left[j] = sp.top().second;
-            }
-            sp.push({cur, j});
-        }
-        stack<pair<int, int>> sp1;
-        for (int j = n - 1; j >= 0; j--)
-        {
-            int cur = nums[j];
-            while (sp1.size() > 0 && sp1.top().first >= cur)
-            {
-                sp1.pop();
-            }
-            if (sp1.size() > 0)
-            {
-                right[j] = sp1.top().second;
-            }
-            sp1.push({cur, j});
-        }
-        int temp = 0;
-        for (int i = 0; i < nums.size(); i++)
-        {
-            int cur = nums[i];
-            int left_v = left[i];
-            int right_v = right[i];
-            if (left_v + 1 <= k && k <= right_v - 1)
-            {
-                temp = max(temp, cur * (right_v - left_v - 1));
-            }
-        }
-        return temp;
+        return result;
     }
 };
 // @lc code=end
