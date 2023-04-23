@@ -114,7 +114,6 @@ public:
 // @lcpr case=start
 // [[1,1],[2,3],[2,3],[1,1],[1,1],[1,1],[1,2]]\n4\n
 // @lcpr case=end
-
 // @lcpr case=start
 // [[1,3],[2,4],[3,2]]\n6\n
 // @lcpr case=end
