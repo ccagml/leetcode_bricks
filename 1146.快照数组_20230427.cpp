@@ -70,36 +70,61 @@ using namespace std;
 class SnapshotArray
 {
 public:
-    unordered_map<int, int> umii;
-    vector<unordered_map<int, int>> vumii;
+    vector<vector<int>> vvpii_snip;
+    vector<vector<int>> vvpii_value;
+
+    int cur_snap;
     SnapshotArray(int length)
     {
+        vvpii_snip.resize(length + 10);
+        vvpii_value.resize(length + 10);
+        cur_snap = 0;
     }
 
     void set(int index, int val)
     {
-        umii[index] = val;
+        vvpii_snip[index].push_back(cur_snap);
+        vvpii_value[index].push_back(val);
     }
 
     int snap()
     {
-        int cur = vumii.size();
-        unordered_map<int, int> umii1;
-        for (pair<int, int> pii : umii)
-        {
-            umii1[pii.first] = pii.second;
-        }
-        vumii.push_back(umii1);
-        return cur;
+        cur_snap++;
+        return cur_snap - 1;
     }
 
     int get(int index, int snap_id)
     {
-        if (vumii.size() > snap_id)
+        // //第一个大于 i
+        auto upper = std::upper_bound(vvpii_snip[index].begin(), vvpii_snip[index].end(), snap_id);
+
+        if (upper != vvpii_snip[index].end())
         {
-            return vumii[snap_id][index];
+            int temp_index = std::distance(vvpii_snip[index].begin(), upper);
+            if (temp_index == 0)
+            {
+
+                return 0;
+            }
+            else
+            {
+
+                return vvpii_value[index][temp_index - 1];
+            }
         }
-        return 0;
+        else
+        {
+            if (vvpii_snip[index].size() == 0)
+            {
+
+                return 0;
+            }
+            else
+            {
+
+                return vvpii_value[index][vvpii_value[index].size() - 1];
+            }
+        }
     }
 };
 
@@ -113,6 +138,10 @@ public:
 // @lc code=end
 
 /*
+// @lcpr case=start
+// ["SnapshotArray","set","snap","set","get"]\n[[3],[0,5],[],[0,6],[0,0]]\n
+// @lcpr case=end
+
 // @lcpr case=start
 // ["SnapshotArray","set","snap","set","get"]\n[[3],[0,5],[],[0,6],[0,0]]\n
 // @lcpr case=end
