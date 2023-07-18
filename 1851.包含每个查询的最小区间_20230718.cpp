@@ -82,135 +82,103 @@ using namespace std;
 // @lc code=start
 int temp_max = 99999999;
 
-class segmentTree
-{
-private:
-    class segmentTreeNode
-    {
-    public:
-        segmentTreeNode(int l, int r)
-        {
-            left = l;
-            right = r;
-            val = 0;
-            temp_add = 0;
-            min_v = temp_max;
-            left_son = nullptr;
-            right_son = nullptr;
-            push_down_flag = true;
-        }
-        int id;
-        int left;
-        int right;
-        long long min_v = 0;
-        bool push_down_flag;
-        long long val;
-        long long temp_add;
-        segmentTreeNode *left_son;
-        segmentTreeNode *right_son;
-    };
-
-    int all_left, all_right;
-
-    void modify(segmentTreeNode *cur_node, int cur_l, int cur_r, int need_L, int need_R, long long new_v)
-    {
-        cur_node->push_down_flag = true;
-        //  cur_l   need_L  need_R  cur_r
-        //  范围外
-        if (cur_l > need_R || cur_r < need_L)
-        {
-            return;
-        }
-
-        // 全包含了,不往下递推
-        if (need_L <= cur_l && cur_r <= need_R && cur_node->left_son == nullptr && cur_node->right_son == nullptr)
-        {
-            cur_node->min_v = min(new_v, cur_node->min_v);
-
-            // 2 3-6 10  /  3  -  6 == 5
-            return;
-        }
-        int old_min_v = cur_node->min_v;
-        cur_node->min_v = temp_max;
-        // 继续下推
-        int mid = (cur_l + cur_r) >> 1;
-        if (cur_node->left_son == nullptr)
-        {
-            cur_node->left_son = new segmentTreeNode(cur_l, mid);
-        }
-        if (cur_node->right_son == nullptr)
-        {
-            cur_node->right_son = new segmentTreeNode((mid + 1), cur_r);
-        }
-        if (old_min_v != temp_max)
-        {
-            modify(cur_node->left_son, cur_l, mid, cur_l, cur_r, old_min_v);
-            modify(cur_node->right_son, mid + 1, cur_r, cur_l, cur_r, old_min_v);
-        }
-        modify(cur_node->left_son, cur_l, mid, need_L, need_R, new_v);
-        modify(cur_node->right_son, mid + 1, cur_r, need_L, need_R, new_v);
-    }
-
-    segmentTreeNode *root;
-    long long query_min(segmentTreeNode *cur_node, int cur_l, int cur_r, int NEED_L, int NEED_R)
-    {
-        if (cur_node == nullptr)
-        {
-            return temp_max;
-        }
-        if (cur_l > NEED_R || cur_r < NEED_L)
-        {
-            return temp_max;
-        }
-
-        if (cur_node->left_son == nullptr && cur_node->right_son == nullptr && cur_l <= NEED_L && NEED_R <= cur_r)
-        {
-            return cur_node->min_v;
-        }
-        if (NEED_L <= cur_l && cur_r <= NEED_R)
-            return cur_node->min_v;
-        // pushdown(cur_node, 0);
-        long mid = (cur_l + cur_r) >> 1;
-        return min(query_min(cur_node->left_son, cur_l, mid, NEED_L, NEED_R), query_min(cur_node->right_son, mid + 1, cur_r, NEED_L, NEED_R));
-    }
-
-public:
-    segmentTree(int left, int right)
-    {
-
-        root = new segmentTreeNode(left, right);
-        all_left = left;
-        all_right = right;
-    }
-
-    void modify(int l, int r, long long new_v)
-    {
-        modify(root, all_left, all_right, l, r, new_v);
-    }
-    int query(int l, int r)
-    {
-        return query_min(root, all_left, all_right, l, r);
-    }
-};
-
 class Solution
 {
 public:
     vector<int> minInterval(vector<vector<int>> &intervals, vector<int> &queries)
     {
-        segmentTree *st = new segmentTree(1, 10000002);
-        for (int i = 0; i < intervals.size(); i++)
+
+        // 自定义比较函数pair//返回true使得第一个参数排后面
+        auto cmp_pair = [](const std::pair<int, int> &t1, const std::pair<int, int> &t2)
         {
-            int a = intervals[i][0];
-            int b = intervals[i][1];
-            int c = b - a + 1;
-            st->modify(a, b, c);
+            // true使得t1排后面?
+            if (t1.first > t2.first)
+            {
+                return true;
+            }
+            else if (t1.first == t2.first && t1.second > t2.second)
+            {
+                return true;
+            }
+            return false;
+        };
+        std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(cmp_pair)> pair_pq(cmp_pair);
+        unordered_set<int> usi;
+        vector<int> vi;
+        for (int q : queries)
+        {
+            usi.insert(q);
+        }
+        for (int q : usi)
+        {
+            vi.push_back(q);
+        }
+        sort(vi.begin(), vi.end());
+        sort(intervals.begin(), intervals.end());
+        int vii = 0;
+        int ii = 0;
+        unordered_map<int, int> umii;
+        while (vii < vi.size())
+        {
+            int need_check = vi[vii];
+            while (ii < intervals.size())
+            {
+                int a = intervals[ii][0];
+                int b = intervals[ii][1];
+                int len = b - a + 1;
+                if (a <= need_check)
+                {
+                    pair_pq.push({len, a});
+                    ii++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            // 过滤掉无效区间
+            while (pair_pq.size() > 0)
+            {
+                pair<int, int> top = pair_pq.top();
+                int a = top.second;
+                int c = top.first;
+                int b = c + a - 1;
+                if (b < need_check)
+                {
+                    pair_pq.pop();
+                }
+                else
+                {
+                    break;
+                }
+            }
+            // 结果
+            if (pair_pq.size() == 0)
+            {
+                umii[need_check] = -1;
+            }
+            else
+            {
+                pair<int, int> top = pair_pq.top();
+                int a = top.second;
+                int c = top.first;
+                int b = c + a - 1;
+                if (a > need_check)
+                {
+                    umii[need_check] = -1;
+                }
+                else
+                {
+                    umii[need_check] = c;
+                }
+            }
+            vii++;
         }
         vector<int> result;
         for (int q : queries)
         {
-            int temp_q = st->query(q, q);
-            result.push_back(((temp_q == temp_max) ? -1 : temp_q));
+            result.push_back(umii[q]);
         }
         return result;
     }
