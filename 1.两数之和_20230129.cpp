@@ -1,15 +1,8 @@
 // @lcpr-before-debug-begin
 
-
-
-
 // @lcpr-before-debug-end
 
 // @before-stub-for-debug-begin
-
-
-
-
 
 // @before-stub-for-debug-end
 
