@@ -1,0 +1,1 @@
+{"data":[{"name":"2023-10-28 10:57:24","id":1698461844585,"body":"Accepted\n88/88 cases passed (696 ms)\nYour runtime beats 13.25 % of cpp submissions\nYour memory usage beats 40.96 % of cpp submissions (114.1 MB)\n1.bfs不能把上一级在进入队列,\n2.次数超过答案就不用继续\n"}]}
