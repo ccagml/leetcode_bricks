@@ -815,6 +815,73 @@ void test_quick_pow()
     std::cout << "quick_pow(2,3):8" << quick_pow(2, 3) << "\n";
     std::cout << "quick_pow(2,4):16" << quick_pow(2, 4) << "\n";
 }
+
+// 降序的二分查找
+void test_down_upper_bound()
+{
+
+    const std::vector<int> data = {6, 5, 5, 4, 3, 2, 1};
+
+    for (int i = 0; i < 8; ++i)
+    {
+        // 第一个大于 i 的位置
+        auto it = std::upper_bound(data.rbegin(), data.rend(), i);
+
+        std::cout << i << " < ";
+        // 0 < 1 at index 6
+        // 1 < 2 at index 5
+        // 2 < 3 at index 4
+        // 3 < 4 at index 3
+        // 4 < 5 at index 2
+        // 5 < 6 at index 0
+        // 6 < [not found]
+        // 7 < [not found]
+        if (it != data.rend())
+        {
+            int index1 = data.size() - (std::distance(data.rbegin(), it) + 1);
+            std::cout << *it << " at index " << index1;
+        }
+        else
+        {
+            std::cout << "[not found]";
+        }
+        std::cout << '\n';
+    }
+}
+
+// 降序的二分查找
+void test_down_lower_bound()
+{
+
+    const std::vector<int> data = {6, 5, 5, 4, 3, 2, 1};
+
+    for (int i = 0; i < 8; ++i)
+    {
+        // 第一个大于等于 i 的位置
+        auto it = std::lower_bound(data.rbegin(), data.rend(), i);
+
+        std::cout << i << " ≤ ";
+        // 0 ≤ 1 at index 6
+        // 1 ≤ 1 at index 6
+        // 2 ≤ 2 at index 5
+        // 3 ≤ 3 at index 4
+        // 4 ≤ 4 at index 3
+        // 5 ≤ 5 at index 2
+        // 6 ≤ 6 at index 0
+        // 7 ≤ [not found]
+        if (it != data.rend())
+        {
+            int index1 = data.size() - (std::distance(data.rbegin(), it) + 1);
+            std::cout << *it << " at index " << index1;
+        }
+        else
+        {
+            std::cout << "[not found]";
+        }
+        std::cout << '\n';
+    }
+}
+
 // 第一个不小于 i 的位置
 // 二分
 void test_lower_bound()
@@ -2125,7 +2192,7 @@ unordered_set<int> get_primes_list_fast(int x)
     return result;
 }
 
-int_fast8_t main(int argc, char const *argv[])
+int main(int argc, char const *argv[])
 {
     // test_pair();
     // test_tuple();
@@ -2146,7 +2213,9 @@ int_fast8_t main(int argc, char const *argv[])
     // test_upper_bound();
     // test_set_bit();
     // test_list();
-    test_segment_tree();
+    // test_segment_tree();
+    // test_down_upper_bound();
+    test_down_lower_bound();
     return 0;
 }
 
