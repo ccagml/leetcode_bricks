@@ -95,18 +95,15 @@ public:
             // 当前位置看到的人数
             int cur_j = heights[j];
 
-            // 使用 std::lower_bound 查找第一个大于5的位置
-            auto it = std::upper_bound(temp_i.rbegin(), temp_i.rend(), cur_j);
+            auto it = std::lower_bound(temp_i.rbegin(), temp_i.rend(), cur_j);
 
-            // 输出结果
             if (it != temp_i.rend())
             {
-                int index1 = std::distance(temp_i.rbegin(), it);
-                result[j] = index1 + 1;
+                int index1 = temp_i.size() - (std::distance(temp_i.rbegin(), it) + 1);
+                result[j] = temp_i.size() - index1;
             }
             else
             {
-                // std::cout << "未找到大于等于 " << cur_j << " 的元素。" << std::endl;
                 result[j] = temp_i.size();
             }
 
