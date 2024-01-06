@@ -93,6 +93,9 @@ using namespace std;
 #include <vector>
 // @lcpr-template-end
 // @lc code=start
+// 看不出为什么过不去
+//  因为保存的值 uiusi_len[start_flag][pii_next.first] 不对
+//  进入 pii_next.first 应当保存  cur_len - pii_next.second
 class Solution
 {
 public:
@@ -105,28 +108,11 @@ public:
         for (pair<int, int> pii_next : uiuii[cur_n])
         {
             // 还没到过
-            if ((uiusi[start_flag].count(pii_next.first) == 0 || (uiusi_len[start_flag].count(pii_next.first) > 0 && uiusi_len[start_flag][pii_next.first] < cur_len)) && cur_len >= pii_next.second && pii_next.first != start_flag)
+            if ((uiusi[start_flag].count(pii_next.first) == 0 || (uiusi_len[start_flag].count(pii_next.first) > 0 && uiusi_len[start_flag][pii_next.first] < (cur_len - pii_next.second))) && cur_len >= pii_next.second && pii_next.first != start_flag)
             {
-                uiusi_len[start_flag][pii_next.first] = cur_len;
+                uiusi_len[start_flag][pii_next.first] = cur_len - pii_next.second;
                 uiusi[start_flag].insert(pii_next.first);
-                for (int bb = 0; bb < deep; bb++)
-                {
-                    std::cout << "   ";
-                }
-                std::cout << " -> " << pii_next.first << " 剩余 " << cur_len << " - " << pii_next.second << "=" << cur_len - pii_next.second << std::endl;
                 check_n(start_flag, pii_next.first, cur_len - pii_next.second, deep + 1);
-            }
-            else
-            {
-                if (cur_len - pii_next.second > 0)
-                {
-                    for (int bb = 0; bb < deep; bb++)
-                    {
-                        std::cout << "   ";
-                    }
-
-                    std::cout << " -> " << pii_next.first << " 不进入 " << cur_len << " - " << pii_next.second << "=" << cur_len - pii_next.second << std::endl;
-                }
             }
         }
     }
@@ -142,12 +128,12 @@ public:
             int a = edges[j][0];
             int b = edges[j][1];
             int len = edges[j][2];
-            uiuii[a][b] = len;
-            uiuii[b][a] = len;
+            if (len <= distanceThreshold)
+            {
+                uiuii[a][b] = len;
+                uiuii[b][a] = len;
+            }
         }
-
-        check_n(32, 32, distanceThreshold, 0);
-        check_n(38, 38, distanceThreshold, 0);
 
         for (int j = 0; j < n; j++)
         {
