@@ -1645,8 +1645,9 @@ double get_sum(vector<int> &pre_sum, int i, int j)
 void loop_hash(string s)
 {
     int p_131 = 131;
-    vector<unsigned long long> f(1001);
-    vector<unsigned long long> p(1001);
+    int n = s.size();
+    vector<unsigned long long> f(n + 1);
+    vector<unsigned long long> p(n + 1);
     p[0] = 1;
     f[0] = (s[0] - 'a' + 1);
     for (int i = 1; i < s.size(); i++)
@@ -1656,7 +1657,7 @@ void loop_hash(string s)
     }
 
     // 计算某部分的哈希
-    // unsigned long long get_h(vector<unsigned long long> f, vector<unsigned long long> p, int left, int right)
+    // unsigned long long get_h(vector<unsigned long long>& f, vector<unsigned long long>& p, int left, int right)
     // {
     //     if (left == 0)
     //     {
