@@ -8,6 +8,7 @@ using namespace std;
 #include <iostream>
 #include <list>
 #include <queue>
+#include <set>
 #include <stack>
 #include <tuple>
 #include <unordered_map>
@@ -2191,6 +2192,26 @@ unordered_set<int> get_primes_list_fast(int x)
         result.insert(x);
     }
     return result;
+}
+
+// 有序集合 搜索 差的绝对值 最接近target的数
+// 先找大于等于的数,在找前一个比较绝对值
+int findClosest(const std::set<int> &s, int target)
+{
+    auto it = s.lower_bound(target);
+    if (it == s.begin())
+    {
+        return *it;
+    }
+    auto prev = std::prev(it);
+    if (it == s.end() || std::abs(static_cast<int>(*it - target)) >= std::abs(static_cast<int>(*prev - target)))
+    {
+        return *prev;
+    }
+    else
+    {
+        return *it;
+    }
 }
 
 int main(int argc, char const *argv[])
