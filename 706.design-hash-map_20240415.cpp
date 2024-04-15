@@ -82,28 +82,26 @@ using namespace std;
 class MyHashMap
 {
 public:
-    unordered_map<int, int> umii;
+    vector<int> vi;
     MyHashMap()
     {
+        vector<int> nvi(1000002, -1);
+        vi = nvi;
     }
 
     void put(int key, int value)
     {
-        umii[key] = value;
+        vi[key] = value;
     }
 
     int get(int key)
     {
-        if (umii.count(key) > 0)
-        {
-            return umii[key];
-        }
-        return -1;
+        return vi[key];
     }
 
     void remove(int key)
     {
-        umii.erase(key);
+        vi[key] = -1;
     }
 };
 
