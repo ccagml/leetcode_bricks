@@ -1008,6 +1008,23 @@ void test_upper_bound()
         }
         std::cout << '\n';
     }
+    std::vector<pair<int, int>> vpii = {{100, 3}, {101, 4}, {102, 5}, {103, 5}, {107, 3}};
+    for (int to_find : {102, 110})
+    {
+        auto prc_info = std::upper_bound(vpii.begin(), vpii.end(), to_find, [](int value, const pair<int, int> &info)
+                                         { return value < info.first; });
+        if (prc_info != vpii.end())
+        {
+            // 107.3 at index 4
+            std::cout << prc_info->first << " at index " << prc_info - vpii.begin();
+        }
+        else
+        {
+            // 110.2 not found
+            std::cout << to_find << " not found";
+        }
+        std::cout << '\n';
+    }
 }
 int set_bit_1(int x, int index)
 {
@@ -2232,12 +2249,12 @@ int main(int argc, char const *argv[])
     // test_mod_1e97();
     // test_quick_pow();
     // test_lower_bound();
-    // test_upper_bound();
+    test_upper_bound();
     // test_set_bit();
     // test_list();
     // test_segment_tree();
     // test_down_upper_bound();
-    test_down_lower_bound();
+    // test_down_lower_bound();
     return 0;
 }
 

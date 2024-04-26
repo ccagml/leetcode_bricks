@@ -82,7 +82,22 @@ public:
 
     void set(int index, int val)
     {
-        uivpi[index].push_back({snap_id, val});
+        if (uivpi[index].size() < 1)
+        {
+            uivpi[index].push_back({snap_id, val});
+        }
+        else
+        {
+            // 判断最后一个
+            if (uivpi[index][uivpi[index].size() - 1].first == snap_id)
+            {
+                uivpi[index][uivpi[index].size() - 1].second = val;
+            }
+            else
+            {
+                uivpi[index].push_back({snap_id, val});
+            }
+        }
     }
 
     int snap()
@@ -96,21 +111,30 @@ public:
     {
         vector<pair<int, int>> &vpp = uivpi[index];
         if (vpp.size() < 1)
-        {
             return 0;
-        }
-        // 找到
         int result = 0;
-        for (int i = 0; i < vpp.size(); i++)
+        // for (int i = 0; i < vpp.size(); i++)
+        // {
+        //     if (vpp[i].first <= snap_id)
+        //         result = vpp[i].second;
+        //     else
+        //         break;
+        // }
+        auto prc_info = std::upper_bound(vpp.begin(), vpp.end(), snap_id, [](int value, const pair<int, int> &info)
+                                         { return value < info.first; });
+        if (prc_info != vpp.end())
         {
-            if (vpp[i].first <= snap_id)
+            // 107.3 at index 4
+            int index = prc_info - vpp.begin();
+            if (index > 0)
             {
-                result = vpp[i].second;
+
+                return vpp[index - 1].second;
             }
-            else
-            {
-                break;
-            }
+        }
+        else
+        {
+            return vpp[vpp.size() - 1].second;
         }
         return result;
     }
