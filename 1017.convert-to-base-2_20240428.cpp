@@ -77,120 +77,67 @@ using namespace std;
 class Solution
 {
 public:
-    unordered_map<int, int> uivi_zheng;
-    unordered_map<int, int> uivi_fu;
-    int set_bit_1(int x, int index)
-    {
-        x |= (1 << index);
-        return x;
-    }
-
     bool is_bit_1(int x, int index)
     {
         return ((1 << index) & (x));
     }
 
-    void dfs(vector<int> &a, int cur_index, int cur_sum, int cur_flag)
-    {
-        if (a.size() <= cur_index)
-        {
-            return;
-        }
-        int cur = a[cur_index];
-
-        int xuan = cur_sum + cur;
-        int xuan_flag = set_bit_1(cur_flag, cur_index);
-        int bu_xuan = cur_sum;
-        int bu_xian_flag = cur_flag;
-        if (cur > 0)
-        {
-            uivi_zheng[xuan] = xuan_flag;
-            uivi_zheng[bu_xuan] = bu_xian_flag;
-        }
-        else if (cur < 0)
-        {
-            uivi_fu[xuan] = xuan_flag;
-            uivi_fu[bu_xuan] = bu_xian_flag;
-        }
-        dfs(a, cur_index + 1, xuan, xuan_flag);
-        dfs(a, cur_index + 1, bu_xuan, bu_xian_flag);
-    }
     string baseNeg2(int n)
     {
         if (n == 0)
         {
             return "0";
         }
-        vector<int> zheng;
-        vector<int> zheng_index;
-
-        vector<int> fu;
-        vector<int> fu_index;
-        long long temp = 1;
+        vector<int> vi(40);
         for (int i = 0; i < 32; i++)
         {
-            if (temp > 0)
+            if (is_bit_1(n, i))
             {
-                zheng.push_back(temp);
-                zheng_index.push_back(i);
+                vi[i] = 1;
             }
-            else if (temp < 0 && temp > -2147483648)
-            {
-                fu.push_back(temp);
-                fu_index.push_back(i);
-            }
-            temp *= (long long)-2;
         }
-        dfs(zheng, 0, 0, 0);
-        dfs(fu, 0, 0, 0);
 
-        int zheng_flag = 0;
-        int fu_flag = 0;
-        for (pair<int, int> pii : uivi_zheng)
+        for (int i = 0; i < 32; i++)
         {
-            if (pii.first > 0)
+            if (i % 2 == 1 && vi[i] > 0)
             {
-                int fu = n - pii.first;
-                if (fu < 0 && uivi_fu.count(fu) > 0)
+                vi[i + 1]++;
+            }
+        }
+        for (int i = 0; i < vi.size(); i++)
+        {
+            while (vi[i] > 1)
+            {
+
+                // 110 = 6
+                // 110 = 2
+                //   -2 4 -8 16
+                vi[i] -= 2;
+                if (vi.size() > i + 1)
                 {
-                    zheng_flag = pii.second;
-                    fu_flag = uivi_fu[fu];
-                    break;
+                    vi[i + 1]++;
                 }
-                else if (fu == 0)
+                if (vi.size() > i + 2)
                 {
-                    zheng_flag = pii.second;
-                    fu_flag = 0;
-                    break;
+                    vi[i + 2]++;
                 }
             }
         }
-        vector<int> result(33, 0);
-        for (int j = 0; j < 18; j++)
-        {
-            if (is_bit_1(zheng_flag, j))
-            {
-                result[zheng_index[j]] = 1;
-            }
-            if (is_bit_1(fu_flag, j))
-            {
-                result[fu_index[j]] = 1;
-            }
-        }
-        string res = "";
+
         bool find = false;
-        for (int i = 32; i >= 0; i--)
+        string result = "";
+        for (int j = vi.size() - 1; j >= 0; j--)
         {
-            if (result[i] == 1)
+            if (vi[j] == 1)
             {
                 find = true;
             }
             if (find)
             {
-                res.push_back(result[i] + '0');
+                result.push_back(vi[j] + '0');
             }
         }
-        return res;
+        return result;
     }
 };
 // @lc code=end
@@ -206,6 +153,14 @@ public:
 
 // @lcpr case=start
 // 4\n
+// @lcpr case=end
+
+// @lcpr case=start
+// 6\n
+// @lcpr case=end
+
+// @lcpr case=start
+// 14\n
 // @lcpr case=end
 
  */

@@ -1,1 +1,1 @@
-{"data":[{"name":"2024-04-28 14:32:32","id":1714285952922,"body":"超时"}]}
+{"data":[{"name":"2024-04-28 14:32:32","id":1714285952922,"body":"超时"},{"name":"2024-04-28 15:15:58","id":1714288558667,"body":"Accepted\n170/170 cases passed (0 ms)\nYour runtime beats 100 % of cpp submissions\nYour memory usage beats 36 % of cpp submissions (7.2 MB)\n耗时 3:47:12\n数学\n2进制 转成 -2禁止, 相当于 i 是奇数, 变成 i + 1 和 i + 2处理"}]}
