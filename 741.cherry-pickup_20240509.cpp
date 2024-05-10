@@ -92,6 +92,7 @@ class Solution
 {
 public:
     vector<vector<int>> gg;
+    unordered_map<string, int> umsi;
     int dfs(int k, int a1, int a2)
     {
         // k 步 到达 (k - a1, a1), (k - a2, a2)
@@ -100,14 +101,23 @@ public:
         int b_x = k - a2;
         int b_y = a2;
 
-        // a1到达的最大值
-        if (a_x < 0 || a_y < 0 || b_x < 0 || b_y << 0)
+        string kaa = std::to_string(k) + "_" + std::to_string(a1) + "_" + std::to_string(a2);
+
+        if (umsi.count(kaa) > 0)
         {
+            return umsi[kaa];
+        }
+
+        // a1到达的最大值
+        if (a_x < 0 || a_y < 0 || b_x < 0 || b_y < 0)
+        {
+            umsi[kaa] = -99999999;
             return -99999999;
         }
 
         if (a_x == 0 && a_y == 0 && b_x == 0 && b_y == 0)
         {
+            umsi[kaa] = gg[0][0];
             return gg[0][0];
         }
 
@@ -137,14 +147,19 @@ public:
         }
         if (gg[a_y][a_x] == -1)
         {
+            umsi[kaa] = -99999999;
             return -99999999;
         }
         if (gg[b_y][b_x] == -1)
         {
+            umsi[kaa] = -99999999;
             return -99999999;
         }
 
-        return max(d1, max(d2, max(d3, d4))) + add;
+        int temp = max(d1, max(d2, max(d3, d4))) + add;
+        umsi[kaa] = temp;
+
+        return temp;
     }
     int cherryPickup(vector<vector<int>> &grid)
     {
