@@ -120,7 +120,7 @@
     "leetcode-problem-rating.filePath": {
         "default": {
             "folder": "",
-            "filename": "${id}.${kebab-case-name}_${yyyymmdd}.${ext}"
+            "filename": "${id}._${score}_${kebab-case-name}_${yyyymmdd}.${ext}"
         }
     },
 }
